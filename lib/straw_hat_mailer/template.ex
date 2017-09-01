@@ -4,13 +4,13 @@ defmodule StrawHat.Mailer.Template do
   alias StrawHat.Mailer.Repo
   alias StrawHat.Mailer.Schema.Template
 
-  def list_templates(params),
-    do: Repo.paginate(Template, params)
+  def list_templates(params), do: Repo.paginate(Template, params)
 
   def list_template_by_service(service, params) do
     query =
       from template in Template,
       where: ^[service: service]
+
     Repo.paginate(query, params)
   end
 
@@ -25,21 +25,8 @@ defmodule StrawHat.Mailer.Template do
     |> Template.changeset(params)
     |> Repo.update()
   end
-  def update_template(id, params) do
-    with {:ok, template} <- find_template(id),
-      do: update_template(template, params)
-  end
 
-  def destroy_template(%Template{} = template) do
-    case Repo.delete(template) do
-      {:ok, result} -> {:ok, result}
-      {:error, reason} -> {:error, reason}
-    end
-  end
-  def destroy_template(id) do
-    with {:ok, template} <- find_template(id),
-      do: destroy_template(template)
-  end
+  def destroy_template(%Template{} = template), do: Repo.delete(template)
 
   def find_template(id) do
     case get_template(id) do
@@ -48,10 +35,9 @@ defmodule StrawHat.Mailer.Template do
     end
   end
 
-  def get_template(id),
-    do: Repo.get(Template, id)
+  def get_template(id), do: Repo.get(Template, id)
 
-  def template(name)do
+  def template(name) do
     query =
       from template in Template,
       where: ^[name: name]

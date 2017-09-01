@@ -67,8 +67,8 @@ defmodule StrawHat.Mailer.Mixfile do
       {:gen_smtp, "~> 0.11.0"},
 
       # Testing
-      {:ex_machina, "~> 2.0", only: :test},
-      {:faker, "~> 0.8", only: :test}
+      {:ex_machina, ">= 0.0.0", only: :test},
+      {:faker, ">= 0.0.0", only: :test}
     ]
   end
 
