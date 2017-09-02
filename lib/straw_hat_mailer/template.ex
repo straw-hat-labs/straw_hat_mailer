@@ -1,17 +1,15 @@
 defmodule StrawHat.Mailer.Template do
-  import Ecto.Query, only: [from: 2]
-
+  alias StrawHat.Mailer.Query.Template, as: TemplateQuery
+  alias StrawHat.Error
   alias StrawHat.Mailer.Repo
   alias StrawHat.Mailer.Schema.Template
 
-  def list_templates(params), do: Repo.paginate(Template, params)
+  def list_templates(paginate), do: Repo.paginate(Template, paginate)
 
-  def list_template_by_service(service, params) do
-    query =
-      from template in Template,
-      where: ^[service: service]
-
-    Repo.paginate(query, params)
+  def list_template_by_service(service, paginate) do
+    Template
+    |> TemplateQuery.by_service(service)
+    |> Repo.paginate(paginate)
   end
 
   def create_template(params) do
@@ -30,21 +28,20 @@ defmodule StrawHat.Mailer.Template do
 
   def find_template(id) do
     case get_template(id) do
-      nil -> {:error, {:not_found, "Template #{id} not found"}}
+      nil -> {:error, Error.new("mailer.template.not_found", metadata: [id: id])}
       template -> {:ok, template}
     end
   end
 
   def get_template(id), do: Repo.get(Template, id)
 
-  def template(name) do
-    query =
-      from template in Template,
-      where: ^[name: name]
-
-    case Repo.one(query) do
-      nil -> {:error, "Not found template by name #{name}"}
-      template -> {:ok, template}
-    end
+  def template(name)do
+    Template
+    |> TemplateQuery.by_name(name)
+    |> Repo.one()
+    |> case do
+         nil -> {:error, Error.new("mailer.template.not_found", metadata: [name: name])}
+         template -> {:ok, template}
+       end
   end
 end
