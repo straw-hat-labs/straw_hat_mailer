@@ -27,13 +27,13 @@ defmodule StrawHat.Mailer.Test.TemplateTest do
     assert {:ok, _template} = Template.create_template(params)
   end
 
-  test "update name" do
+  test "update by template" do
     template = insert(:template)
     {:ok, template} = Template.update_template(template, %{"name": "new_service"})
     assert template.name == "new_service"
   end
 
-  test "delete template by id" do
+  test "delete by template" do
     template = insert(:template)
     assert {:ok, _} = Template.destroy_template(template)
   end
