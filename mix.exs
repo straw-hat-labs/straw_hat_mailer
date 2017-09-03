@@ -68,7 +68,12 @@ defmodule StrawHat.Mailer.Mixfile do
 
       # Testing
       {:ex_machina, ">= 0.0.0", only: :test},
-      {:faker, ">= 0.0.0", only: :test}
+      {:faker, ">= 0.0.0", only: :test},
+
+      # Tools
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
+      {:credo, ">= 0.0.0", only: [:dev, :test], runtime: false},
+      {:excoveralls, ">= 0.0.0", only: :test}
     ]
   end
 
