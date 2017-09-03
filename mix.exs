@@ -1,10 +1,11 @@
 defmodule StrawHat.Mailer.Mixfile do
   use Mix.Project
 
+  @version "0.0.2"
+
   @elixir_version "~> 1.5"
   @name :straw_hat_mailer
   @organization "straw_hat"
-  @version "0.0.1"
   @description """
     Mailer Management
   """
