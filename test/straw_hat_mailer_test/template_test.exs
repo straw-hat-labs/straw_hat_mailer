@@ -35,6 +35,6 @@ defmodule StrawHat.Mailer.Test.TemplateTest do
 
   test "delete template by id" do
     template = insert(:template)
-    assert {:ok, _} = Template.destroy_template(template.id)
+    assert {:ok, _} = Template.destroy_template(template)
   end
 end

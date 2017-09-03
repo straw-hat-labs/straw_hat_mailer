@@ -60,7 +60,7 @@ defmodule StrawHat.Mailer.Mixfile do
   defp deps do
     [
       {:postgrex, "~> 0.13.2"},
-      {:ecto, "~> 2.1"},
+      {:ecto, "~> 2.2"},
       {:scrivener_ecto, "~> 1.2"},
 
       {:swoosh, "~> 0.8.0"},
