@@ -1,7 +1,7 @@
 defmodule StrawHat.Mailer.Mixfile do
   use Mix.Project
 
-  @version "0.0.2"
+  @version "0.0.3"
 
   @elixir_version "~> 1.5"
   @name :straw_hat_mailer
@@ -47,11 +47,7 @@ defmodule StrawHat.Mailer.Mixfile do
   def application do
     [
       mod: {StrawHat.Mailer.Application, []},
-      extra_applications: [
-        :logger,
-        :swoosh,
-        :gen_smtp
-      ]
+      extra_applications: [:logger]
     ]
   end
 
