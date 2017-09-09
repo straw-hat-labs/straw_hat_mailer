@@ -22,14 +22,14 @@ defmodule StrawHat.Mailer.Test.TemplateTest do
          email: Faker.Internet.email()
         },
         subject: "Milka Suberast",
-        text_body: "Welcome {name}, enjoy a good reputation",
-        html_body: "<b>Become </b> our client number <i>{number}</i>, enjoy the service."}
-    assert {:ok, _template} = Template.create_template(params)
+        text_body: "Welcome {{name}}, enjoy a good reputation",
+        html_body: "<b>Become </b> our client number <i>{{number}}</i>, enjoy the service."}
+    assert {:ok, template} = Template.create_template(params)
   end
 
   test "update by template" do
     template = insert(:template)
-    {:ok, template} = Template.update_template(template, %{"name": "new_service"})
+    {:ok, template} = Template.update_template(template, %{name: "new_service"})
     assert template.name == "new_service"
   end
 

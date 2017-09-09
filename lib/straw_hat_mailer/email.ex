@@ -1,6 +1,7 @@
 defmodule StrawHat.Mailer.Email do
   import Swoosh.Email
 
+  alias Mustache
   alias StrawHat.Mailer.Template
 
   defdelegate to(email, recipient), to: Swoosh.Email
@@ -21,7 +22,7 @@ defmodule StrawHat.Mailer.Email do
     case template.subject do
       nil -> email
       subject ->
-        subject = replace_options(subject, options)
+        subject = Mustache.render(subject, options)
         subject(email, subject)
     end
   end
@@ -30,7 +31,7 @@ defmodule StrawHat.Mailer.Email do
     case template.html_body do
       nil  -> email
       html ->
-        html = replace_options(html, options)
+        html = Mustache.render(html, options)
         html_body(email, html)
     end
   end
@@ -39,15 +40,8 @@ defmodule StrawHat.Mailer.Email do
     case template.text_body do
       nil  -> email
       text ->
-        text = replace_options(text, options)
+        text = Mustache.render(text, options)
         text_body(email, text)
     end
-  end
-
-  defp replace_options(text, options) do
-    Enum.reduce(options, text, fn({key, value}, acc) ->
-      if is_binary(key) || is_number(key),
-        do: String.replace(acc, "{#{key}}", value), else: acc
-    end)
   end
 end

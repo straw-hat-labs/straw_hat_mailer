@@ -12,8 +12,8 @@ defmodule StrawHat.Mailer.Test.Factory do
       service: get_random_string(3),
       from: build(:from),
       subject: "Milka Suberast",
-      text_body: "Welcome {name}, enjoy a good reputation",
-      html_body: "<b>Become </b> our client number <i>{number}</i>, enjoy the service."}
+      text_body: "Welcome {{name}}, enjoy a good reputation",
+      html_body: "<b>Become </b> our client number <i>{{number}}</i>, enjoy the service."}
   end
 
   def from_factory do
