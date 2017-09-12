@@ -1,26 +1,42 @@
 defmodule StrawHat.Mailer.Schema.Template do
-  use Ecto.Schema
-  import Ecto.Changeset
+  use StrawHat.Mailer.Schema
 
-  alias StrawHat.Mailer.Schema.Template.From
+  alias StrawHat.Mailer.Template.Privacy
 
-  @required_fields ~w(name service subject text_body)a
-  @optional_fields ~w(html_body)a
+  @required_fields ~w(name title subject owner_id)a
+  @optional_fields ~w(html_body text_body privacy)a
+  @name_regex ~r/^[a-z]+[a-z_]*$/
 
   schema "templates" do
     field(:name, :string)
-    field(:service, :string)
+    field(:title, :string)
     field(:subject, :string)
+    field(:owner_id, :string)
+    field(:privacy, Privacy)
     field(:text_body, :string)
     field(:html_body, :string)
-    embeds_one(:from, From)
   end
 
-  def changeset(template, params \\ %{}) do
+  def changeset(template, template_attrs) do
     template
-    |> cast(params, @required_fields ++ @optional_fields)
-    |> cast_embed(:from)
+    |> cast(template_attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
-    |> unique_constraint(:name, name: :templates_name_index)
+    |> update_change(:title, &String.trim/1)
+    |> validate_inclusion(:privacy, Privacy.values())
+    |> validate_name()
+  end
+
+  defp validate_name(changeset) do
+    changeset
+    |> update_change(:name, &cleanup_name/1)
+    |> validate_format(:name, @name_regex)
+    |> unique_constraint(:name, name: :templates_owner_id_name_index)
+  end
+
+  defp cleanup_name(name) do
+    name
+    |> String.trim()
+    |> String.replace(~r/\s/, "_")
+    |> String.downcase()
   end
 end
