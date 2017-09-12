@@ -5,13 +5,13 @@ defmodule StrawHat.Mailer.Email do
   alias StrawHat.Mailer.Template
 
   defdelegate to(email, recipient), to: Swoosh.Email
+  defdelegate from(email, from), to: Swoosh.Email
 
   def template(name, options) do
-    case Template.template(name) do
+    case Template.get_template_by_name(name) do
       {:error, _reason} -> new()
       {:ok, template} ->
         new()
-        |> from({template.from.name, template.from.email})
         |> add_subject(template, options)
         |> add_html(template, options)
         |> add_text(template, options)

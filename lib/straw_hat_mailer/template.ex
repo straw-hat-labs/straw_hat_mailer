@@ -1,16 +1,9 @@
 defmodule StrawHat.Mailer.Template do
-  alias StrawHat.Mailer.Query.Template, as: TemplateQuery
   alias StrawHat.Error
   alias StrawHat.Mailer.Repo
   alias StrawHat.Mailer.Schema.Template
 
-  def list_templates(paginate), do: Repo.paginate(Template, paginate)
-
-  def list_template_by_service(service, paginate) do
-    Template
-    |> TemplateQuery.by_service(service)
-    |> Repo.paginate(paginate)
-  end
+  def get_templates(paginate), do: Repo.paginate(Template, paginate)
 
   def create_template(params) do
     %Template{}
@@ -35,13 +28,14 @@ defmodule StrawHat.Mailer.Template do
 
   def get_template(id), do: Repo.get(Template, id)
 
-  def template(name)do
+  def get_template_by_name(template_name)do
     Template
-    |> TemplateQuery.by_name(name)
-    |> Repo.one()
+    |> Repo.get_by(name: template_name)
     |> case do
-         nil -> {:error, Error.new("mailer.template.not_found", metadata: [name: name])}
-         template -> {:ok, template}
-       end
+      nil ->
+        error = Error.new("mailer.template.not_found", metadata: [template_name: template_name])
+        {:error, error}
+      template -> {:ok, template}
+    end
   end
 end
