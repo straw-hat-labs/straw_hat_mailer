@@ -16,3 +16,11 @@ config :straw_hat_mailer, StrawHat.Mailer.Mailer,
 
 config :swoosh,
   preview_port: 5000
+
+config :straw_hat_mailer, StrawHat.Mailer,
+  adapter: Swoosh.Adapters.SMTP,
+  relay: "",
+  username: "",
+  password: "",
+  tls: :always,
+  auth: :always
