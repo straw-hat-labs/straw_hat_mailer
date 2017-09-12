@@ -4,27 +4,24 @@ defmodule StrawHat.Mailer.Test.TemplateTest do
 
   test "get by name" do
     template = insert(:template)
-    assert {:ok, _template} = Template.template(template.name)
+    assert {:ok, _template} = Template.get_template_by_name(template.name)
   end
 
   test "list per page" do
     insert_list(10, :template)
-    template = Template.list_templates(%{page: 2, page_size: 5})
+    template = Template.get_templates(%{page: 2, page_size: 5})
     assert template.total_entries == 10
   end
 
   test "create" do
     params =
-      %{name: get_random_string(),
-        service: get_random_string(3),
-        from: %{
-         name: Faker.Name.name(),
-         email: Faker.Internet.email()
-        },
+      %{name: "my_template",
+        title: get_random_string(),
+        owner_id: get_random_string(3),
         subject: "Milka Suberast",
         text_body: "Welcome {{name}}, enjoy a good reputation",
         html_body: "<b>Become </b> our client number <i>{{number}}</i>, enjoy the service."}
-    assert {:ok, template} = Template.create_template(params)
+    assert {:ok, _template} = Template.create_template(params)
   end
 
   test "update by template" do

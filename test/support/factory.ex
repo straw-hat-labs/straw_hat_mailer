@@ -9,16 +9,10 @@ defmodule StrawHat.Mailer.Test.Factory do
   def template_factory do
     %StrawHat.Mailer.Schema.Template{
       name: get_random_string(),
-      service: get_random_string(3),
-      from: build(:from),
+      title: get_random_string(),
+      owner_id: "some_service",
       subject: "Milka Suberast",
       text_body: "Welcome {{name}}, enjoy a good reputation",
       html_body: "<b>Become </b> our client number <i>{{number}}</i>, enjoy the service."}
-  end
-
-  def from_factory do
-    %StrawHat.Mailer.Schema.Template.From{
-       name: Faker.Name.name(),
-       email: Faker.Internet.email()}
   end
 end
