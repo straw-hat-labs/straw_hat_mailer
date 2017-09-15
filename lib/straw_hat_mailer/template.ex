@@ -29,9 +29,8 @@ defmodule StrawHat.Mailer.Template do
   def get_template(id), do: Repo.get(Template, id)
 
   def get_template_by_name(template_name)do
-    Template
-    |> Repo.get_by(name: template_name)
-    |> case do
+    clauses = [name: template_name]
+    case Repo.get_by(Template, clauses) do
       nil ->
         error = Error.new("mailer.template.not_found", metadata: [template_name: template_name])
         {:error, error}
