@@ -11,7 +11,7 @@ config :straw_hat_mailer, StrawHat.Mailer.Repo,
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
 
-config :straw_hat_mailer, StrawHat.Mailer.Mailer,
+config :straw_hat_mailer, StrawHat.Mailer,
   adapter: Swoosh.Adapters.Local
 
 config :swoosh,
