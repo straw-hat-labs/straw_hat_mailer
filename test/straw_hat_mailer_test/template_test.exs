@@ -15,10 +15,10 @@ defmodule StrawHat.Mailer.Test.TemplateTest do
 
   test "create" do
     params =
-      %{name: "my_template",
-        title: get_random_string(),
-        owner_id: get_random_string(3),
+      %{name: "welcome",
+        title: Faker.String.base64(3),
         subject: "Milka Suberast",
+        owner_id: "cargo",
         text_body: "Welcome {{name}}, enjoy a good reputation",
         html_body: "<b>Become </b> our client number <i>{{number}}</i>, enjoy the service."}
     assert {:ok, _template} = Template.create_template(params)
