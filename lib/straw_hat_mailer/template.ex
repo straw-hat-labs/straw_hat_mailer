@@ -1,49 +1,42 @@
 defmodule StrawHat.Mailer.Template do
-  import Ecto.Query, only: [from: 2]
-
+  alias StrawHat.Error
   alias StrawHat.Mailer.Repo
   alias StrawHat.Mailer.Schema.Template
 
-  def list_templates(params), do: Repo.paginate(Template, params)
+  def get_templates(pagination \\ []), do: Repo.paginate(Template, pagination)
 
-  def list_template_by_service(service, params) do
-    query =
-      from template in Template,
-      where: ^[service: service]
-
-    Repo.paginate(query, params)
-  end
-
-  def create_template(params) do
+  def create_template(template_attrs) do
     %Template{}
-    |> Template.changeset(params)
+    |> Template.changeset(template_attrs)
     |> Repo.insert()
   end
 
-  def update_template(%Template{} = template, params) do
+  def update_template(%Template{} = template, template_attrs) do
     template
-    |> Template.changeset(params)
+    |> Template.changeset(template_attrs)
     |> Repo.update()
   end
 
   def destroy_template(%Template{} = template), do: Repo.delete(template)
 
-  def find_template(id) do
-    case get_template(id) do
-      nil -> {:error, {:not_found, "Template #{id} not found"}}
+  def find_template(template_id) do
+    case get_template(template_id) do
+      nil ->
+        error = Error.new("mailer.template.not_found", metadata: [template_id: template_id])
+        {:error, error}
       template -> {:ok, template}
     end
   end
 
-  def get_template(id), do: Repo.get(Template, id)
+  def get_template(template_id), do: Repo.get(Template, template_id)
 
-  def template(name) do
-    query =
-      from template in Template,
-      where: ^[name: name]
+  def get_template_by_name(template_name) do
+    clauses = [name: template_name]
 
-    case Repo.one(query) do
-      nil -> {:error, "Not found template by name #{name}"}
+    case Repo.get_by(Template, clauses) do
+      nil ->
+        error = Error.new("mailer.template.not_found", metadata: [template_name: template_name])
+        {:error, error}
       template -> {:ok, template}
     end
   end

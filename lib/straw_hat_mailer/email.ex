@@ -3,51 +3,41 @@ defmodule StrawHat.Mailer.Email do
 
   alias StrawHat.Mailer.Template
 
-  defdelegate to(email, recipient), to: Swoosh.Email
+  def new_email(to, from, opts \\ %{}) do
+    opts
+    |> Map.merge(%{to: to, from: from})
+    |> new()
+  end
 
-  def template(name, options) do
-    case Template.template(name) do
-      {:error, _reason} -> new()
+  def with_template(email, template_name, opts) do
+    case Template.get_template_by_name(template_name) do
+      {:error, _reason} -> email
       {:ok, template} ->
-        new()
-        |> from({template.from.name, template.from.email})
-        |> add_subject(template, options)
-        |> add_html(template, options)
-        |> add_text(template, options)
+        email
+        |> add_subject(template.subject, opts)
+        |> add_html_body(template.html_body, opts)
+        |> add_text_body(template.text_body, opts)
     end
   end
 
-  defp add_subject(email, template, options) do
-    case template.subject do
-      nil -> email
-      subject ->
-        subject = replace_options(subject, options)
-        subject(email, subject)
-    end
+  defdelegate send_email(email), to: StrawHat.Mailer, as: :deliver
+
+  def send_email_later(email) do
+    Task.start(fn -> send_email(email) end)
   end
 
-  defp add_html(email, template, options) do
-    case template.html_body do
-      nil  -> email
-      html ->
-        html = replace_options(html, options)
-        html_body(email, html)
-    end
+  defp add_subject(email, subject, opts) do
+    subject = Mustache.render(subject, opts)
+    Map.put(email, :subject, subject)
   end
 
-  defp add_text(email, template, options) do
-    case template.text_body do
-      nil  -> email
-      text ->
-        text = replace_options(text, options)
-        text_body(email, text)
-    end
+  defp add_html_body(email, html_body, opts) do
+    html_body = Mustache.render(html_body, opts)
+    Map.put(email, :html_body, html_body)
   end
 
-  defp replace_options(text, options) do
-    Enum.reduce(options, text, fn({key, value}, acc) ->
-      if is_binary(key) || is_number(key),
-        do: String.replace(acc, "{#{key}}", value), else: acc
-    end)
+  defp add_text_body(email, text_body, opts) do
+    text_body = Mustache.render(text_body, opts)
+    Map.put(email, :text_body, text_body)
   end
 end

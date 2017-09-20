@@ -56,12 +56,16 @@ defmodule StrawHat.Mailer.Mixfile do
 
   defp deps do
     [
+      {:straw_hat, "~> 0.0.10", organization: "straw_hat"},
+
       {:postgrex, "~> 0.13.2"},
       {:ecto, "~> 2.2"},
       {:scrivener_ecto, "~> 1.2"},
+      {:exnumerator, "~> 1.2"},
 
       {:swoosh, "~> 0.8.0"},
       {:gen_smtp, "~> 0.11.0"},
+      {:mustache, "~> 0.3.1"},
 
       # Testing
       {:ex_machina, ">= 0.0.0", only: :test},
