@@ -7,9 +7,8 @@ defmodule StrawHat.Mailer.Test.EmailTest do
     template = insert(:template)
     options = %{name: "jristo", number: "1 000 000"}
 
-    email = 
-      new_email("john@gmail.com", "support@myapp.com")
-      |> with_template(template.name, options)
+    email = new_email("john@gmail.com", "support@myapp.com")
+    email = with_template(email, template.name, options)
 
     assert email.html_body == "<b>Become </b> our client number <i>1 000 000</i>, enjoy the service."
     assert email.text_body == "Welcome jristo, enjoy a good reputation"
@@ -24,9 +23,8 @@ defmodule StrawHat.Mailer.Test.EmailTest do
           username: "jristo"
         }
     }
-    email =
-      new_email("john@gmail.com", "support@myapp.com")
-      |> with_template(template.name,  options)
+    email = new_email("john@gmail.com", "support@myapp.com")
+    email = with_template(email, template.name,  options)
 
     assert email.html_body == "<b>Become </b> our client number <i>1 000 000</i>, enjoy the service."
     assert email.text_body == "Welcome jristo, enjoy a good reputation"
@@ -34,17 +32,18 @@ defmodule StrawHat.Mailer.Test.EmailTest do
 
   test "email without template" do
     options = %{subject: "Welcome john"}
-    assert %Swoosh.Email{} =
-      new_email("john@gmail.com", "support@myapp.com", options)
+    assert %Swoosh.Email{} = new_email("john@gmail.com", "support@myapp.com", options)
   end
 
   test "send email" do
     options = %{subject: "Welcome john"}
-    assert {:ok, %{id: _}} = new_email("john@gmail.com", "support@myapp.com", options)|> send()
+    email = new_email("john@gmail.com", "support@myapp.com", options)
+    assert {:ok, %{id: _}} = send(email)
   end
 
   test "send email later" do
     options = %{subject: "Welcome john"}
-    assert {:ok, _} = new_email("john@gmail.com", "support@myapp.com", options) |> send_later()
+    email = new_email("john@gmail.com", "support@myapp.com", options)
+    assert {:ok, _} = send_later(email)
   end
 end
