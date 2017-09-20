@@ -1,12 +1,11 @@
 defmodule StrawHat.Mailer.Email do
   import Swoosh.Email
 
-  alias Mustache
   alias StrawHat.Mailer.Template
 
-  def new_email(to, from, opts \\ []) do
+  def new_email(to, from, opts \\ %{}) do
     opts
-    |> Enum.concat([to: to, from: from])
+    |> Map.merge(%{to: to, from: from})
     |> new()
   end
 
@@ -21,28 +20,24 @@ defmodule StrawHat.Mailer.Email do
     end
   end
 
-  defdelegate send(email), to: StrawHat.Mailer, as: :deliver
+  defdelegate send_email(email), to: StrawHat.Mailer, as: :deliver
 
-  def send_later(email) do
-    Task.start(fn ->
-      send(email)
-    end)
+  def send_email_later(email) do
+    Task.start(fn -> send_email(email) end)
   end
 
   defp add_subject(email, subject, opts) do
-    subject = render(subject, opts)
+    subject = Mustache.render(subject, opts)
     Map.put(email, :subject, subject)
   end
 
   defp add_html_body(email, html_body, opts) do
-    html_body = render(html_body, opts)
+    html_body = Mustache.render(html_body, opts)
     Map.put(email, :html_body, html_body)
   end
 
   defp add_text_body(email, text_body, opts) do
-    text_body = render(text_body, opts)
+    text_body = Mustache.render(text_body, opts)
     Map.put(email, :text_body, text_body)
   end
-
-  defp render(template, opts), do: Mustache.render(template, opts)
 end
