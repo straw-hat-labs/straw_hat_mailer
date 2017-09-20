@@ -1,0 +1,12 @@
+{
+  "skip_files": [
+    "lib/straw_hat_mailer.ex",
+    "lib/straw_hat_mailer/application.ex",
+    "lib/straw_hat_mailer/interactor.ex",
+    "lib/straw_hat_mailer/repo.ex",
+    "lib/straw_hat_mailer/schema.ex",
+
+    "lib/straw_hat_mailer/schema",
+    "test/support"
+  ]
+}

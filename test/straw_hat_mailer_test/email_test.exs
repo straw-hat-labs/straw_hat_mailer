@@ -3,31 +3,43 @@ defmodule StrawHat.Mailer.Test.EmailTest do
 
   alias StrawHat.Mailer.Email
 
-  test "email with template" do
-    template = insert(:template)
-    options = %{name: "jristo", number: "1 000 000"}
+  describe "with template" do
+    test "when the template exists" do
+      template = insert(:template)
+      options = %{name: "jristo", number: "1 000 000"}
 
-    email = Email.new_email("john@gmail.com", "support@myapp.com")
-    email = Email.with_template(email, template.name, options)
+      email = Email.new_email("john@gmail.com", "support@myapp.com")
+      email = Email.with_template(email, template.name, options)
 
-    assert email.html_body == "<b>Become </b> our client number <i>1 000 000</i>, enjoy the service."
-    assert email.text_body == "Welcome jristo, enjoy a good reputation"
-  end
+      assert email.html_body == "<b>Become </b> our client number <i>1 000 000</i>, enjoy the service."
+      assert email.text_body == "Welcome jristo, enjoy a good reputation"
+    end
 
-  test "email with template and struct data" do
-    template = insert(:template, %{text_body: "Welcome {{account.username}}, enjoy a good reputation"})
-    options = %{
-        name: "jristo",
-        number: "1 000 000",
-        account: %{
-          username: "jristo"
-        }
-    }
-    email = Email.new_email("john@gmail.com", "support@myapp.com")
-    email = Email.with_template(email, template.name,  options)
+    test "when the template do not exists" do
+      options = %{name: "jristo", number: "1 000 000"}
 
-    assert email.html_body == "<b>Become </b> our client number <i>1 000 000</i>, enjoy the service."
-    assert email.text_body == "Welcome jristo, enjoy a good reputation"
+      email = Email.new_email("john@gmail.com", "support@myapp.com")
+      email = Email.with_template(email, "fake_id", options)
+
+      assert email.html_body == nil
+      assert email.text_body == nil
+    end
+
+    test "with template and struct data" do
+      template = insert(:template, %{text_body: "Welcome {{account.username}}, enjoy a good reputation"})
+      options = %{
+          name: "jristo",
+          number: "1 000 000",
+          account: %{
+            username: "jristo"
+          }
+      }
+      email = Email.new_email("john@gmail.com", "support@myapp.com")
+      email = Email.with_template(email, template.name,  options)
+
+      assert email.html_body == "<b>Become </b> our client number <i>1 000 000</i>, enjoy the service."
+      assert email.text_body == "Welcome jristo, enjoy a good reputation"
+    end
   end
 
   test "email without template" do

@@ -7,7 +7,7 @@ defmodule StrawHat.Mailer.Mixfile do
   @name :straw_hat_mailer
   @organization "straw_hat"
   @description """
-    Mailer Management
+    Email Management
   """
   @source_url "https://github.com/straw-hat-llc/straw_hat_mailer"
 
@@ -94,7 +94,10 @@ defmodule StrawHat.Mailer.Mixfile do
         "README*",
         "LICENSE*"
       ],
-      maintainers: ["Osley Zorrilla"],
+      maintainers: [
+        "Yordis Prieto",
+        "Osley Zorrilla"
+      ],
       licenses: ["MIT"],
       links: %{"GitHub" => @source_url}
     ]
