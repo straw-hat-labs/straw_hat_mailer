@@ -14,13 +14,7 @@ defmodule StrawHat.Mailer.Test.TemplateTest do
   end
 
   test "create" do
-    params =
-      %{name: "welcome",
-        title: Faker.String.base64(3),
-        subject: "Milka Suberast",
-        owner_id: "cargo",
-        text_body: "Welcome {{name}}, enjoy a good reputation",
-        html_body: "<b>Become </b> our client number <i>{{number}}</i>, enjoy the service."}
+    params = params_for(:template)
     assert {:ok, _template} = Template.create_template(params)
   end
 

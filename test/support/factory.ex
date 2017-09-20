@@ -6,7 +6,7 @@ defmodule StrawHat.Mailer.Test.Factory do
 
   def template_factory do
     %Template{
-      name: Faker.String.base64(),
+      name: Faker.Pokemon.name(),
       title: Faker.Name.title(),
       owner_id: Faker.String.base64(),
       privacy: "private",
