@@ -16,7 +16,6 @@ defmodule StrawHat.Mailer.Email do
         email
         |> add_subject(template.subject, opts)
         |> add_html_body(template.html_body, opts)
-        |> add_text_body(template.text_body, opts)
     end
   end
 
