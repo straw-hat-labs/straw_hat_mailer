@@ -4,7 +4,7 @@ defmodule StrawHat.Mailer.Schema.Template do
   alias StrawHat.Mailer.Template.Privacy
 
   @required_fields ~w(name title subject owner_id)a
-  @optional_fields ~w(html_body text_body privacy)a
+  @optional_fields ~w(html_body privacy)a
   @name_regex ~r/^[a-z]+[a-z_]*$/
 
   schema "templates" do
@@ -13,7 +13,6 @@ defmodule StrawHat.Mailer.Schema.Template do
     field(:subject, :string)
     field(:owner_id, :string)
     field(:privacy, Privacy)
-    field(:text_body, :string)
     field(:html_body, :string)
   end
 

@@ -8,8 +8,7 @@ defmodule StrawHat.Mailer.Repo.Migrations.CreateTemplatesTable do
       add(:subject, :string, null: false)
       add(:owner_id, :string, null: false)
       add(:privacy, :string, default: "private")
-      add(:text_body, :string)
-      add(:html_body, :string)
+      add(:html_body, :text)
     end
 
     create index(:templates, [:owner_id, :name], unique: true)
