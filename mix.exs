@@ -2,14 +2,13 @@ defmodule StrawHat.Mailer.Mixfile do
   use Mix.Project
 
   @version "0.1.2"
-
+  @organization "straw_hat"
   @elixir_version "~> 1.5"
   @name :straw_hat_mailer
-  @organization "straw_hat"
   @description """
     Email Management
   """
-  @source_url "https://github.com/straw-hat-llc/straw_hat_mailer"
+  @source_url "https://github.com/straw-hat-team/straw_hat_mailer"
 
   def project do
     production? = Mix.env == :prod
@@ -56,12 +55,12 @@ defmodule StrawHat.Mailer.Mixfile do
 
   defp deps do
     [
-      {:straw_hat, "~> 0.0.10", organization: "straw_hat"},
+      {:straw_hat, "~> 0.1.3"},
 
       {:postgrex, "~> 0.13.2"},
       {:ecto, "~> 2.2"},
       {:scrivener_ecto, "~> 1.2"},
-      {:exnumerator, "~> 1.2"},
+      {:exnumerator, "~> 1.3"},
 
       {:swoosh, "~> 0.8.0"},
       {:gen_smtp, "~> 0.11.0"},

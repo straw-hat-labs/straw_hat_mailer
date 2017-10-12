@@ -9,6 +9,5 @@ defmodule StrawHat.Mailer.Template.Privacy do
   - public: everyone have access to the template
   """
 
-  use Exnumerator,
-      values: [:private, :public]
+  use Exnumerator, values: ["private", "public"]
 end
