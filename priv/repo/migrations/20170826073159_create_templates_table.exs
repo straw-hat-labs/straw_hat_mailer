@@ -8,7 +8,6 @@ defmodule StrawHat.Mailer.Repo.Migrations.CreateTemplatesTable do
       add(:subject, :string, null: false)
       add(:owner_id, :string, null: false)
       add(:privacy, :string, default: "private")
-      add(:text_body, :text)
       add(:html_body, :text)
     end
 

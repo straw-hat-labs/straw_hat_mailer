@@ -34,9 +34,4 @@ defmodule StrawHat.Mailer.Email do
     html_body = Mustache.render(html_body, opts)
     Map.put(email, :html_body, html_body)
   end
-
-  defp add_text_body(email, text_body, opts) do
-    text_body = Mustache.render(text_body, opts)
-    Map.put(email, :text_body, text_body)
-  end
 end
