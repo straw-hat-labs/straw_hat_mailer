@@ -1,10 +1,10 @@
 defmodule StrawHat.Mailer.Mixfile do
   use Mix.Project
 
-  @version "0.1.2"
-  @organization "straw_hat"
-  @elixir_version "~> 1.5"
   @name :straw_hat_mailer
+  @version "0.1.2"
+  @elixir_version "~> 1.5"
+
   @description """
     Email Management
   """
@@ -14,32 +14,28 @@ defmodule StrawHat.Mailer.Mixfile do
     production? = Mix.env == :prod
 
     [
-     app: @name,
-     description: @description,
-     version: @version,
-     elixir: @elixir_version,
-     elixirc_paths: elixirc_paths(Mix.env),
-     build_embedded: production?,
-     start_permanent: production?,
-     deps: deps(),
-     aliases: aliases(),
-     package: package(),
+      name: "StrawHat.Mailer",
+      description: @description,
 
-      # docs
-      name: "StrawHat.mailer",
-      source_url: @source_url,
-      homepage_url: @source_url,
-      docs: [
-        main: "StrawHat.Mailer",
-        extras: ["README.md"]
-      ],
+      app: @name,
+      version: @version,
+      elixir: @elixir_version,
+      elixirc_paths: elixirc_paths(Mix.env),
+      deps: deps(),
+      aliases: aliases(),
 
-      # coverage
+      build_embedded: production?,
+      start_permanent: production?,
+
       test_coverage: [tool: ExCoveralls],
       preferred_cli_env: [
         "coveralls": :test,
         "coveralls.html": :test
       ]
+
+      # Extras
+      package: package(),
+      docs: docs()
     ]
   end
 
@@ -71,9 +67,10 @@ defmodule StrawHat.Mailer.Mixfile do
       {:faker, ">= 0.0.0", only: :test},
 
       # Tools
-      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
+      {:dialyxir, ">= 0.0.0", only: [:dev], runtime: false},
       {:credo, ">= 0.0.0", only: [:dev, :test], runtime: false},
-      {:excoveralls, ">= 0.0.0", only: :test}
+      {:excoveralls, ">= 0.0.0", only: [:test], runtime: false},
+      {:ex_doc, ">= 0.0.0", only: [:dev], runtime: false}
     ]
   end
 
@@ -86,7 +83,6 @@ defmodule StrawHat.Mailer.Mixfile do
   defp package do
     [
       name: @name,
-      organization: @organization,
       files: [
         "lib",
         "priv",
@@ -100,6 +96,16 @@ defmodule StrawHat.Mailer.Mixfile do
       ],
       licenses: ["MIT"],
       links: %{"GitHub" => @source_url}
+    ]
+  end
+
+  defp docs do
+    [
+      main: "readme",
+      homepage_url: @source_url,
+      source_ref: "v#{@version}",
+      source_url: @source_url,
+      extras: ["README.md"]
     ]
   end
 end

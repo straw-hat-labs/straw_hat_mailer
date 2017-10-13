@@ -1,18 +1,31 @@
 # StrawHat.Mailer
 
-**TODO: Add description**
+Email Management with templating capability.
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `straw_hat_mailer` to your list of dependencies in `mix.exs`:
-
 ```elixir
 def deps do
-  [{:straw_hat_mailer, ">= 0.0.0"}]
+  [{:straw_hat_mailer, ">= 0.1.2"}]
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/straw_hat_mailer](https://hexdocs.pm/straw_hat_mailer).
+## Usage
+
+StrawHat.Mailer use Swoosh under the hood. The next example shows how to create an email using specific template.
+
+```elixir
+token = get_token()
+from = {"ACME", "noreply@acme.com"}
+to = {"Straw Hat Team", "some_email@acme.com"}
+data = %{
+  confirmation_token: token
+}
+
+email =
+  to
+  |> StrawHat.Mailer.Email.new_email(from)
+  |> StrawHat.Mailer.Email.with_template("welcome", data)
+
+StrawHat.Mailer.Email.send_email(email)
+```
