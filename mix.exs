@@ -31,7 +31,7 @@ defmodule StrawHat.Mailer.Mixfile do
       preferred_cli_env: [
         "coveralls": :test,
         "coveralls.html": :test
-      ]
+      ],
 
       # Extras
       package: package(),
