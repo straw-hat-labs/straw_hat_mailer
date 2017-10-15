@@ -10,4 +10,6 @@ defmodule StrawHat.Mailer.Template.Privacy do
   """
 
   use Exnumerator, values: ["private", "public"]
+
+  @type t :: String.t
 end
