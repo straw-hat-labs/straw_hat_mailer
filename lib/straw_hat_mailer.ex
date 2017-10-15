@@ -1,7 +1,6 @@
 defmodule StrawHat.Mailer do
   @moduledoc """
-  Check Swoosh.Mailer documentation for learn more about the module. This is
-  an extension of that module.
+  Check `Swoosh.Mailer` documentation for learn more about this module.
   """
   use Swoosh.Mailer, otp_app: :straw_hat_mailer
 
