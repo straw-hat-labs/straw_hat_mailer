@@ -4,13 +4,13 @@ defmodule StrawHat.Mailer.Template.Privacy do
   based on the privacy.
   """
 
-  use Exnumerator, values: ["private", "public"]
+  use Exnumerator, values: ["PRIVATE", "PUBLIC"]
 
   @typedoc """
   Allowed Values
 
-  - ***private:*** only the owner have access to the template.
-  - ***public:*** everyone have access to the template.
+  - ***PRIVATE:*** only the owner have access to the template.
+  - ***PUBLIC:*** everyone have access to the template.
   """
   @type t :: String.t
 end
