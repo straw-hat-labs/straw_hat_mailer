@@ -1,6 +1,7 @@
 # StrawHat.Mailer
 
-Email Management with templating capability.
+Email Management with templating capability. The templates use Mustache template
+under the hood so you can do everything that the template system allow you to do.
 
 ## Installation
 
