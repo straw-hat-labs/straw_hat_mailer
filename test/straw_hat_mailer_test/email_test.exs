@@ -3,13 +3,18 @@ defmodule StrawHat.Mailer.Test.EmailTest do
 
   alias StrawHat.Mailer.Email
 
+  @from "siupport@myapp.com"
+  @to "acme@acme.com"
+
   describe "with template" do
     test "when the template exists" do
       template = insert(:template)
       options = %{name: "jristo", number: "1 000 000"}
 
-      email = Email.new("support@myapp.com", "john@gmail.com")
-      email = Email.with_template(email, template.name, options)
+      email =
+        @from
+        |> Email.new(@to)
+        |> Email.with_template(template.name, options)
 
       assert email.html_body == "Welcome jristo, enjoy a good reputation <br> <b>Become </b> our client number <i>1 000 000</i>, enjoy the service."
     end
@@ -17,8 +22,10 @@ defmodule StrawHat.Mailer.Test.EmailTest do
     test "when the template do not exists" do
       options = %{name: "jristo", number: "1 000 000"}
 
-      email = Email.new("support@myapp.com", "john@gmail.com")
-      email = Email.with_template(email, "fake_id", options)
+      email =
+        @from
+        |> Email.new(@to)
+        |> Email.with_template("fake_id", options)
 
       assert email.html_body == nil
     end
@@ -32,8 +39,11 @@ defmodule StrawHat.Mailer.Test.EmailTest do
             username: "jristo"
           }
       }
-      email = Email.new("support@myapp.com", "john@gmail.com")
-      email = Email.with_template(email, template.name,  options)
+      
+      email =
+        @from
+        |> Email.new(@to)
+        |> Email.with_template(template.name,  options)
 
       assert email.html_body == "Welcome jristo, enjoy a good reputation"
     end
@@ -41,13 +51,13 @@ defmodule StrawHat.Mailer.Test.EmailTest do
 
   test "send email" do
     options = [subject: "Welcome john"]
-    email = Email.new("support@myapp.com", "john@gmail.com", options)
+    email = Email.new(@from, @to, options)
     assert {:ok, %{id: _}} = StrawHat.Mailer.deliver(email)
   end
 
   test "send email later" do
     options = [subject: "Welcome john"]
-    email = Email.new("support@myapp.com", "john@gmail.com", options)
+    email = Email.new(@from, @to, options)
     assert {:ok, _} = StrawHat.Mailer.deliver_later(email)
   end
 end
