@@ -1,6 +1,6 @@
 defmodule StrawHat.Mailer.Template do
   @moduledoc """
-  Interactor module with all the functionality for template management.
+  Interactor module that defines all the functionality for template management.
   """
 
   alias StrawHat.Error
