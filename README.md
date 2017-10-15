@@ -22,10 +22,10 @@ data = %{
   confirmation_token: token
 }
 
-email =
-  to
-  |> StrawHat.Mailer.Email.new_email(from)
+{:ok, email} =
+  from
+  |> StrawHat.Mailer.Email.new(to)
   |> StrawHat.Mailer.Email.with_template("welcome", data)
 
-StrawHat.Mailer.Email.send_email(email)
+StrawHat.Mailer.deliver(email)
 ```

@@ -1,4 +1,24 @@
 defmodule StrawHat.Mailer.Email do
+  @moduledoc """
+  Add capability to create emails using templates.
+
+  ```elixir
+  token = get_token()
+  from = {"ACME", "noreply@acme.com"}
+  to = {"Straw Hat Team", "some_email@acme.com"}
+  data = %{
+    confirmation_token: token
+  }
+
+  {:ok, email} =
+    from
+    |> StrawHat.Mailer.Email.new(to)
+    |> StrawHat.Mailer.Email.with_template("welcome", data)
+
+  StrawHat.Mailer.deliver(email)
+  ```
+  """
+
   alias Swoosh.Email
   alias StrawHat.Mailer.Template
 
@@ -15,8 +35,8 @@ defmodule StrawHat.Mailer.Email do
   the Swoosh documentation, the only different is this one force you to pass
   from and to as paramters rather than inside the opts.
   """
-  @spec new(to, address, keyword) :: Swoosh.Email.t
-  def new(to, from, opts \\ []) do
+  @spec new(address, to, keyword) :: Swoosh.Email.t
+  def new(from, to, opts \\ []) do
     opts
     |> Keyword.merge([to: to, from: from])
     |> Email.new()
@@ -34,16 +54,6 @@ defmodule StrawHat.Mailer.Email do
         |> add_subject(template.subject, data)
         |> add_html_body(template.html_body, data)
     end
-  end
-
-  defdelegate send_email(email), to: StrawHat.Mailer, as: :deliver
-
-  @doc """
-  Send an email async using Task.
-  """
-  @spec send_email_later(Swoosh.Email.t) :: {:ok, pid}
-  def send_email_later(email) do
-    Task.start(fn -> send_email(email) end)
   end
 
   defp add_subject(email, subject, opts) do
