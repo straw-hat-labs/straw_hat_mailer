@@ -10,7 +10,7 @@ defmodule StrawHat.Mailer.Schema.Template do
   @typedoc """
   - ***name:*** unique identifier (per owner_id) of the template.
   - ***title:*** Human readable title.
-  - ***privacy:*** Check `StrawHat.Mailer.Template.Privacy.t` for more information.
+  - ***privacy:*** Check `t:StrawHat.Mailer.Template.Privacy.t/0` for more information.
   - ***owner_id:*** The identifier of the owner. We recommend to use combinations
   of `system + resource id`. For example: `"system_name:resource_id"` or any other
   combination. The reason behind is that if you use just some resource id,
