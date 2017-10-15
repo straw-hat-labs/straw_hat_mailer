@@ -1,24 +1,35 @@
 defmodule StrawHat.Mailer.Template do
+  @moduledoc """
+  Interactor module with all the functionality for template management.
+  """
+
   alias StrawHat.Error
   alias StrawHat.Mailer.Repo
   alias StrawHat.Mailer.Schema.Template
 
+  @type template_input :: %{}
+
+  @spec get_templates(Scrivener.Config.t) :: Scrivener.Page.t
   def get_templates(pagination \\ []), do: Repo.paginate(Template, pagination)
 
+  @spec create_template(template_input) :: {:ok, Template.t} | {:error, Ecto.Changeset.t}
   def create_template(template_attrs) do
     %Template{}
     |> Template.changeset(template_attrs)
     |> Repo.insert()
   end
 
+  @spec update_template(Template.t, template_input) :: {:ok, Template.t} | {:error, Ecto.Changeset.t}
   def update_template(%Template{} = template, template_attrs) do
     template
     |> Template.changeset(template_attrs)
     |> Repo.update()
   end
 
+  @spec destroy_template(Template.t) :: {:ok, Template.t} | {:error, Ecto.Changeset.t}
   def destroy_template(%Template{} = template), do: Repo.delete(template)
 
+  @spec find_template(String.t) :: {:ok, Template.t} | {:error, Error.t}
   def find_template(template_id) do
     case get_template(template_id) do
       nil ->
@@ -28,8 +39,10 @@ defmodule StrawHat.Mailer.Template do
     end
   end
 
+  @spec get_template(String.t) :: Ecto.Schema.t | nil | no_return
   def get_template(template_id), do: Repo.get(Template, template_id)
 
+  @spec get_template_by_name(String.t) :: {:ok, Template.t} | {:error, Ecto.Changeset.t}
   def get_template_by_name(template_name) do
     clauses = [name: template_name]
 
