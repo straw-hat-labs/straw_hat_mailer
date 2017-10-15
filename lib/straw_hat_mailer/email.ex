@@ -31,7 +31,7 @@ defmodule StrawHat.Mailer.Email do
   @type to :: address | [address]
 
   @doc """
-  Create a Swoosh.Email struct. It use Swoosh.Email.new/1 so you can check
+  Create a Swoosh.Email struct. It use `Swoosh.Email.new/1` so you can check
   the Swoosh documentation, the only different is this one force you to pass
   from and to as paramters rather than inside the opts.
   """
