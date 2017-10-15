@@ -7,15 +7,6 @@ defmodule StrawHat.Mailer.Template do
   alias StrawHat.Mailer.Repo
   alias StrawHat.Mailer.Schema.Template
 
-  @type template_attrs :: %{
-    name: String.t,
-    title: String.t,
-    subject: String.t,
-    owner_id: String.t,
-    privacy: Privacy.t,
-    html_body: String.t,
-  }
-
   @doc """
   Get the list of templates.
   """
@@ -25,7 +16,7 @@ defmodule StrawHat.Mailer.Template do
   @doc """
   Create a template.
   """
-  @spec create_template(template_attrs) :: {:ok, Template.t} | {:error, Ecto.Changeset.t}
+  @spec create_template(Template.template_attrs) :: {:ok, Template.t} | {:error, Ecto.Changeset.t}
   def create_template(template_attrs) do
     %Template{}
     |> Template.changeset(template_attrs)
@@ -35,7 +26,7 @@ defmodule StrawHat.Mailer.Template do
   @doc """
   Update a template.
   """
-  @spec update_template(Template.t, template_attrs) :: {:ok, Template.t} | {:error, Ecto.Changeset.t}
+  @spec update_template(Template.t, Template.template_attrs) :: {:ok, Template.t} | {:error, Ecto.Changeset.t}
   def update_template(%Template{} = template, template_attrs) do
     template
     |> Template.changeset(template_attrs)
