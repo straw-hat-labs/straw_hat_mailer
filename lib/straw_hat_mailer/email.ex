@@ -33,7 +33,7 @@ defmodule StrawHat.Mailer.Email do
   @doc """
   Create a Swoosh.Email struct. It use `Swoosh.Email.new/1` so you can check
   the Swoosh documentation, the only different is this one force you to pass
-  from and to as paramters rather than inside the opts.
+  `from` and `to` as paramters rather than inside the `opts`.
   """
   @spec new(address, to, keyword) :: Swoosh.Email.t
   def new(from, to, opts \\ []) do
