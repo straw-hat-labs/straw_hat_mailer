@@ -58,6 +58,21 @@ defmodule StrawHat.Mailer.Email do
     end
   end
 
+  @doc """
+  Add `subject` and merge the partial `header` and `footer`
+  with `html_body` to the Email using a template.
+  """
+  @spec with_template_and_partial(Swoosh.Email.t, String.t, Partial.t, map) :: Swoosh.Email.t
+  def with_template_and_partial(email, template_name, partial, data) do
+    case Template.get_template_by_name(template_name) do
+      {:error, _reason} -> email
+      {:ok, template} ->
+        email
+        |> add_subject(template.subject, data)
+        |> add_partial(template.html_body, partial, data)
+    end
+    end
+
   defp add_subject(email, subject, opts) do
     subject = Mustache.render(subject, opts)
     Email.subject(email, subject)
@@ -67,4 +82,13 @@ defmodule StrawHat.Mailer.Email do
     html_body = Mustache.render(html_body, opts)
     Email.html_body(email, html_body)
   end
+
+  defp add_partial(email, html_body, partial, opts) do
+    html_body =
+      [partial.header, html_body, partial.footer]
+      |> Enum.join("</br>")
+      |> Mustache.render(opts)
+    Email.html_body(email, html_body)
+  end
+
 end

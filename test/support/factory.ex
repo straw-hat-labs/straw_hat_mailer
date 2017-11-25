@@ -1,7 +1,7 @@
 defmodule StrawHat.Mailer.Test.Factory do
   use ExMachina.Ecto, repo: StrawHat.Mailer.Repo
 
-  alias StrawHat.Mailer.Schema.{Template}
+  alias StrawHat.Mailer.Schema.{Template, Partial}
 
   def template_factory do
     privacy =
@@ -18,5 +18,12 @@ defmodule StrawHat.Mailer.Test.Factory do
       html_body:
         "Welcome {{name}}, enjoy a good reputation <br> <b>Become </b> our client number <i>{{number}}</i>, enjoy the service."
     }
+  end
+
+  def partial_factory do
+    %Partial{
+      header: "{{company}} the best in the market!",
+      footer: "Located in: {{address}}",
+      owner_id: Faker.String.base64()}
   end
 end
