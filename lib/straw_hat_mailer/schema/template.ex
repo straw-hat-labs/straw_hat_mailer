@@ -6,6 +6,7 @@ defmodule StrawHat.Mailer.Schema.Template do
 
   use StrawHat.Mailer.Schema
   alias StrawHat.Mailer.Template.Privacy
+  alias StrawHat.Mailer.Schema.Partial
 
   @typedoc """
   - ***name:*** unique identifier (per owner_id) of the template.
@@ -20,30 +21,33 @@ defmodule StrawHat.Mailer.Schema.Template do
   inside for render dynamic content from the data pass to the template.
   - ***html_body:*** The `html_body` of the email. You can use Mustache
   template inside for render dynamic content from the data pass to the template.
+  - ***partial_id:*** The `partial_id` incorporate header and footer for template.
   """
   @type t :: %__MODULE__{
-          name: String.t(),
-          title: String.t(),
-          subject: String.t(),
-          owner_id: String.t(),
-          privacy: Privacy.t(),
-          html_body: String.t()
-        }
+    name: String.t,
+    title: String.t,
+    subject: String.t,
+    owner_id: String.t,
+    privacy: Privacy.t,
+    html_body: String.t,
+    partial_id: Integer.t
+  }
 
   @typedoc """
   Check `t` type for more information about the keys.
   """
   @type template_attrs :: %{
-          name: String.t(),
-          title: String.t(),
-          subject: String.t(),
-          owner_id: String.t(),
-          privacy: Privacy.t(),
-          html_body: String.t()
-        }
+    name: String.t,
+    title: String.t,
+    subject: String.t,
+    owner_id: String.t,
+    privacy: Privacy.t,
+    html_body: String.t,
+    partial_id: Integer.t
+  }
 
   @required_fields ~w(name title subject owner_id)a
-  @optional_fields ~w(html_body privacy)a
+  @optional_fields ~w(html_body privacy partial_id)a
   @name_regex ~r/^[a-z]+[a-z_]+[a-z]$/
 
   schema "templates" do
@@ -53,6 +57,7 @@ defmodule StrawHat.Mailer.Schema.Template do
     field(:owner_id, :string)
     field(:privacy, Privacy)
     field(:html_body, :string)
+    belongs_to(:partial, Partial)
   end
 
   @doc """
@@ -66,6 +71,7 @@ defmodule StrawHat.Mailer.Schema.Template do
     |> update_change(:title, &String.trim/1)
     |> validate_inclusion(:privacy, Privacy.values())
     |> validate_name()
+    |> assoc_constraint(:partial)
   end
 
   defp validate_name(changeset) do

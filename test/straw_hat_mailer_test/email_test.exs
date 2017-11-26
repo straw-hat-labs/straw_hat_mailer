@@ -8,16 +8,15 @@ defmodule StrawHat.Mailer.Test.EmailTest do
 
   describe "with template" do
     test "when the template exists" do
-      template = insert(:template)
-      options = %{name: "jristo", number: "1 000 000"}
+      template = insert(:template, partial: nil)
+      options = %{number: "1 000 000"}
 
       email =
         @from
         |> Email.new(@to)
         |> Email.with_template(template.name, options)
 
-      assert email.html_body ==
-               "Welcome jristo, enjoy a good reputation <br> <b>Become </b> our client number <i>1 000 000</i>, enjoy the service."
+      assert email.html_body == "Welcome , enjoy a good reputation <br> <b>Become </b> our client number <i>1 000 000</i>, enjoy the service."
     end
 
     test "when the template do not exists" do
@@ -36,11 +35,13 @@ defmodule StrawHat.Mailer.Test.EmailTest do
         insert(:template, %{html_body: "Welcome {{account.username}}, enjoy a good reputation"})
 
       options = %{
-        name: "jristo",
-        number: "1 000 000",
-        account: %{
-          username: "jristo"
-        }
+          name: "jristo",
+          number: "1 000 000",
+          company: 'Straw-hat',
+          address: 'POBOX 54634',
+          account: %{
+            username: "jristo"
+          }
       }
 
       email =
@@ -48,48 +49,7 @@ defmodule StrawHat.Mailer.Test.EmailTest do
         |> Email.new(@to)
         |> Email.with_template(template.name, options)
 
-      assert email.html_body == "Welcome jristo, enjoy a good reputation"
-    end
-
-    test "with template and partial template" do
-      template = insert(:template, %{html_body: "Welcome {{account.username}}, enjoy a good reputation"})
-      partial = insert(:partial, %{header: "{{company}}", footer: "{{location}}"})
-      options = %{
-          name: "jristo",
-          number: "1 000 000",
-          company: "straw-hat",
-          location: "POBOX 222, MS",
-          account: %{
-            username: "jristo"
-          }
-      }
-
-      email =
-        @from
-        |> Email.new(@to)
-        |> Email.with_template_and_partial(template.name, partial, options)
-
-      assert email.html_body == "straw-hat</br>Welcome jristo, enjoy a good reputation</br>POBOX 222, MS"
-    end
-
-    test "with fake template and partial template" do
-      partial = insert(:partial, %{header: "{{company}}", footer: "{{location}}"})
-      options = %{
-          name: "jristo",
-          number: "1 000 000",
-          company: "straw-hat",
-          location: "POBOX 222, MS",
-          account: %{
-            username: "jristo"
-          }
-      }
-
-      email =
-        @from
-        |> Email.new(@to)
-        |> Email.with_template_and_partial("fake_name", partial, options)
-
-      assert email.html_body == nil
+      assert email.html_body == "Straw-hat the best in the market!</br>Welcome jristo, enjoy a good reputation</br>Located in: POBOX 54634"
     end
   end
 

@@ -6,6 +6,7 @@ defmodule StrawHat.Mailer.Template do
   alias StrawHat.Error
   alias StrawHat.Mailer.Repo
   alias StrawHat.Mailer.Schema.Template
+  alias StrawHat.Mailer.Query.TemplateQuery
 
   @doc """
   Get the list of templates.
@@ -67,9 +68,11 @@ defmodule StrawHat.Mailer.Template do
   """
   @spec get_template_by_name(String.t()) :: {:ok, Template.t()} | {:error, Ecto.Changeset.t()}
   def get_template_by_name(template_name) do
-    clauses = [name: template_name]
-
-    case Repo.get_by(Template, clauses) do
+    template =
+      Template
+      |> TemplateQuery.by_name(template_name)
+      |> Repo.one()
+    case template do
       nil ->
         error = Error.new("mailer.template.not_found", metadata: [template_name: template_name])
         {:error, error}
