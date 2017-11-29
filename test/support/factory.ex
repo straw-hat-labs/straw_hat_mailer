@@ -22,9 +22,17 @@ defmodule StrawHat.Mailer.Test.Factory do
   end
 
   def partial_factory do
+    privacy =
+      StrawHat.Mailer.Template.Privacy.values()
+      |> Enum.take_random(1)
+      |> List.first()
+
     %Partial{
-      header: "{{company}} the best in the market!",
-      footer: "Located in: {{address}}",
+      html_header: "{{company}} the best in the market!",
+      html_footer: "Located in: {{address}}",
+      text_header: "{{company}} the best in the market!",
+      text_footer: "Located in: {{address}}",
+      privacy: privacy,
       owner_id: Faker.String.base64()}
   end
 end
