@@ -46,6 +46,16 @@ defmodule StrawHat.Mailer.Test.EmailTest do
       assert email.text_body == "Text with name, plain and my number is 1 000 000"
     end
 
+    test "when the template body is empty" do
+      template = insert(:template, html_body: nil, text_body: nil)
+      email =
+        @from
+        |> Email.new(@to)
+        |> Email.with_template(template.name, @options)
+
+      assert email.text_body == "Behold then sings my soul\n\n\nStraw-hat the best in the market!\nLocated in: POBOX 54634"
+    end
+
     test "when the template do not exists" do
       email =
         @from
@@ -62,7 +72,7 @@ defmodule StrawHat.Mailer.Test.EmailTest do
         |> Email.new(@to)
         |> Email.with_template(template.name,  @options)
 
-      assert email.html_body == "<span style=\"display: none !important;\">Behold then sings my soul</span></br>Straw-hat the best in the market!</br>Welcome tokarev, enjoy a good reputation</br>Text with name, plain and my number is 1 000 000</br>Located in: POBOX 54634"
+      assert email.html_body == "<span style=\"display: none !important;\">Behold then sings my soul</span></br>Straw-hat the best in the market!</br>Welcome tokarev, enjoy a good reputation</br>Located in: POBOX 54634"
     end
   end
 
