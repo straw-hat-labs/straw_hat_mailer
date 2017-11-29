@@ -43,7 +43,7 @@ defmodule StrawHat.Mailer.Email do
   end
 
   @doc """
-  Add `subject` and `html_body` to the Email using a template.
+  Add `subject` and `html_body` or `text_body` to the Email using a template.
   """
   @spec with_template(Swoosh.Email.t(), String.t(), map) :: Swoosh.Email.t()
   def with_template(email, template_name, data) do
@@ -58,46 +58,45 @@ defmodule StrawHat.Mailer.Email do
     end
   end
 
-  defp add_subject(email, subject, opts) do
-    subject = Mustache.render(subject, opts)
+  defp add_subject(email, subject, data) do
+    subject = Mustache.render(subject, data)
     Email.subject(email, subject)
   end
 
-  defp add_html_body(email, html_body, partial, opts) do
-    html_body =
-      case partial do
-        nil -> Mustache.render(html_body, opts)
-        %{header: header, footer: footer} ->
-          [header, html_body, footer]
-          |> Enum.join("</br>")
-          |> Mustache.render(opts)
-      end
-    Email.html_body(email, html_body)
-  end
-
-  defp add_body(email, template, opts) do
-     body =
-       []
-       |> add_pre_header(template)
-       |> add_header(template)
-       |> add_html(template)
-       |> add_text(template)
-       |> add_footer(template)
+  defp add_body(email, template, data) do
      case template.html_body do
-       nil ->
-         text_body = render_body(body, opts)
-         Email.text_body(email, text_body)
-       _ ->
-         html_body = render_body(body, opts, "</br>")
-         Email.html_body(email, html_body)
+       nil -> add_text_body(email, template, data)
+       _   -> add_html_body(email, template, data)
      end
   end
 
-  defp render_body(body, opts, separator \\ "\n") do
+  defp add_html_body(email, template, data) do
+    body =
+      []
+      |> add_pre_header(template)
+      |> add_partial(:html_header, template)
+      |> add_body_template(:html_body, template)
+      |> add_partial(:html_footer, template)
+    html_body = render_body(body, data, "</br>")
+    Email.html_body(email, html_body)
+  end
+
+  defp add_text_body(email, template, data) do
+    body =
+      []
+      |> add_pre_header(template)
+      |> add_partial(:text_header, template)
+      |> add_body_template(:text_body, template)
+      |> add_partial(:text_footer, template)
+    text_body = render_body(body, data, "\n")
+    Email.text_body(email, text_body)
+  end
+
+  defp render_body(body, data, separator) do
     body
     |> Enum.reverse()
     |> Enum.join(separator)
-    |> Mustache.render(opts)
+    |> Mustache.render(data)
   end
 
   defp add_pre_header(body, template) do
@@ -114,31 +113,17 @@ defmodule StrawHat.Mailer.Email do
     end
   end
 
-  defp add_header(body, template) do
+  defp add_partial(body, tag, template) do
     case template.partial do
       nil -> body
-      partial -> [partial.header | body]
+      partial -> [Map.get(partial, tag)| body]
     end
   end
 
-  defp add_html(body, template) do
-    case template.html_body do
+  defp add_body_template(body, tag, template) do
+    case Map.get(template, tag) do
       nil -> body
-      html_body -> [html_body | body]
-    end
-  end
-
-  defp add_text(body, template) do
-    case template.text_body do
-      nil -> body
-      text_body -> [text_body | body]
-    end
-  end
-
-  defp add_footer(body, template) do
-    case template.partial do
-      nil -> body
-      partial -> [partial.footer | body]
+      tag_body -> [tag_body | body]
     end
   end
 end
