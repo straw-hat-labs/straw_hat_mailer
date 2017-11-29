@@ -5,12 +5,17 @@ defmodule StrawHat.Mailer.Schema.Partial do
   """
 
   use StrawHat.Mailer.Schema
+  alias StrawHat.Mailer.Template.Privacy
 
   @typedoc """
-  - ***header:*** The `header` is a Mustach template or plain text that is
+  - ***html_header:*** The `html_header` is a Mustach template or plain text that is
   combined with `html_body` of the email.
-  - ***footer:***  The `footer` is a Mustach template or plain text that is
+  - ***html_footer:***  The `html_footer` is a Mustach template or plain text that is
   combined with `html_body` of the email.
+  - ***text_header:*** The `text_header` is a Mustach template or plain text that is
+  combined with `text_body` of the email.
+  - ***text_footer:***  The `text_footer` is a Mustach template or plain text that is
+  combined with `text_body` of the email.
   - ***owner_id:*** The identifier of the owner. We recommend to use combinations
   of `system + resource id`. For example: `"system_name:resource_id"` or any other
   combination. The reason behind is that if you use just some resource id,
@@ -18,8 +23,11 @@ defmodule StrawHat.Mailer.Schema.Partial do
   template with the same `id`.
   """
   @type t :: %__MODULE__{
-    header: String.t,
-    footer: String.t,
+    html_header: String.t,
+    html_footer: String.t,
+    text_header: String.t,
+    text_footer: String.t,
+    privacy: Privacy.t,
     owner_id: String.t
   }
 
@@ -27,16 +35,22 @@ defmodule StrawHat.Mailer.Schema.Partial do
   Check `t` type for more information about the keys.
   """
   @type partial_attrs :: %{
-    header: String.t,
-    footer: String.t,
+    html_header: String.t,
+    html_footer: String.t,
+    text_header: String.t,
+    text_footer: String.t,
+    privacy: Privacy.t,
     owner_id: String.t,
   }
 
-  @required_fields ~w(header footer owner_id)a
+  @required_fields ~w(html_header text_header html_footer text_footer privacy owner_id)a
 
   schema "partials" do
-    field(:header, :string)
-    field(:footer, :string)
+    field(:html_header, :string)
+    field(:html_footer, :string)
+    field(:text_header, :string)
+    field(:text_footer, :string)
+    field(:privacy, Privacy)
     field(:owner_id, :string)
   end
 
@@ -48,5 +62,6 @@ defmodule StrawHat.Mailer.Schema.Partial do
     partial
     |> cast(partial_attrs, @required_fields)
     |> validate_required(@required_fields)
+    |> validate_inclusion(:privacy, Privacy.values())
   end
 end
