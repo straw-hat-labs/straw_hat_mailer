@@ -15,7 +15,9 @@ defmodule StrawHat.Mailer.Test.Factory do
       owner_id: Faker.String.base64(),
       privacy: privacy,
       subject: "Milka Suberast",
-      html_body: "Welcome {{name}}, enjoy a good reputation <br> <b>Become </b> our client number <i>{{number}}</i>, enjoy the service.",
+      pre_header: "Behold then sings my soul",
+      html_body: "Welcome, enjoy a good reputation <br> <b>Become </b> our client number <i>{{number}}</i>, enjoy the service.",
+      text_body: "Text with name, plain and my number is {{number}}",
       partial: build(:partial)}
   end
 

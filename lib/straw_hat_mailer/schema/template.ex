@@ -19,8 +19,12 @@ defmodule StrawHat.Mailer.Schema.Template do
   template with the same `id`.
   - ***subject:*** The subject of the email. You can use Mustache template
   inside for render dynamic content from the data pass to the template.
+  - ***pre_header:*** The `pre_header` of the email. You can use Mustache
+  template inside for render dynamic html content from the data pass to the template.
   - ***html_body:*** The `html_body` of the email. You can use Mustache
-  template inside for render dynamic content from the data pass to the template.
+  template inside for render dynamic html content from the data pass to the template.
+  - ***text_body:*** The `text_body` of the email. You can use Mustach
+  template inside for render dynamic html content from the data pass to the template.
   - ***partial_id:*** The `partial_id` incorporate header and footer for template.
   """
   @type t :: %__MODULE__{
@@ -29,7 +33,9 @@ defmodule StrawHat.Mailer.Schema.Template do
     subject: String.t,
     owner_id: String.t,
     privacy: Privacy.t,
+    pre_header: String.t,
     html_body: String.t,
+    text_body: String.t,
     partial_id: Integer.t
   }
 
@@ -42,12 +48,14 @@ defmodule StrawHat.Mailer.Schema.Template do
     subject: String.t,
     owner_id: String.t,
     privacy: Privacy.t,
+    pre_body: String.t,
     html_body: String.t,
+    text_body: String.t,
     partial_id: Integer.t
   }
 
   @required_fields ~w(name title subject owner_id)a
-  @optional_fields ~w(html_body privacy partial_id)a
+  @optional_fields ~w(pre_header html_body text_body privacy partial_id)a
   @name_regex ~r/^[a-z]+[a-z_]+[a-z]$/
 
   schema "templates" do
@@ -56,7 +64,9 @@ defmodule StrawHat.Mailer.Schema.Template do
     field(:subject, :string)
     field(:owner_id, :string)
     field(:privacy, Privacy)
+    field(:pre_header, :string)
     field(:html_body, :string)
+    field(:text_body, :string)
     belongs_to(:partial, Partial)
   end
 
