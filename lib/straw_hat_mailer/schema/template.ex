@@ -82,6 +82,7 @@ defmodule StrawHat.Mailer.Schema.Template do
     |> validate_inclusion(:privacy, Privacy.values())
     |> validate_name()
     |> assoc_constraint(:partial)
+    |> cast_assoc(:partial)
   end
 
   defp validate_name(changeset) do

@@ -25,7 +25,11 @@ defmodule StrawHat.Mailer.Test.TemplateTest do
   end
 
   test "create template" do
-    params = params_for(:template)
+    partial = params_for(:partial)
+    params =
+      :template
+      |> params_for()
+      |> Map.put(:partial, partial)
     assert {:ok, _template} = Template.create_template(params)
   end
 
