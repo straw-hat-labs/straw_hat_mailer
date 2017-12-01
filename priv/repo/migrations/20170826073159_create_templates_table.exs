@@ -11,6 +11,6 @@ defmodule StrawHat.Mailer.Repo.Migrations.CreateTemplatesTable do
       add(:html_body, :text)
     end
 
-    create index(:templates, [:owner_id, :name], unique: true)
+    create(index(:templates, [:owner_id, :name], unique: true))
   end
 end

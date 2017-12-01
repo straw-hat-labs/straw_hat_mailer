@@ -16,7 +16,8 @@ defmodule StrawHat.Mailer.Test.EmailTest do
         |> Email.new(@to)
         |> Email.with_template(template.name, options)
 
-      assert email.html_body == "Welcome jristo, enjoy a good reputation <br> <b>Become </b> our client number <i>1 000 000</i>, enjoy the service."
+      assert email.html_body ==
+               "Welcome jristo, enjoy a good reputation <br> <b>Become </b> our client number <i>1 000 000</i>, enjoy the service."
     end
 
     test "when the template do not exists" do
@@ -31,19 +32,21 @@ defmodule StrawHat.Mailer.Test.EmailTest do
     end
 
     test "with template and struct data" do
-      template = insert(:template, %{html_body: "Welcome {{account.username}}, enjoy a good reputation"})
+      template =
+        insert(:template, %{html_body: "Welcome {{account.username}}, enjoy a good reputation"})
+
       options = %{
-          name: "jristo",
-          number: "1 000 000",
-          account: %{
-            username: "jristo"
-          }
+        name: "jristo",
+        number: "1 000 000",
+        account: %{
+          username: "jristo"
+        }
       }
-      
+
       email =
         @from
         |> Email.new(@to)
-        |> Email.with_template(template.name,  options)
+        |> Email.with_template(template.name, options)
 
       assert email.html_body == "Welcome jristo, enjoy a good reputation"
     end

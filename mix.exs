@@ -11,25 +11,22 @@ defmodule StrawHat.Mailer.Mixfile do
   @source_url "https://github.com/straw-hat-team/straw_hat_mailer"
 
   def project do
-    production? = Mix.env == :prod
+    production? = Mix.env() == :prod
 
     [
       name: "StrawHat.Mailer",
       description: @description,
-
       app: @name,
       version: @version,
       elixir: @elixir_version,
-      elixirc_paths: elixirc_paths(Mix.env),
+      elixirc_paths: elixirc_paths(Mix.env()),
       deps: deps(),
       aliases: aliases(),
-
       build_embedded: production?,
       start_permanent: production?,
-
       test_coverage: [tool: ExCoveralls],
       preferred_cli_env: [
-        "coveralls": :test,
+        coveralls: :test,
         "coveralls.html": :test
       ],
 
@@ -47,12 +44,11 @@ defmodule StrawHat.Mailer.Mixfile do
   end
 
   defp elixirc_paths(:test), do: ["lib", "test/support"]
-  defp elixirc_paths(_),     do: ["lib"]
+  defp elixirc_paths(_), do: ["lib"]
 
   defp deps do
     [
       {:straw_hat, "~> 0.1.4"},
-
       {:postgrex, "~> 0.13.2"},
       {:ecto, "~> 2.2"},
       {:scrivener_ecto, "~> 1.2"},
@@ -73,9 +69,11 @@ defmodule StrawHat.Mailer.Mixfile do
   end
 
   defp aliases do
-    ["ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
-     "ecto.reset": ["ecto.drop", "ecto.setup"],
-     "test": ["ecto.create --quiet", "ecto.migrate", "test"]]
+    [
+      "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
+      "ecto.reset": ["ecto.drop", "ecto.setup"],
+      test: ["ecto.create --quiet", "ecto.migrate", "test"]
+    ]
   end
 
   defp package do

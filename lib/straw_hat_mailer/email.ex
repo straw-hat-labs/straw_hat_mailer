@@ -27,7 +27,7 @@ defmodule StrawHat.Mailer.Email do
 
   Example: `{"Straw Hat Team", "straw_hat_team@straw_hat.com"}`
   """
-  @type address :: {String.t, String.t}
+  @type address :: {String.t(), String.t()}
   @type to :: address | [address]
 
   @doc """
@@ -35,20 +35,22 @@ defmodule StrawHat.Mailer.Email do
   the Swoosh documentation, the only different is this one force you to pass
   `from` and `to` as paramters rather than inside the `opts`.
   """
-  @spec new(address, to, keyword) :: Swoosh.Email.t
+  @spec new(address, to, keyword) :: Swoosh.Email.t()
   def new(from, to, opts \\ []) do
     opts
-    |> Keyword.merge([to: to, from: from])
+    |> Keyword.merge(to: to, from: from)
     |> Email.new()
   end
 
   @doc """
   Add `subject` and `html_body` to the Email using a template.
   """
-  @spec with_template(Swoosh.Email.t, String.t, map) :: Swoosh.Email.t
+  @spec with_template(Swoosh.Email.t(), String.t(), map) :: Swoosh.Email.t()
   def with_template(email, template_name, data) do
     case Template.get_template_by_name(template_name) do
-      {:error, _reason} -> email
+      {:error, _reason} ->
+        email
+
       {:ok, template} ->
         email
         |> add_subject(template.subject, data)
