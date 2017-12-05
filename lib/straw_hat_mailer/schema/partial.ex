@@ -16,6 +16,7 @@ defmodule StrawHat.Mailer.Schema.Partial do
   combined with `text_body` of the email.
   - ***text_footer:***  The `text_footer` is a Mustach template or plain text that is
   combined with `text_body` of the email.
+  - ***privacy:*** Check `t:StrawHat.Mailer.Template.Privacy.t/0` for more information.
   - ***owner_id:*** The identifier of the owner. We recommend to use combinations
   of `system + resource id`. For example: `"system_name:resource_id"` or any other
   combination. The reason behind is that if you use just some resource id,
@@ -44,7 +45,7 @@ defmodule StrawHat.Mailer.Schema.Partial do
   }
 
   @required_fields ~w(owner_id)a
-  @optional_fields ~w(html_header text_header html_footer text_footer)a
+  @optional_fields ~w(html_header text_header html_footer text_footer privacy)a
 
   schema "partials" do
     field(:html_header, :string)
