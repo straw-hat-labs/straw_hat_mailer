@@ -43,7 +43,8 @@ defmodule StrawHat.Mailer.Schema.Partial do
     owner_id: String.t,
   }
 
-  @required_fields ~w(html_header text_header html_footer text_footer privacy owner_id)a
+  @required_fields ~w(owner_id)a
+  @optional_fields ~w(html_header text_header html_footer text_footer)a
 
   schema "partials" do
     field(:html_header, :string)
@@ -60,7 +61,7 @@ defmodule StrawHat.Mailer.Schema.Partial do
   @spec changeset(t, partial_attrs) :: Ecto.Changeset.t
   def changeset(partial, partial_attrs) do
     partial
-    |> cast(partial_attrs, @required_fields)
+    |> cast(partial_attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
     |> validate_inclusion(:privacy, Privacy.values())
   end
