@@ -35,8 +35,8 @@ defmodule StrawHat.Mailer.Test.PartialTest do
 
   test "update partial" do
     partial = insert(:partial)
-    {:ok, partial} = Partial.update_partial(partial, %{text_footer: "Real location {{location}}"})
-    assert partial.text_footer == "Real location {{location}}"
+    {:ok, partial} = Partial.update_partial(partial, %{text: "Real location {{location}}"})
+    assert partial.text == "Real location {{location}}"
   end
 
   test "delete partial" do
