@@ -54,7 +54,8 @@ defmodule StrawHat.Mailer.Email do
       {:ok, template} ->
         email
         |> add_subject(template.subject, data)
-        |> add_body(template, data)
+        |> add_body(:html, template, data)
+        |> add_body(:text, template, data)
     end
   end
 
@@ -63,67 +64,51 @@ defmodule StrawHat.Mailer.Email do
     Email.subject(email, subject)
   end
 
-  defp add_body(email, template, data) do
-     case template.html_body do
-       nil -> add_text_body(email, template, data)
-       _   -> add_html_body(email, template, data)
-     end
+  defp add_body(email, type, template, data) do
+    data = add_partials_to_data(type, template, data)
+
+    pre_header = render_pre_header(template, data)
+    content =
+      type
+      |> get_content_by_type(template)
+      |> Mustache.render(data)
+
+    data = %{
+      pre_header: pre_header,
+      content: content
+    }
+    body = render_markup(data)
+    render_body(type, email, body)
   end
 
-  defp add_html_body(email, template, data) do
-    body =
-      []
-      |> add_pre_header(template)
-      |> add_partial(:html_header, template)
-      |> add_body_template(:html_body, template)
-      |> add_partial(:html_footer, template)
-    html_body = render_body(body, data, "</br>")
-    Email.html_body(email, html_body)
+  defp get_content_by_type(:html, template), do: template.html_body
+  defp get_content_by_type(:text, template), do: template.text_body
+
+  defp render_body(:html, email, body), do: Email.html_body(email, body)
+  defp render_body(:text, email, body), do: Email.text_body(email, body)
+
+  defp add_partials_to_data(content_type, template, data) do
+    Enum.reduce(template.partials, data, fn(partial, data) ->
+      key = Map.get(partial, :key)
+      content =
+        partial
+        |> Map.get(content_type)
+        |> Mustache.render(data)
+      Map.put(data, key, content)
+    end)
   end
 
-  defp add_text_body(email, template, data) do
-    body =
-      []
-      |> add_pre_header(template)
-      |> add_partial(:text_header, template)
-      |> add_body_template(:text_body, template)
-      |> add_partial(:text_footer, template)
-    text_body = render_body(body, data, "\n")
-    Email.text_body(email, text_body)
-  end
-
-  defp render_body(body, data, separator) do
-    body
-    |> Enum.reverse()
-    |> Enum.join(separator)
-    |> Mustache.render(data)
-  end
-
-  defp add_pre_header(body, template) do
+  defp render_pre_header(template, data) do
     case template.pre_header do
-      nil -> body
-      pre_header -> build_markup(body, template, pre_header)
+      nil -> ""
+      pre_header ->
+        text = Mustache.render(pre_header, data)
+        '<span style="display: none !important;">#{text}</span>'
     end
   end
 
-  defp build_markup(body, template, text) do
-    case template.html_body do
-      nil -> ['#{text}\n\n' | body]
-      _ -> ['<span style="display: none !important;">#{text}</span>' | body]
-    end
-  end
-
-  defp add_partial(body, tag, template) do
-    case template.partial do
-      nil -> body
-      partial -> [Map.get(partial, tag)| body]
-    end
-  end
-
-  defp add_body_template(body, tag, template) do
-    case Map.get(template, tag) do
-      nil -> body
-      tag_body -> [tag_body | body]
-    end
+  defp render_markup(data) do
+    markup = "{{pre_header}} {{content}}"
+    Mustache.render(markup, data)
   end
 end
