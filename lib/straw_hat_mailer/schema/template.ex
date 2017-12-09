@@ -6,7 +6,7 @@ defmodule StrawHat.Mailer.Schema.Template do
 
   use StrawHat.Mailer.Schema
   alias StrawHat.Mailer.Template.Privacy
-  alias StrawHat.Mailer.Schema.Partial
+  alias StrawHat.Mailer.Schema.{TemplatePartial, Partial}
 
   @typedoc """
   - ***name:*** unique identifier (per owner_id) of the template.
@@ -25,7 +25,6 @@ defmodule StrawHat.Mailer.Schema.Template do
   template inside for render dynamic html content from the data pass to the template.
   - ***text_body:*** The `text_body` of the email. You can use Mustach
   template inside for render dynamic html content from the data pass to the template.
-  - ***partial_id:*** The `partial_id` incorporate header and footer for template.
   """
   @type t :: %__MODULE__{
     name: String.t,
@@ -35,8 +34,7 @@ defmodule StrawHat.Mailer.Schema.Template do
     privacy: Privacy.t,
     pre_header: String.t,
     html_body: String.t,
-    text_body: String.t,
-    partial_id: Integer.t
+    text_body: String.t
   }
 
   @typedoc """
@@ -51,11 +49,10 @@ defmodule StrawHat.Mailer.Schema.Template do
     pre_body: String.t,
     html_body: String.t,
     text_body: String.t,
-    partial_id: Integer.t
   }
 
   @required_fields ~w(name title subject owner_id)a
-  @optional_fields ~w(pre_header html_body text_body privacy partial_id)a
+  @optional_fields ~w(pre_header html_body text_body privacy)a
   @name_regex ~r/^[a-z]+[a-z_]+[a-z]$/
 
   schema "templates" do
@@ -67,7 +64,7 @@ defmodule StrawHat.Mailer.Schema.Template do
     field(:pre_header, :string)
     field(:html_body, :string)
     field(:text_body, :string)
-    belongs_to(:partial, Partial)
+    many_to_many(:partials, Partial, join_through: TemplatePartial)
   end
 
   @doc """
@@ -81,8 +78,6 @@ defmodule StrawHat.Mailer.Schema.Template do
     |> update_change(:title, &String.trim/1)
     |> validate_inclusion(:privacy, Privacy.values())
     |> validate_name()
-    |> assoc_constraint(:partial)
-    |> cast_assoc(:partial)
   end
 
   defp validate_name(changeset) do
