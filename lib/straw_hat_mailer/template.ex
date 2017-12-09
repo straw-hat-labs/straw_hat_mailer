@@ -5,8 +5,8 @@ defmodule StrawHat.Mailer.Template do
 
   alias StrawHat.Error
   alias StrawHat.Mailer.Repo
-  alias StrawHat.Mailer.Schema.Template
-  alias StrawHat.Mailer.Query.TemplateQuery
+  alias StrawHat.Mailer.Schema.{Template, TemplatePartial}
+  alias StrawHat.Mailer.Query.{TemplateQuery, TemplatePartialQuery}
 
   @doc """
   Get the list of templates.
@@ -51,8 +51,8 @@ defmodule StrawHat.Mailer.Template do
       nil ->
         error = Error.new("mailer.template.not_found", metadata: [template_id: template_id])
         {:error, error}
-
       template ->
+        template = Repo.preload(template, :partials)
         {:ok, template}
     end
   end
@@ -81,4 +81,26 @@ defmodule StrawHat.Mailer.Template do
         {:ok, template}
     end
   end
+
+    @doc """
+    Add partials to template.
+    """
+    @spec add_partials(Template.t, [Partial.t]) :: {:ok, Template.t} | {:error, Ecto.Changeset.t}
+    def add_partials(template, partials) do
+      template
+      |> Repo.preload(:partials)
+      |> Ecto.Changeset.change()
+      |> Ecto.Changeset.put_assoc(:partials, partials)
+      |> Repo.update()
+    end
+
+    @doc """
+    Remove partials from template.
+    """
+    @spec remove_partials(Template.t, [Integer.t]) :: {integer, nil | [term]} | no_return
+    def remove_partials(template, partials) do
+      TemplatePartial
+      |> TemplatePartialQuery.get_by(template.id, partials)
+      |> Repo.delete_all()
+    end
 end
