@@ -25,12 +25,23 @@ defmodule StrawHat.Mailer.Test.TemplateTest do
   end
 
   test "create template" do
-    partial = params_for(:partial)
-    params =
-      :template
-      |> params_for()
-      |> Map.put(:partial, partial)
+    params = params_for(:template)
     assert {:ok, _template} = Template.create_template(params)
+  end
+
+  test "add partials to template" do
+    template = insert(:template)
+    partials = insert_list(10, :partial)
+    assert {:ok, template} = Template.add_partials(template, partials)
+    assert Enum.count(template.partials) == 10
+  end
+
+  test "remove partials from template" do
+    template = insert(:template)
+    partial = insert(:partial)
+    assert {:ok, template} = Template.add_partials(template, [partial])
+    assert {count, _} = Template.remove_partials(template, [partial.id])
+    assert count == 1
   end
 
   test "update template" do
