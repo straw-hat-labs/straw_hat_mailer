@@ -26,7 +26,7 @@ defmodule StrawHat.Mailer.Schema.TemplatePartial do
   @required_fields ~w(template_id partial_id)a
 
   @primary_key false
-  schema "template_partial" do
+  schema "template_partials" do
     belongs_to(:template, Template)
     belongs_to(:partial, Partial)
   end
