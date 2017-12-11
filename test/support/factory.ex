@@ -13,8 +13,8 @@ defmodule StrawHat.Mailer.Test.Factory do
       privacy: privacy,
       subject: "Milka Suberast",
       pre_header: "Behold then sings my soul",
-      html_body: "Welcome, enjoy a good reputation <br> <b>Become </b> our client number <i>{{number}}</i>, enjoy the service.",
-      text_body: "Text with name, plain and my number is {{number}}"}
+      html_body: "Welcome {{data.username}}!, <br> <b>Become </b> our client number <i>{{data.number}}</i>",
+      text_body: "Text with name, plain and my number is {{data.number}}"}
   end
 
   def partial_factory do
@@ -22,8 +22,8 @@ defmodule StrawHat.Mailer.Test.Factory do
 
     %Partial{
       key: Faker.String.base64(),
-      html: "<b>Located in:</b> {{address}}",
-      text: "Located in: {{address}}",
+      html: "<b>Located in:</b> {{data.address}}",
+      text: "Located in: {{data.address}}",
       privacy: privacy,
       owner_id: Faker.String.base64()}
   end
