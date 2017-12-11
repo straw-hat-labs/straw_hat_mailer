@@ -65,50 +65,48 @@ defmodule StrawHat.Mailer.Email do
   end
 
   defp add_body(email, type, template, data) do
-    data = add_partials_to_data(type, template, data)
 
-    pre_header = render_pre_header(template, data)
-    content =
-      type
-      |> get_content_by_type(template)
-      |> Mustache.render(data)
-
-    data = %{
-      pre_header: pre_header,
-      content: content
+    opts = %{
+      data: data
     }
-    body = render_markup(data)
-    render_body(type, email, body)
+    pre_header = render_pre_header(template, opts)
+
+    opts =
+      opts
+      |> Map.put(:pre_header, pre_header)
+      |> Map.put(:pre_header_html,'<span style="display: none !important;">#{pre_header}</span>')
+
+    partials = render_partials(type, template, opts)
+    opts = Map.put(opts, :partials, partials)
+
+    body =
+      type
+      |> get_body_by_type(template)
+      |> Mustache.render(opts)
+    add_body_to_email(type, email, body)
   end
 
-  defp get_content_by_type(:html, template), do: template.html_body
-  defp get_content_by_type(:text, template), do: template.text_body
+  defp get_body_by_type(:html, template), do: template.html_body
+  defp get_body_by_type(:text, template), do: template.text_body
 
-  defp render_body(:html, email, body), do: Email.html_body(email, body)
-  defp render_body(:text, email, body), do: Email.text_body(email, body)
+  defp add_body_to_email(:html, email, body), do: Email.html_body(email, body)
+  defp add_body_to_email(:text, email, body), do: Email.text_body(email, body)
 
-  defp add_partials_to_data(content_type, template, data) do
-    Enum.reduce(template.partials, data, fn(partial, data) ->
+  defp render_partials(type, template, data) do
+    Enum.reduce(template.partials, %{}, fn(partial, opts) ->
       key = Map.get(partial, :key)
       content =
         partial
-        |> Map.get(content_type)
+        |> Map.get(type)
         |> Mustache.render(data)
-      Map.put(data, key, content)
+      Map.put(opts, String.to_atom(key), content)
     end)
   end
 
   defp render_pre_header(template, data) do
     case template.pre_header do
       nil -> ""
-      pre_header ->
-        text = Mustache.render(pre_header, data)
-        '<span style="display: none !important;">#{text}</span>'
+      pre_header -> Mustache.render(pre_header, data)
     end
-  end
-
-  defp render_markup(data) do
-    markup = "{{pre_header}} {{content}}"
-    Mustache.render(markup, data)
   end
 end
