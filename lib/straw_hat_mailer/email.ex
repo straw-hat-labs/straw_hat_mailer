@@ -74,7 +74,7 @@ defmodule StrawHat.Mailer.Email do
     opts =
       opts
       |> Map.put(:pre_header, pre_header)
-      |> Map.put(:pre_header_html,'<span style="display: none !important;">#{pre_header}</span>')
+      |> Map.put(:pre_header_html, '<span style="display: none !important;">#{pre_header}</span>')
 
     partials = render_partials(type, template, opts)
     opts = Map.put(opts, :partials, partials)

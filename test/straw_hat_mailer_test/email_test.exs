@@ -1,8 +1,7 @@
 defmodule StrawHat.Mailer.Test.EmailTest do
   use StrawHat.Mailer.Test.DataCase, async: true
 
-  alias StrawHat.Mailer.Email
-  alias StrawHat.Mailer.Template
+  alias StrawHat.Mailer.{Email, Template}
 
   @from "siupport@myapp.com"
   @to "acme@acme.com"
