@@ -2,6 +2,7 @@ defmodule StrawHat.Mailer.Test.EmailTest do
   use StrawHat.Mailer.Test.DataCase, async: true
 
   alias StrawHat.Mailer.Email
+  alias StrawHat.Mailer.Template
 
   @from "siupport@myapp.com"
   @to "acme@acme.com"
@@ -10,50 +11,28 @@ defmodule StrawHat.Mailer.Test.EmailTest do
      number: "1 000 000",
      company: "Straw-hat",
      address: "POBOX 54634",
-     account: %{
-       username: "tokarev"
-     }
+     username: "tokarev"
   }
 
   describe "with template" do
     test "when the template use html in body" do
-      template = insert(:template, partial: nil, text_body: nil)
+      template = insert(:template)
       email =
         @from
         |> Email.new(@to)
         |> Email.with_template(template.name, @options)
 
-      assert email.html_body == "<span style=\"display: none !important;\">Behold then sings my soul</span></br>Welcome, enjoy a good reputation <br> <b>Become </b> our client number <i>1 000 000</i>, enjoy the service."
+      assert email.html_body == "Welcome tokarev!, <br> <b>Become </b> our client number <i>1 000 000</i>"
     end
 
     test "when the template use text plain in body" do
-      template = insert(:template, html_body: nil)
-      email =
-        @from
-        |> Email.new(@to)
-        |> Email.with_template(template.name, @options)
-
-      assert email.text_body == "Behold then sings my soul\n\n\nStraw-hat the best in the market!\nText with name, plain and my number is 1 000 000\nLocated in: POBOX 54634"
-    end
-
-    test "when the template use text plain in body without: pre_header and partials" do
-      template = insert(:template, pre_header: nil, partial: nil, html_body: nil)
+      template = insert(:template)
       email =
         @from
         |> Email.new(@to)
         |> Email.with_template(template.name, @options)
 
       assert email.text_body == "Text with name, plain and my number is 1 000 000"
-    end
-
-    test "when the template body is empty" do
-      template = insert(:template, html_body: nil, text_body: nil)
-      email =
-        @from
-        |> Email.new(@to)
-        |> Email.with_template(template.name, @options)
-
-      assert email.text_body == "Behold then sings my soul\n\n\nStraw-hat the best in the market!\nLocated in: POBOX 54634"
     end
 
     test "when the template do not exists" do
@@ -65,14 +44,27 @@ defmodule StrawHat.Mailer.Test.EmailTest do
       assert email.html_body == nil
     end
 
-    test "with template and struct data" do
-      template = insert(:template, %{html_body: "Welcome {{account.username}}, enjoy a good reputation"})
+    test "with template and partials" do
+      template_attrs = %{
+          html_body: "<b>Welcome</b> {{data.username}}!, enjoy a good reputation, {{partials.marketing_text}}",
+          text_body: "Welcome {{data.username}}!, enjoy a good reputation, {{partials.marketing_text}}"
+        }
+      partial_attrs = %{
+          key: "marketing_text",
+          html: "<b>Purchase Now!</b>: {{data.address}}",
+          text: "Purchase Now!: {{data.address}}"
+        }
+      template = insert(:template, template_attrs)
+      partial  = insert(:partial, partial_attrs)
+
+      assert {:ok, template} = Template.add_partials(template, [partial])
       email =
         @from
         |> Email.new(@to)
         |> Email.with_template(template.name,  @options)
 
-      assert email.html_body == "<span style=\"display: none !important;\">Behold then sings my soul</span></br>Straw-hat the best in the market!</br>Welcome tokarev, enjoy a good reputation</br>Located in: POBOX 54634"
+      assert email.html_body == "<b>Welcome</b> tokarev!, enjoy a good reputation, <b>Purchase Now!</b>: POBOX 54634"
+      assert email.text_body == "Welcome tokarev!, enjoy a good reputation, Purchase Now!: POBOX 54634"
     end
   end
 
