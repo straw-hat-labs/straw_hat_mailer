@@ -65,25 +65,29 @@ defmodule StrawHat.Mailer.Email do
   end
 
   defp add_body(email, type, template, data) do
-
-    opts = %{
-      data: data
-    }
-    pre_header = render_pre_header(template, opts)
-
-    opts =
-      opts
-      |> Map.put(:pre_header, pre_header)
-      |> Map.put(:pre_header_html, '<span style="display: none !important;">#{pre_header}</span>')
-
-    partials = render_partials(type, template, opts)
-    opts = Map.put(opts, :partials, partials)
+    template_data =
+      %{data: data}
+      |> put_pre_header(type, template)
+      |> put_partials(type, template)
 
     body =
       type
       |> get_body_by_type(template)
-      |> Mustache.render(opts)
+      |> Mustache.render(template_data)
     add_body_to_email(type, email, body)
+  end
+
+  defp put_pre_header(template_data, type, template) do
+    pre_header = render_pre_header(template, template_data)
+    case type do
+      :text -> Map.put(template_data, :pre_header, pre_header)
+      :html -> Map.put(template_data, :pre_header_html, '<span style="display: none !important;">#{pre_header}</span>')
+    end
+  end
+
+  defp put_partials(template_data, type, template) do
+    partials = render_partials(type, template, template_data)
+    Map.put(template_data, :partials, partials)
   end
 
   defp get_body_by_type(:html, template), do: template.html_body
