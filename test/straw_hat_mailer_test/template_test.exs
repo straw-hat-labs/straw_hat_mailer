@@ -2,10 +2,15 @@ defmodule StrawHat.Mailer.Test.TemplateTest do
   use StrawHat.Mailer.Test.DataCase, async: true
   alias StrawHat.Mailer.Template
 
-  describe "get template by name" do
+  describe "get template" do
     test "with valid name" do
       template = insert(:template)
       assert {:ok, _template} = Template.get_template_by_name(template.name)
+    end
+
+    test "with valid id" do
+      template = insert(:template)
+      assert {:ok, _template} = Template.find_template(template.id)
     end
 
     test "with invalid name" do
