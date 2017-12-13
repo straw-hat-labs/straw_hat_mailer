@@ -21,6 +21,7 @@ defmodule StrawHat.Mailer.Email do
 
   alias Swoosh.Email
   alias StrawHat.Mailer.Template
+  alias StrawHat.Mailer.Schema.Template, as: TemplateSchema
 
   @typedoc """
   The tuple is compose by the name and email.
@@ -42,20 +43,25 @@ defmodule StrawHat.Mailer.Email do
     |> Email.new()
   end
 
+    @doc """
+  Add `subject` and `html_body` or `text_body` to the Email using a template.
+  """
+  @spec with_template(Swoosh.Email.t, TemplateSchema.t, map) :: Swoosh.Email.t
+  def with_template(email, %TemplateSchema{} = template, data) do
+    email
+    |> add_subject(template.subject, data)
+    |> add_body(:html, template, data)
+    |> add_body(:text, template, data)
+  end
+
   @doc """
   Add `subject` and `html_body` or `text_body` to the Email using a template.
   """
   @spec with_template(Swoosh.Email.t(), String.t(), map) :: Swoosh.Email.t()
   def with_template(email, template_name, data) do
     case Template.get_template_by_name(template_name) do
-      {:error, _reason} ->
-        email
-
-      {:ok, template} ->
-        email
-        |> add_subject(template.subject, data)
-        |> add_body(:html, template, data)
-        |> add_body(:text, template, data)
+      {:error, _reason} -> email
+      {:ok, template} -> with_template(email, template, data)
     end
   end
 
