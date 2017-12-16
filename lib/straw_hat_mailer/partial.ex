@@ -46,7 +46,7 @@ defmodule StrawHat.Mailer.Partial do
   def find_partial(partial_id) do
     case get_partial(partial_id) do
       nil ->
-        error = Error.new("mailer.partial.not_found", metadata: [partial_id: partial_id])
+        error = Error.new("straw_hat_mailer.partial.not_found", metadata: [partial_id: partial_id])
         {:error, error}
       partial -> {:ok, partial}
     end
@@ -67,7 +67,7 @@ defmodule StrawHat.Mailer.Partial do
 
     case Repo.get_by(Partial, clauses) do
       nil ->
-        error = Error.new("mailer.partial.not_found", metadata: [partial_owner: owner_id])
+        error = Error.new("straw_hat_mailer.partial.not_found", metadata: [partial_owner: owner_id])
         {:error, error}
       partial -> {:ok, partial}
     end

@@ -49,7 +49,7 @@ defmodule StrawHat.Mailer.Template do
   def find_template(template_id) do
     case get_template(template_id) do
       nil ->
-        error = Error.new("mailer.template.not_found", metadata: [template_id: template_id])
+        error = Error.new("straw_hat_mailer.template.not_found", metadata: [template_id: template_id])
         {:error, error}
       template ->
         template = Repo.preload(template, :partials)
@@ -74,7 +74,7 @@ defmodule StrawHat.Mailer.Template do
       |> Repo.one()
     case template do
       nil ->
-        error = Error.new("mailer.template.not_found", metadata: [template_name: template_name])
+        error = Error.new("straw_hat_mailer.template.not_found", metadata: [template_name: template_name])
         {:error, error}
 
       template ->
