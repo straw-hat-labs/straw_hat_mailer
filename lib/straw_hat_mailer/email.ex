@@ -19,8 +19,9 @@ defmodule StrawHat.Mailer.Email do
   ```
   """
 
+  use StrawHat.Mailer.Interactor
+
   alias Swoosh.Email
-  alias StrawHat.Error
   alias StrawHat.Mailer.Template
   alias StrawHat.Mailer.Schema.Template, as: TemplateSchema
 
@@ -130,14 +131,14 @@ defmodule StrawHat.Mailer.Email do
   @spec render_partials(email_body_type(), TemplateSchema.t(), map()) :: map()
   defp render_partials(type, template, template_data) do
     Enum.reduce(template.partials, %{}, fn partial, reducer_accumulator ->
-      key = Map.get(partial, :key)
+      name = Map.get(partial, :name)
 
       content =
         partial
         |> Map.get(type)
         |> Mustache.render(template_data)
 
-      Map.put(reducer_accumulator, String.to_atom(key), content)
+      Map.put(reducer_accumulator, String.to_atom(name), content)
     end)
   end
 

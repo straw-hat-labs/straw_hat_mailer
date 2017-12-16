@@ -53,7 +53,7 @@ defmodule StrawHat.Mailer.Test.EmailTest do
       }
 
       partial_attrs = %{
-        key: "marketing_text",
+        name: "marketing_text",
         html: "<b>Purchase Now!</b>: {{data.address}}",
         text: "Purchase Now!: {{data.address}}"
       }

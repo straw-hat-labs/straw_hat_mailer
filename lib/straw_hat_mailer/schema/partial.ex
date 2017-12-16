@@ -8,11 +8,11 @@ defmodule StrawHat.Mailer.Schema.Partial do
   alias StrawHat.Mailer.Template.Privacy
 
   @typedoc """
-  - ***key:*** The `key` is the partial identificator and is used for index the rendered
+  - ***name:*** The partial identificator and is used for index the rendered
   content of partial in the template body.
-  - ***html:*** The `html` is a Mustach template or html text that is combined in the
+  - ***html:*** The `html` is a Mustache template or html text that is combined in the
   `html_body` of the email.
-  - ***text:*** The `text` is a Mustach template or plain text that is combined in the
+  - ***text:*** The `text` is a Mustache template or plain text that is combined in the
   `text_body` of the email.
   - ***privacy:*** Check `t:StrawHat.Mailer.Template.Privacy.t/0` for more information.
   - ***owner_id:*** The identifier of the owner. We recommend to use combinations
@@ -22,7 +22,7 @@ defmodule StrawHat.Mailer.Schema.Partial do
   template with the same `id`.
   """
   @type t :: %__MODULE__{
-          key: String.t(),
+          name: String.t(),
           html: String.t(),
           text: String.t(),
           privacy: Privacy.t(),
@@ -30,21 +30,22 @@ defmodule StrawHat.Mailer.Schema.Partial do
         }
 
   @typedoc """
-  Check `t` type for more information about the keys.
+  Check `t:t/0` type for more information about the keys.
   """
   @type partial_attrs :: %{
-          key: String.t(),
+          name: String.t(),
           html: String.t(),
           text: String.t(),
           privacy: Privacy.t(),
           owner_id: String.t()
         }
 
-  @required_fields ~w(key owner_id)a
+  @required_fields ~w(name owner_id)a
   @optional_fields ~w(html text privacy)a
+  @name_regex ~r/^[a-z]+[a-z_]+[a-z]$/
 
   schema "partials" do
-    field(:key, :string)
+    field(:name, :string)
     field(:html, :string)
     field(:text, :string)
     field(:privacy, Privacy)
@@ -60,5 +61,22 @@ defmodule StrawHat.Mailer.Schema.Partial do
     |> cast(partial_attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
     |> validate_inclusion(:privacy, Privacy.values())
+    |> validate_name()
+  end
+
+  @spec validate_name(Ecto.Changeset.t()) :: Ecto.Changeset.t()
+  defp validate_name(changeset) do
+    changeset
+    |> update_change(:name, &cleanup_name/1)
+    |> validate_format(:name, @name_regex)
+    |> unique_constraint(:name, name: :partials_owner_id_name_index)
+  end
+
+  @spec cleanup_name(String.t()) :: String.t()
+  defp cleanup_name(name) do
+    name
+    |> String.trim()
+    |> String.replace(~r/\s/, "_")
+    |> String.downcase()
   end
 end

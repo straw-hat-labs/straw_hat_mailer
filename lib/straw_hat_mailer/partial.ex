@@ -3,8 +3,7 @@ defmodule StrawHat.Mailer.Partial do
   Interactor module that defines all the functionality for partial management.
   """
 
-  alias StrawHat.Error
-  alias StrawHat.Mailer.Repo
+  use StrawHat.Mailer.Interactor
   alias StrawHat.Mailer.Schema.Partial
 
   @doc """
@@ -61,7 +60,7 @@ defmodule StrawHat.Mailer.Partial do
   @doc """
   Get a partial by `id`.
   """
-  @spec get_partial(String.t()) :: Ecto.Schema.t() | nil | no_return
+  @spec get_partial(String.t()) :: Partial.t() | nil | no_return
   def get_partial(partial_id), do: Repo.get(Partial, partial_id)
 
   @doc """

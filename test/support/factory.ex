@@ -23,7 +23,7 @@ defmodule StrawHat.Mailer.Test.Factory do
     privacy = get_privacy()
 
     %Partial{
-      key: Faker.String.base64(),
+      name: Faker.Name.first_name(),
       html: "<b>Located in:</b> {{data.address}}",
       text: "Located in: {{data.address}}",
       privacy: privacy,
