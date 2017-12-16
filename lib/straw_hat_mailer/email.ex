@@ -43,7 +43,7 @@ defmodule StrawHat.Mailer.Email do
   the Swoosh documentation, the only different is this one force you to pass
   `from` and `to` as paramters rather than inside the `opts`.
   """
-  @spec new(address, to, keyword) :: Swoosh.Email.t()
+  @spec new(address, to, keyword) :: Email.t()
   def new(from, to, opts \\ []) do
     opts
     |> Keyword.merge(to: to, from: from)
@@ -55,8 +55,8 @@ defmodule StrawHat.Mailer.Email do
   """
   def with_template(email, template_name_or_template_schema, data \\ %{})
 
-  @spec with_template(Swoosh.Email.t(), TemplateSchema.t(), map) ::
-          {:ok, Swoosh.Email.t()} | {:error, Error.t()}
+  @spec with_template(Email.t(), TemplateSchema.t(), map) ::
+          {:ok, Email.t()} | {:error, Error.t()}
   def with_template(email, %TemplateSchema{} = template, data) do
     email
     |> add_subject(template.subject, data)
@@ -66,8 +66,8 @@ defmodule StrawHat.Mailer.Email do
     {:ok, email}
   end
 
-  @spec with_template(Swoosh.Email.t(), String.t(), map) ::
-          {:ok, Swoosh.Email.t()} | {:error, Error.t()}
+  @spec with_template(Email.t(), String.t(), map) ::
+          {:ok, Email.t()} | {:error, Error.t()}
   def with_template(email, template_name, data) do
     case Template.get_template_by_name(template_name) do
       {:error, reason} -> {:error, reason}
@@ -75,13 +75,13 @@ defmodule StrawHat.Mailer.Email do
     end
   end
 
-  @spec add_subject(Swoosh.Email.t(), String.t(), map) :: Swoosh.Email.t()
+  @spec add_subject(Email.t(), String.t(), map) :: Email.t()
   defp add_subject(email, subject, data) do
     subject = Mustache.render(subject, data)
     Email.subject(email, subject)
   end
 
-  @spec add_body(Swoosh.Email.t(), email_body_type(), TemplateSchema.t(), map) :: Swoosh.Email.t()
+  @spec add_body(Email.t(), email_body_type(), TemplateSchema.t(), map) :: Email.t()
   defp add_body(email, type, template, data) do
     template_data =
       %{data: data}
@@ -123,7 +123,7 @@ defmodule StrawHat.Mailer.Email do
   defp get_body_by_type(:html, template), do: template.html_body
   defp get_body_by_type(:text, template), do: template.text_body
 
-  @spec add_body_to_email(email_body_type(), TemplateSchema.t(), String.t()) :: Swoosh.Email.t()
+  @spec add_body_to_email(email_body_type(), TemplateSchema.t(), String.t()) :: Email.t()
   defp add_body_to_email(:html, email, body), do: Email.html_body(email, body)
   defp add_body_to_email(:text, email, body), do: Email.text_body(email, body)
 
