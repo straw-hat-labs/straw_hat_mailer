@@ -56,9 +56,6 @@ defmodule StrawHat.Mailer.Mixfile do
       {:swoosh, "~> 0.10.0"},
       {:mustache, "~> 0.3.1"},
 
-      {:quantum, ">= 2.2.0"},
-      {:timex, "~> 3.0"},
-
       # Testing
       {:ex_machina, ">= 0.0.0", only: :test},
       {:faker, ">= 0.0.0", only: :test},
@@ -67,9 +64,9 @@ defmodule StrawHat.Mailer.Mixfile do
       {:dialyxir, ">= 0.0.0", only: [:dev], runtime: false},
       {:credo, ">= 0.0.0", only: [:dev, :test], runtime: false},
       {:excoveralls, ">= 0.0.0", only: [:test], runtime: false},
-      {:benchee, "~> 0.11", only: [:dev], runtime: false},
-      {:ex_doc, ">= 0.0.0", only: [:dev], runtime: false},
-      {:benchee_html, "~> 0.4", only: :dev}
+      {:benchee, ">= 0.0.0", only: [:dev], runtime: false},
+      {:benchee_html, ">= 0.0.0", only: [:dev], runtime: false},
+      {:ex_doc, ">= 0.0.0", only: [:dev], runtime: false}
     ]
   end
 
