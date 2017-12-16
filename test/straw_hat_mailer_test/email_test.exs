@@ -17,7 +17,7 @@ defmodule StrawHat.Mailer.Test.EmailTest do
     test "when the template use html in body" do
       template = insert(:template)
 
-      email =
+      {:ok, email} =
         @from
         |> Email.new(@to)
         |> Email.with_template(template.name, @options)
@@ -29,7 +29,7 @@ defmodule StrawHat.Mailer.Test.EmailTest do
     test "when the template use text plain in body" do
       template = insert(:template)
 
-      email =
+      {:ok, email} =
         @from
         |> Email.new(@to)
         |> Email.with_template(template.name, @options)
@@ -38,12 +38,10 @@ defmodule StrawHat.Mailer.Test.EmailTest do
     end
 
     test "when the template do not exists" do
-      email =
-        @from
-        |> Email.new(@to)
-        |> Email.with_template("fake_id", @options)
-
-      assert email.html_body == nil
+      assert {:error, email} =
+               @from
+               |> Email.new(@to)
+               |> Email.with_template("fake_id", @options)
     end
 
     test "with template and partials" do
@@ -65,7 +63,7 @@ defmodule StrawHat.Mailer.Test.EmailTest do
 
       assert {:ok, template} = Template.add_partials(template, [partial])
 
-      email =
+      {:ok, email} =
         @from
         |> Email.new(@to)
         |> Email.with_template(template.name, @options)

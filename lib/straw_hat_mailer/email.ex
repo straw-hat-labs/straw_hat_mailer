@@ -58,16 +58,16 @@ defmodule StrawHat.Mailer.Email do
   @spec with_template(Email.t(), TemplateSchema.t(), map) ::
           {:ok, Email.t()} | {:error, Error.t()}
   def with_template(email, %TemplateSchema{} = template, data) do
-    email
-    |> add_subject(template.subject, data)
-    |> add_body(:html, template, data)
-    |> add_body(:text, template, data)
+    email =
+      email
+      |> add_subject(template.subject, data)
+      |> add_body(:html, template, data)
+      |> add_body(:text, template, data)
 
     {:ok, email}
   end
 
-  @spec with_template(Email.t(), String.t(), map) ::
-          {:ok, Email.t()} | {:error, Error.t()}
+  @spec with_template(Email.t(), String.t(), map) :: {:ok, Email.t()} | {:error, Error.t()}
   def with_template(email, template_name, data) do
     case Template.get_template_by_name(template_name) do
       {:error, reason} -> {:error, reason}

@@ -24,9 +24,10 @@ defmodule StrawHat.Mailer.Test.TemplateTest do
   end
 
   test "list per page" do
-    insert_list(10, :template)
-    template = Template.get_templates(%{page: 2, page_size: 5})
-    assert template.total_entries == 10
+    insert_list(5, :template)
+    template_pagination = Template.get_templates(%{page: 2, page_size: 2})
+
+    assert length(template_pagination.entries) == 2
   end
 
   test "create template" do
