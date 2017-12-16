@@ -79,8 +79,15 @@ inputs = %{
 #
 Benchee.run(%{
   "make_email" => fn template ->
-    from
-    |> StrawHat.Mailer.Email.new(to)
-    |> StrawHat.Mailer.Email.with_template(template, data)
-  end
-}, time: 1, print: [fast_warning: false], inputs: inputs)
+      from
+      |> StrawHat.Mailer.Email.new(to)
+      |> StrawHat.Mailer.Email.with_template(template, data)
+    end
+  },
+  time: 1,
+  print: [fast_warning: false],
+  inputs: inputs,
+  formatters: [
+    Benchee.Formatters.HTML,
+    Benchee.Formatters.Console
+  ])
