@@ -57,8 +57,8 @@ defmodule StrawHat.Mailer.Mixfile do
       {:mustache, "~> 0.3.1"},
 
       # Testing
-      {:ex_machina, ">= 0.0.0", only: :test},
-      {:faker, ">= 0.0.0", only: :test},
+      {:ex_machina, ">= 0.0.0", only: [:test], runtime: false},
+      {:faker, ">= 0.0.0", only: [:test], runtime: false},
 
       # Tools
       {:dialyxir, ">= 0.0.0", only: [:dev], runtime: false},
