@@ -10,13 +10,14 @@ defmodule StrawHat.Mailer.Partial do
   @doc """
   Get the list of partials.
   """
-  @spec get_partials(Scrivener.Config.t) :: Scrivener.Page.t
+  @spec get_partials(Scrivener.Config.t()) :: Scrivener.Page.t()
   def get_partials(pagination \\ []), do: Repo.paginate(Partial, pagination)
 
   @doc """
   Create a partial.
   """
-  @spec create_partial(Partial.partial_attrs) :: {:ok, Partial.t} | {:error, Ecto.Changeset.t}
+  @spec create_partial(Partial.partial_attrs()) ::
+          {:ok, Partial.t()} | {:error, Ecto.Changeset.t()}
   def create_partial(partial_attrs) do
     %Partial{}
     |> Partial.changeset(partial_attrs)
@@ -26,7 +27,8 @@ defmodule StrawHat.Mailer.Partial do
   @doc """
   Update a partial.
   """
-  @spec update_partial(Partial.t, Partial.partial_attrs) :: {:ok, Partial.t} | {:error, Ecto.Changeset.t}
+  @spec update_partial(Partial.t(), Partial.partial_attrs()) ::
+          {:ok, Partial.t()} | {:error, Ecto.Changeset.t()}
   def update_partial(%Partial{} = partial, partial_attrs) do
     partial
     |> Partial.changeset(partial_attrs)
@@ -36,40 +38,48 @@ defmodule StrawHat.Mailer.Partial do
   @doc """
   Destroy a partial.
   """
-  @spec destroy_partial(Partial.t) :: {:ok, Partial.t} | {:error, Ecto.Changeset.t}
+  @spec destroy_partial(Partial.t()) :: {:ok, Partial.t()} | {:error, Ecto.Changeset.t()}
   def destroy_partial(%Partial{} = partial), do: Repo.delete(partial)
 
   @doc """
   Get a partial by `id`.
   """
-  @spec find_partial(String.t) :: {:ok, Partial.t} | {:error, Error.t}
+  @spec find_partial(String.t()) :: {:ok, Partial.t()} | {:error, Error.t()}
   def find_partial(partial_id) do
     case get_partial(partial_id) do
       nil ->
-        error = Error.new("straw_hat_mailer.partial.not_found", metadata: [partial_id: partial_id])
+        error =
+          Error.new("straw_hat_mailer.partial.not_found", metadata: [partial_id: partial_id])
+
         {:error, error}
-      partial -> {:ok, partial}
+
+      partial ->
+        {:ok, partial}
     end
   end
 
   @doc """
   Get a partial by `id`.
   """
-  @spec get_partial(String.t) :: Ecto.Schema.t | nil | no_return
+  @spec get_partial(String.t()) :: Ecto.Schema.t() | nil | no_return
   def get_partial(partial_id), do: Repo.get(Partial, partial_id)
 
   @doc """
   Get a partial by `owner_id`.
   """
-  @spec get_partial_by_owner(String.t) :: {:ok, Partial.t} | {:error, Ecto.Changeset.t}
+  @spec get_partial_by_owner(String.t()) :: {:ok, Partial.t()} | {:error, Ecto.Changeset.t()}
   def get_partial_by_owner(owner_id) do
     clauses = [owner_id: owner_id]
 
     case Repo.get_by(Partial, clauses) do
       nil ->
-        error = Error.new("straw_hat_mailer.partial.not_found", metadata: [partial_owner: owner_id])
+        error =
+          Error.new("straw_hat_mailer.partial.not_found", metadata: [partial_owner: owner_id])
+
         {:error, error}
-      partial -> {:ok, partial}
+
+      partial ->
+        {:ok, partial}
     end
   end
 end

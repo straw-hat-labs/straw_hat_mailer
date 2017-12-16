@@ -43,10 +43,10 @@ defmodule StrawHat.Mailer.Email do
     |> Email.new()
   end
 
-    @doc """
+  @doc """
   Add `subject` and `html_body` or `text_body` to the Email using a template.
   """
-  @spec with_template(Swoosh.Email.t, TemplateSchema.t, map) :: Swoosh.Email.t
+  @spec with_template(Swoosh.Email.t(), TemplateSchema.t(), map) :: Swoosh.Email.t()
   def with_template(email, %TemplateSchema{} = template, data) do
     email
     |> add_subject(template.subject, data)
@@ -80,14 +80,23 @@ defmodule StrawHat.Mailer.Email do
       type
       |> get_body_by_type(template)
       |> Mustache.render(template_data)
+
     add_body_to_email(type, email, body)
   end
 
   defp put_pre_header(template_data, type, template) do
     pre_header = render_pre_header(template, template_data)
+
     case type do
-      :text -> Map.put(template_data, :pre_header, pre_header)
-      :html -> Map.put(template_data, :pre_header_html, '<span style="display: none !important;">#{pre_header}</span>')
+      :text ->
+        Map.put(template_data, :pre_header, pre_header)
+
+      :html ->
+        Map.put(
+          template_data,
+          :pre_header_html,
+          '<span style="display: none !important;">#{pre_header}</span>'
+        )
     end
   end
 
@@ -103,12 +112,14 @@ defmodule StrawHat.Mailer.Email do
   defp add_body_to_email(:text, email, body), do: Email.text_body(email, body)
 
   defp render_partials(type, template, data) do
-    Enum.reduce(template.partials, %{}, fn(partial, opts) ->
+    Enum.reduce(template.partials, %{}, fn partial, opts ->
       key = Map.get(partial, :key)
+
       content =
         partial
         |> Map.get(type)
         |> Mustache.render(data)
+
       Map.put(opts, String.to_atom(key), content)
     end)
   end

@@ -27,29 +27,29 @@ defmodule StrawHat.Mailer.Schema.Template do
   template inside for render dynamic html content from the data pass to the template.
   """
   @type t :: %__MODULE__{
-    name: String.t,
-    title: String.t,
-    subject: String.t,
-    owner_id: String.t,
-    privacy: Privacy.t,
-    pre_header: String.t,
-    html_body: String.t,
-    text_body: String.t
-  }
+          name: String.t(),
+          title: String.t(),
+          subject: String.t(),
+          owner_id: String.t(),
+          privacy: Privacy.t(),
+          pre_header: String.t(),
+          html_body: String.t(),
+          text_body: String.t()
+        }
 
   @typedoc """
   Check `t` type for more information about the keys.
   """
   @type template_attrs :: %{
-    name: String.t,
-    title: String.t,
-    subject: String.t,
-    owner_id: String.t,
-    privacy: Privacy.t,
-    pre_body: String.t,
-    html_body: String.t,
-    text_body: String.t,
-  }
+          name: String.t(),
+          title: String.t(),
+          subject: String.t(),
+          owner_id: String.t(),
+          privacy: Privacy.t(),
+          pre_body: String.t(),
+          html_body: String.t(),
+          text_body: String.t()
+        }
 
   @required_fields ~w(name title subject owner_id)a
   @optional_fields ~w(pre_header html_body text_body privacy)a

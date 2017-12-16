@@ -49,8 +49,11 @@ defmodule StrawHat.Mailer.Template do
   def find_template(template_id) do
     case get_template(template_id) do
       nil ->
-        error = Error.new("straw_hat_mailer.template.not_found", metadata: [template_id: template_id])
+        error =
+          Error.new("straw_hat_mailer.template.not_found", metadata: [template_id: template_id])
+
         {:error, error}
+
       template ->
         template = Repo.preload(template, :partials)
         {:ok, template}
@@ -72,9 +75,15 @@ defmodule StrawHat.Mailer.Template do
       Template
       |> TemplateQuery.by_name(template_name)
       |> Repo.one()
+
     case template do
       nil ->
-        error = Error.new("straw_hat_mailer.template.not_found", metadata: [template_name: template_name])
+        error =
+          Error.new(
+            "straw_hat_mailer.template.not_found",
+            metadata: [template_name: template_name]
+          )
+
         {:error, error}
 
       template ->
@@ -82,25 +91,26 @@ defmodule StrawHat.Mailer.Template do
     end
   end
 
-    @doc """
-    Add partials to template.
-    """
-    @spec add_partials(Template.t, [Partial.t]) :: {:ok, Template.t} | {:error, Ecto.Changeset.t}
-    def add_partials(template, partials) do
-      template
-      |> Repo.preload(:partials)
-      |> Ecto.Changeset.change()
-      |> Ecto.Changeset.put_assoc(:partials, partials)
-      |> Repo.update()
-    end
+  @doc """
+  Add partials to template.
+  """
+  @spec add_partials(Template.t(), [Partial.t()]) ::
+          {:ok, Template.t()} | {:error, Ecto.Changeset.t()}
+  def add_partials(template, partials) do
+    template
+    |> Repo.preload(:partials)
+    |> Ecto.Changeset.change()
+    |> Ecto.Changeset.put_assoc(:partials, partials)
+    |> Repo.update()
+  end
 
-    @doc """
-    Remove partials from template.
-    """
-    @spec remove_partials(Template.t, [Integer.t]) :: {integer, nil | [term]} | no_return
-    def remove_partials(template, partials) do
-      TemplatePartial
-      |> TemplatePartialQuery.get_by(template.id, partials)
-      |> Repo.delete_all()
-    end
+  @doc """
+  Remove partials from template.
+  """
+  @spec remove_partials(Template.t(), [Integer.t()]) :: {integer, nil | [term]} | no_return
+  def remove_partials(template, partials) do
+    TemplatePartial
+    |> TemplatePartialQuery.get_by(template.id, partials)
+    |> Repo.delete_all()
+  end
 end

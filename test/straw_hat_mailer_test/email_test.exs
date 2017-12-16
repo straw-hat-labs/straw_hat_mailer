@@ -6,26 +6,29 @@ defmodule StrawHat.Mailer.Test.EmailTest do
   @from "siupport@myapp.com"
   @to "acme@acme.com"
   @options %{
-     name: "jristo",
-     number: "1 000 000",
-     company: "Straw-hat",
-     address: "POBOX 54634",
-     username: "tokarev"
+    name: "jristo",
+    number: "1 000 000",
+    company: "Straw-hat",
+    address: "POBOX 54634",
+    username: "tokarev"
   }
 
   describe "with template" do
     test "when the template use html in body" do
       template = insert(:template)
+
       email =
         @from
         |> Email.new(@to)
         |> Email.with_template(template.name, @options)
 
-      assert email.html_body == "Welcome tokarev!, <br> <b>Become </b> our client number <i>1 000 000</i>"
+      assert email.html_body ==
+               "Welcome tokarev!, <br> <b>Become </b> our client number <i>1 000 000</i>"
     end
 
     test "when the template use text plain in body" do
       template = insert(:template)
+
       email =
         @from
         |> Email.new(@to)
@@ -45,25 +48,33 @@ defmodule StrawHat.Mailer.Test.EmailTest do
 
     test "with template and partials" do
       template_attrs = %{
-          html_body: "<b>Welcome</b> {{data.username}}!, enjoy a good reputation, {{partials.marketing_text}}",
-          text_body: "Welcome {{data.username}}!, enjoy a good reputation, {{partials.marketing_text}}"
-        }
+        html_body:
+          "<b>Welcome</b> {{data.username}}!, enjoy a good reputation, {{partials.marketing_text}}",
+        text_body:
+          "Welcome {{data.username}}!, enjoy a good reputation, {{partials.marketing_text}}"
+      }
+
       partial_attrs = %{
-          key: "marketing_text",
-          html: "<b>Purchase Now!</b>: {{data.address}}",
-          text: "Purchase Now!: {{data.address}}"
-        }
+        key: "marketing_text",
+        html: "<b>Purchase Now!</b>: {{data.address}}",
+        text: "Purchase Now!: {{data.address}}"
+      }
+
       template = insert(:template, template_attrs)
-      partial  = insert(:partial, partial_attrs)
+      partial = insert(:partial, partial_attrs)
 
       assert {:ok, template} = Template.add_partials(template, [partial])
+
       email =
         @from
         |> Email.new(@to)
-        |> Email.with_template(template.name,  @options)
+        |> Email.with_template(template.name, @options)
 
-      assert email.html_body == "<b>Welcome</b> tokarev!, enjoy a good reputation, <b>Purchase Now!</b>: POBOX 54634"
-      assert email.text_body == "Welcome tokarev!, enjoy a good reputation, Purchase Now!: POBOX 54634"
+      assert email.html_body ==
+               "<b>Welcome</b> tokarev!, enjoy a good reputation, <b>Purchase Now!</b>: POBOX 54634"
+
+      assert email.text_body ==
+               "Welcome tokarev!, enjoy a good reputation, Purchase Now!: POBOX 54634"
     end
   end
 

@@ -22,23 +22,23 @@ defmodule StrawHat.Mailer.Schema.Partial do
   template with the same `id`.
   """
   @type t :: %__MODULE__{
-    key: String.t,
-    html: String.t,
-    text: String.t,
-    privacy: Privacy.t,
-    owner_id: String.t
-  }
+          key: String.t(),
+          html: String.t(),
+          text: String.t(),
+          privacy: Privacy.t(),
+          owner_id: String.t()
+        }
 
   @typedoc """
   Check `t` type for more information about the keys.
   """
   @type partial_attrs :: %{
-    key: String.t,
-    html: String.t,
-    text: String.t,
-    privacy: Privacy.t,
-    owner_id: String.t,
-  }
+          key: String.t(),
+          html: String.t(),
+          text: String.t(),
+          privacy: Privacy.t(),
+          owner_id: String.t()
+        }
 
   @required_fields ~w(key owner_id)a
   @optional_fields ~w(html text privacy)a
@@ -54,7 +54,7 @@ defmodule StrawHat.Mailer.Schema.Partial do
   @doc """
   Validate the attributes and return a Ecto.Changeset for the current Partial Template.
   """
-  @spec changeset(t, partial_attrs) :: Ecto.Changeset.t
+  @spec changeset(t, partial_attrs) :: Ecto.Changeset.t()
   def changeset(partial, partial_attrs) do
     partial
     |> cast(partial_attrs, @required_fields ++ @optional_fields)
