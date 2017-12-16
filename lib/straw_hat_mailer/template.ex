@@ -69,7 +69,7 @@ defmodule StrawHat.Mailer.Template do
   @doc """
   Get a template by `name`.
   """
-  @spec get_template_by_name(String.t()) :: {:ok, Template.t()} | {:error, Ecto.Changeset.t()}
+  @spec get_template_by_name(String.t()) :: {:ok, Template.t()} | {:error, Error.t()}
   def get_template_by_name(template_name) do
     template =
       Template
