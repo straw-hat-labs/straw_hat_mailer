@@ -27,7 +27,7 @@ end
 #
 generate_partials = fn n -> for _ <- 1..n, do:
   %StrawHat.Mailer.Schema.Partial{
-    key: generate_key.(4),
+    name: generate_key.(4),
     html: "Welcome {{data.username}}!, <br> <b>Become </b> our client number <i>{{data.number}}</i> <b>Located in:</b> {{data.address}}",
     text: "{{data.username}} {{data.number}} {{data.company}} {{data.name}} Located in: {{data.address}}",
     privacy: "PUBLIC",
@@ -39,7 +39,7 @@ end
 #
 generate_dinamic_partials_key = fn partials ->
   partials
-  |> Enum.map(fn(%{key: key}) -> "{{partials.#{key}}}" end)
+  |> Enum.map(fn(%{name: name}) -> "{{partials.#{name}}}" end)
   |> Enum.join(" \n ")
 end
 
