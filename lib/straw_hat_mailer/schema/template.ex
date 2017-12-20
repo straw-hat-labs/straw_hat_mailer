@@ -64,7 +64,15 @@ defmodule StrawHat.Mailer.Schema.Template do
     field(:pre_header, :string)
     field(:html_body, :string)
     field(:text_body, :string)
-    many_to_many(:partials, Partial, join_through: TemplatePartial)
+
+    many_to_many(
+      :partials,
+      Partial,
+      join_through: TemplatePartial,
+      on_replace: :delete,
+      on_delete: :delete_all,
+      unique: true
+    )
   end
 
   @doc """
