@@ -82,7 +82,6 @@ defmodule StrawHat.Mailer.Schema.Template do
   def changeset(template, template_attrs) do
     template
     |> cast(template_attrs, @required_fields ++ @optional_fields)
-    |> cast_assoc(:partials)
     |> validate_required(@required_fields)
     |> update_change(:title, &String.trim/1)
     |> validate_inclusion(:privacy, Privacy.values())

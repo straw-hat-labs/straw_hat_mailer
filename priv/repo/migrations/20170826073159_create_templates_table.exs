@@ -11,7 +11,6 @@ defmodule StrawHat.Mailer.Repo.Migrations.CreateTemplatesTable do
       add(:pre_header, :text)
       add(:html_body, :text)
       add(:text_body, :text)
-      add(:partial_id, references(:partials))
     end
 
     create(index(:templates, [:owner_id, :name], unique: true))
