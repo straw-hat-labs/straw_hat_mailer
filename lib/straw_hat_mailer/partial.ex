@@ -4,6 +4,7 @@ defmodule StrawHat.Mailer.Partial do
   """
 
   use StrawHat.Mailer.Interactor
+
   alias StrawHat.Mailer.Schema.Partial
 
   @doc """
