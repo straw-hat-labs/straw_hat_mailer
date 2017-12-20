@@ -7,8 +7,7 @@ defmodule StrawHat.Mailer.Query.TemplateQuery do
 
   @spec templates(Template.t()) :: Ecto.Query.t()
   def templates(query) do
-    from _template in query,
-      preload: [:partials]
+    from(_template in query, preload: [:partials])
   end
 
   @spec by_name(Template.t(), String.t()) :: Ecto.Query.t()

@@ -6,6 +6,7 @@ defmodule StrawHat.Mailer.Partial do
   use StrawHat.Mailer.Interactor
 
   alias StrawHat.Mailer.Schema.Partial
+  alias StrawHat.Mailer.Query.PartialQuery
 
   @doc """
   Get the list of partials.
@@ -65,21 +66,12 @@ defmodule StrawHat.Mailer.Partial do
   def get_partial(partial_id), do: Repo.get(Partial, partial_id)
 
   @doc """
-  Get a partial by `owner_id`.
+  Get the list of partials by `owner_id`.
   """
-  @spec get_partial_by_owner(String.t()) :: {:ok, Partial.t()} | {:error, Ecto.Changeset.t()}
-  def get_partial_by_owner(owner_id) do
-    clauses = [owner_id: owner_id]
-
-    case Repo.get_by(Partial, clauses) do
-      nil ->
-        error =
-          Error.new("straw_hat_mailer.partial.not_found", metadata: [partial_owner: owner_id])
-
-        {:error, error}
-
-      partial ->
-        {:ok, partial}
-    end
+  @spec get_owner_partials(String.t(), Scrivener.Config.t()) :: Scrivener.Page.t()
+  def get_owner_partials(owner_id, pagination \\ []) do
+    owner_id
+    |> PartialQuery.by_owner()
+    |> Repo.paginate(pagination)
   end
 end

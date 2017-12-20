@@ -2,24 +2,30 @@ defmodule StrawHat.Mailer.Test.PartialTest do
   use StrawHat.Mailer.Test.DataCase, async: true
   alias StrawHat.Mailer.Partial
 
-  describe "get partial by owner" do
+  describe "get_owner_partials/2" do
     test "with valid owner" do
-      partial = insert(:partial)
-      assert {:ok, _partial} = Partial.get_partial_by_owner(partial.owner_id)
-    end
+      owner_id = "user:123"
+      partial = insert_list(3, :partial, %{owner_id: owner_id})
+      partial_pagination = Partial.get_owner_partials(owner_id)
 
-    test "with invalid id" do
-      assert {:error, _reason} = Partial.find_partial(1235)
+      assert length(partial_pagination.entries) == 3
     end
 
     test "with invalid owner" do
-      assert {:error, _reason} = Partial.get_partial_by_owner("1235")
+      insert_list(3, :partial, %{owner_id: "user:123"})
+      partial_pagination = Partial.get_owner_partials("admin:123t")
+
+      assert length(partial_pagination.entries) == 0
     end
   end
 
   test "get partial by id" do
     partial = insert(:partial)
     assert Partial.get_partial(partial.id) != nil
+  end
+
+  test "get partial with invalid id" do
+    assert {:error, _reason} = Partial.find_partial(1235)
   end
 
   test "list per page" do
