@@ -99,6 +99,7 @@ defmodule StrawHat.Mailer.Email do
   defp render_body(type, template, template_data) do
     partial_type = Map.get(template_data.partials, type)
     template_data = Map.put(template_data, :partials, partial_type)
+
     type
     |> get_body_by_type(template)
     |> Mustache.render(template_data)
@@ -124,8 +125,8 @@ defmodule StrawHat.Mailer.Email do
   defp get_body_by_type(:text, template), do: template.text_body
 
   @spec add_body_to_email(Email.t(), email_body_type(), String.t()) :: Email.t()
-  defp add_body_to_email(email,:html, body), do: Email.html_body(email, body)
-  defp add_body_to_email(email,:text, body), do: Email.text_body(email, body)
+  defp add_body_to_email(email, :html, body), do: Email.html_body(email, body)
+  defp add_body_to_email(email, :text, body), do: Email.text_body(email, body)
 
   @spec render_partials(TemplateSchema.t(), map()) :: map()
   defp render_partials(template, template_data) do
