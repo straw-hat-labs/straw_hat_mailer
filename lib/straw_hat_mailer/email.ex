@@ -62,8 +62,7 @@ defmodule StrawHat.Mailer.Email do
     email =
       email
       |> add_subject(template.subject, data)
-      |> add_body(:html, template, data)
-      |> add_body(:text, template, data)
+      |> add_body(template, data)
 
     {:ok, email}
   end
@@ -81,41 +80,42 @@ defmodule StrawHat.Mailer.Email do
     Email.subject(email, subject)
   end
 
-  @spec add_body(Email.t(), email_body_type(), TemplateSchema.t(), map) :: Email.t()
-  defp add_body(email, type, template, data) do
+  @spec add_body(Email.t(), TemplateSchema.t(), map) :: Email.t()
+  defp add_body(email, template, data) do
     template_data =
       %{data: data}
-      |> put_pre_header(type, template)
-      |> put_partials(type, template)
+      |> put_pre_header(template)
+      |> put_partials(template)
 
-    body =
-      type
-      |> get_body_by_type(template)
-      |> Mustache.render(template_data)
+    html_body = render_body(:html, template, template_data)
+    text_body = render_body(:text, template, template_data)
 
-    add_body_to_email(type, email, body)
+    email
+    |> add_body_to_email(:html, html_body)
+    |> add_body_to_email(:text, text_body)
   end
 
-  @spec put_pre_header(map(), email_body_type(), TemplateSchema.t()) :: map()
-  defp put_pre_header(template_data, type, template) do
+  @spec render_body(email_body_type(), TemplateSchema.t(), map()) :: map()
+  defp render_body(type, template, template_data) do
+    partial_type = Map.get(template_data.partials, type)
+    template_data = Map.put(template_data, :partials, partial_type)
+    type
+    |> get_body_by_type(template)
+    |> Mustache.render(template_data)
+  end
+
+  @spec put_pre_header(map(), TemplateSchema.t()) :: map()
+  defp put_pre_header(template_data, template) do
     pre_header = render_pre_header(template, template_data)
 
-    case type do
-      :text ->
-        Map.put(template_data, :pre_header, pre_header)
-
-      :html ->
-        Map.put(
-          template_data,
-          :pre_header_html,
-          "<span style=\"display: none !important;\">#{pre_header}</span>"
-        )
-    end
+    template_data
+    |> Map.put(:pre_header, pre_header)
+    |> Map.put(:pre_header_html, "<span style=\"display: none !important;\">#{pre_header}</span>")
   end
 
-  @spec put_partials(map(), email_body_type(), TemplateSchema.t()) :: map()
-  defp put_partials(template_data, type, template) do
-    partials = render_partials(type, template, template_data)
+  @spec put_partials(map(), TemplateSchema.t()) :: map()
+  defp put_partials(template_data, template) do
+    partials = render_partials(template, template_data)
     Map.put(template_data, :partials, partials)
   end
 
@@ -123,22 +123,30 @@ defmodule StrawHat.Mailer.Email do
   defp get_body_by_type(:html, template), do: template.html_body
   defp get_body_by_type(:text, template), do: template.text_body
 
-  @spec add_body_to_email(email_body_type(), TemplateSchema.t(), String.t()) :: Email.t()
-  defp add_body_to_email(:html, email, body), do: Email.html_body(email, body)
-  defp add_body_to_email(:text, email, body), do: Email.text_body(email, body)
+  @spec add_body_to_email(Email.t(), email_body_type(), String.t()) :: Email.t()
+  defp add_body_to_email(email,:html, body), do: Email.html_body(email, body)
+  defp add_body_to_email(email,:text, body), do: Email.text_body(email, body)
 
-  @spec render_partials(email_body_type(), TemplateSchema.t(), map()) :: map()
-  defp render_partials(type, template, template_data) do
-    Enum.reduce(template.partials, %{}, fn partial, reducer_accumulator ->
+  @spec render_partials(TemplateSchema.t(), map()) :: map()
+  defp render_partials(template, template_data) do
+    Enum.reduce(template.partials, %{html: %{}, text: %{}}, fn partial, reducer_accumulator ->
       name = Map.get(partial, :name)
-
-      content =
-        partial
-        |> Map.get(type)
-        |> Mustache.render(template_data)
-
-      Map.put(reducer_accumulator, String.to_atom(name), content)
+      html = add_partial(:html, name, partial, reducer_accumulator, template_data)
+      text = add_partial(:text, name, partial, reducer_accumulator, template_data)
+      %{html: html, text: text}
     end)
+  end
+
+  @spec add_partial(email_body_type(), String.t(), map(), map(), map()) :: map()
+  defp add_partial(type, name, partial, partials_data, template_data) do
+    render_partial =
+      partial
+      |> Map.get(type)
+      |> Mustache.render(template_data)
+
+    partials_data
+    |> Map.get(type)
+    |> Map.put(String.to_atom(name), render_partial)
   end
 
   @spec render_pre_header(TemplateSchema.t(), map()) :: String.t()
