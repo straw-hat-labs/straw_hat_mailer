@@ -1,7 +1,7 @@
-defmodule StrawHat.Mailer.Template.Privacy do
+defmodule StrawHat.Mailer.Schema.Privacy do
   @moduledoc """
-  The privacy of the Template. You could share your templates with others
-  based on the privacy.
+  The privacy of the Template or Partials. You could share your templates with
+  others based on the privacy.
   """
 
   use Exnumerator, values: ["PRIVATE", "PUBLIC"]
@@ -13,4 +13,8 @@ defmodule StrawHat.Mailer.Template.Privacy do
   - ***PUBLIC:*** everyone have access to the template.
   """
   @type t :: String.t()
+
+  def public do
+    "PUBLIC"
+  end
 end

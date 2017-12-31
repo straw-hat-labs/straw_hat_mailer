@@ -1,7 +1,7 @@
 defmodule StrawHat.Mailer.Test.Factory do
   use ExMachina.Ecto, repo: StrawHat.Mailer.Repo
 
-  alias StrawHat.Mailer.Schema.{Template, Partial}
+  alias StrawHat.Mailer.Schema.{Template, Partial, Privacy}
 
   def template_factory do
     privacy = get_privacy()
@@ -32,7 +32,7 @@ defmodule StrawHat.Mailer.Test.Factory do
   end
 
   defp get_privacy() do
-    StrawHat.Mailer.Template.Privacy.values()
+    Privacy.values()
     |> Enum.take_random(1)
     |> List.first()
   end

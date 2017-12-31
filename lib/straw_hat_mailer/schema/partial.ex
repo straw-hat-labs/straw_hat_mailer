@@ -5,7 +5,7 @@ defmodule StrawHat.Mailer.Schema.Partial do
   """
 
   use StrawHat.Mailer.Schema
-  alias StrawHat.Mailer.Template.Privacy
+  alias StrawHat.Mailer.Schema.Privacy
 
   @typedoc """
   - ***name:*** The partial identificator and is used for index the rendered
@@ -14,7 +14,7 @@ defmodule StrawHat.Mailer.Schema.Partial do
   `html_body` of the email.
   - ***text:*** The `text` is a Mustache template or plain text that is combined in the
   `text_body` of the email.
-  - ***privacy:*** Check `t:StrawHat.Mailer.Template.Privacy.t/0` for more information.
+  - ***privacy:*** Check `t:StrawHat.Mailer.Schema.Privacy.t/0` for more information.
   - ***owner_id:*** The identifier of the owner. We recommend to use combinations
   of `system + resource id`. For example: `"system_name:resource_id"` or any other
   combination. The reason behind is that if you use just some resource id,
