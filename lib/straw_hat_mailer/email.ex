@@ -22,7 +22,7 @@ defmodule StrawHat.Mailer.Email do
   use StrawHat.Mailer.Interactor
 
   alias Swoosh.Email
-  alias StrawHat.Mailer.Template
+  alias StrawHat.Mailer.{Template, TemplateEngine}
   alias StrawHat.Mailer.Schema.Template, as: TemplateSchema
 
   @typedoc """
@@ -76,7 +76,7 @@ defmodule StrawHat.Mailer.Email do
 
   @spec add_subject(Email.t(), String.t(), map) :: Email.t()
   defp add_subject(email, subject, data) do
-    subject = Mustache.render(subject, data)
+    subject = TemplateEngine.render(subject, data)
     Email.subject(email, subject)
   end
 
@@ -102,7 +102,7 @@ defmodule StrawHat.Mailer.Email do
 
     type
     |> get_body_by_type(template)
-    |> Mustache.render(template_data)
+    |> TemplateEngine.render(template_data)
   end
 
   @spec put_pre_header(map(), TemplateSchema.t()) :: map()
@@ -143,7 +143,7 @@ defmodule StrawHat.Mailer.Email do
     render_partial =
       partial
       |> Map.get(type)
-      |> Mustache.render(template_data)
+      |> TemplateEngine.render(template_data)
 
     partials_data
     |> Map.get(type)
@@ -157,6 +157,6 @@ defmodule StrawHat.Mailer.Email do
 
   @spec render_pre_header(TemplateSchema.t(), map()) :: String.t()
   defp render_pre_header(%TemplateSchema{pre_header: pre_header} = _template, template_data) do
-    Mustache.render(pre_header, template_data)
+    TemplateEngine.render(pre_header, template_data)
   end
 end
