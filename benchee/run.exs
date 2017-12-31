@@ -1,9 +1,10 @@
-
+use Mix.Config
 #
 # Declared used params or variable:
 #
 to = "acme@acme.com"
 from = "siupport@myapp.com"
+
 data = %{
   name: "jristo",
   number: "1 000 000",
@@ -25,13 +26,17 @@ end
 #
 # This function allow generate [n] partials:
 #
-generate_partials = fn n -> for _ <- 1..n, do:
-  %StrawHat.Mailer.Schema.Partial{
-    name: generate_key.(4),
-    html: "Welcome {{data.username}}!, <br> <b>Become </b> our client number <i>{{data.number}}</i> <b>Located in:</b> {{data.address}}",
-    text: "{{data.username}} {{data.number}} {{data.company}} {{data.name}} Located in: {{data.address}}",
-    privacy: "PUBLIC",
-    owner_id: "benchee:provider:345098"}
+generate_partials = fn n ->
+  for _ <- 1..n,
+      do: %StrawHat.Mailer.Schema.Partial{
+        name: generate_key.(4),
+        html:
+          "Welcome {{data.username}}!, <br> <b>Become </b> our client number <i>{{data.number}}</i> <b>Located in:</b> {{data.address}}",
+        text:
+          "{{data.username}} {{data.number}} {{data.company}} {{data.name}} Located in: {{data.address}}",
+        privacy: "PUBLIC",
+        owner_id: "benchee:provider:345098"
+      }
 end
 
 #
@@ -39,7 +44,7 @@ end
 #
 generate_dinamic_partials_key = fn partials ->
   partials
-  |> Enum.map(fn(%{name: name}) -> "{{partials.#{name}}}" end)
+  |> Enum.map(fn %{name: name} -> "{{partials.#{name}}}" end)
   |> Enum.join(" \n ")
 end
 
@@ -59,8 +64,14 @@ generate_template = fn n ->
     privacy: "PUBLIC",
     subject: "Milka Suberast",
     pre_header: "Behold then sings my soul",
-    html_body: "Welcome {{data.username}}!, <br> <b>Become </b> our client number <i>{{data.number}}</i> #{dinamic_partial_keys}",
-    text_body: "Welcome {{data.username}}!, \n Become our client number {{data.number}} #{dinamic_partial_keys}",
+    html_body:
+      "Welcome {{data.username}}!, <br> <b>Become </b> our client number <i>{{data.number}}</i> #{
+        dinamic_partial_keys
+      }",
+    text_body:
+      "Welcome {{data.username}}!, \n Become our client number {{data.number}} #{
+        dinamic_partial_keys
+      }",
     partials: partials
   }
 end
@@ -69,16 +80,31 @@ end
 # Benchmarking the jobs with different inputs
 #
 inputs = %{
-  "Small (3 Partials)"   => generate_template.(3),
+  "Small (3 Partials)" => generate_template.(3),
   "Middle (10 Partials)" => generate_template.(10),
-  "Big (20 Partials)"    => generate_template.(20),
+  "Big (20 Partials)" => generate_template.(20)
 }
 
 #
 # Run the Benchmark
 #
-Benchee.run(%{
-  "make_email" => fn template ->
+Benchee.run(
+  # This is not working
+  # Related to https://github.com/PragTob/benchee/issues/165
+  %{
+    "bbmustache" => fn template ->
+      config(
+        :straw_hat_mailer,
+        template_engine: StrawHat.Mailer.TemplateEngine.BBMustache
+      )
+
+      from
+      |> StrawHat.Mailer.Email.new(to)
+      |> StrawHat.Mailer.Email.with_template(template, data)
+    end,
+    "mustache" => fn template ->
+      config(:straw_hat_mailer, template_engine: Mustache)
+
       from
       |> StrawHat.Mailer.Email.new(to)
       |> StrawHat.Mailer.Email.with_template(template, data)
@@ -90,4 +116,5 @@ Benchee.run(%{
   formatters: [
     Benchee.Formatters.HTML,
     Benchee.Formatters.Console
-  ])
+  ]
+)

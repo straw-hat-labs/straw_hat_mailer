@@ -54,7 +54,8 @@ defmodule StrawHat.Mailer.Mixfile do
       {:scrivener_ecto, "~> 1.2"},
       {:exnumerator, "~> 1.3"},
       {:swoosh, "~> 0.10.0"},
-      {:mustache, "~> 0.3.1"},
+      {:bbmustache, "~> 1.5"},
+      {:mustache, "~> 0.3.1", optional: true},
 
       # Testing
       {:ex_machina, ">= 0.0.0", only: [:test]},
