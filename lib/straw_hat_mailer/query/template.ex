@@ -15,7 +15,7 @@ defmodule StrawHat.Mailer.Query.TemplateQuery do
     from(
       template in query,
       where: template.name == ^name,
-      preload: :partials
+      preload: [:partials]
     )
   end
 end
