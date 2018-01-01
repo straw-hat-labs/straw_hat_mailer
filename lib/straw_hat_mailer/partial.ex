@@ -68,8 +68,7 @@ defmodule StrawHat.Mailer.Partial do
   @doc """
   Get the list of partials by `owner_id`.
   """
-  @spec get_owner_partials(String.t(), Scrivener.Config.t()) ::
-          Scrivener.Page.t()
+  @spec get_owner_partials(String.t(), Scrivener.Config.t()) :: Scrivener.Page.t()
   def get_owner_partials(owner_id, pagination \\ []) do
     owner_id
     |> PartialQuery.by_owner()

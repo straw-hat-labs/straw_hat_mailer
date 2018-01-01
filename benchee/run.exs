@@ -1,4 +1,3 @@
-use Mix.Config
 #
 # Declared used params or variable:
 #
@@ -92,23 +91,40 @@ Benchee.run(
   # This is not working
   # Related to https://github.com/PragTob/benchee/issues/165
   %{
-    "bbmustache" => fn template ->
-      config(
-        :straw_hat_mailer,
-        template_engine: StrawHat.Mailer.TemplateEngine.BBMustache
-      )
+    "bbmustache" =>
+      {
+        fn template ->
+          from
+          |> StrawHat.Mailer.Email.new(to)
+          |> StrawHat.Mailer.Email.with_template(template, data)
+        end,
+        before_scenario: fn template ->
+          Application.put_env(
+            :straw_hat_mailer,
+            :template_engine,
+            StrawHat.Mailer.TemplateEngine.BBMustache
+          )
 
-      from
-      |> StrawHat.Mailer.Email.new(to)
-      |> StrawHat.Mailer.Email.with_template(template, data)
-    end,
-    "mustache" => fn template ->
-      config(:straw_hat_mailer, template_engine: Mustache)
+          template
+        end
+      },
+    "mustache" =>
+      {
+        fn template ->
+          from
+          |> StrawHat.Mailer.Email.new(to)
+          |> StrawHat.Mailer.Email.with_template(template, data)
+        end,
+        before_scenario: fn template ->
+          Application.put_env(
+            :straw_hat_mailer,
+            :template_engine,
+            Mustache
+          )
 
-      from
-      |> StrawHat.Mailer.Email.new(to)
-      |> StrawHat.Mailer.Email.with_template(template, data)
-    end
+          template
+        end
+      }
   },
   time: 1,
   print: [fast_warning: false],
