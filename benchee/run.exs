@@ -1,6 +1,3 @@
-#
-# Declared used params or variable:
-#
 to = "acme@acme.com"
 from = "siupport@myapp.com"
 
@@ -75,13 +72,20 @@ generate_template = fn n ->
   }
 end
 
+run = fn template ->
+  from
+  |> StrawHat.Mailer.Email.new(to)
+  |> StrawHat.Mailer.Email.with_template(template, data)
+end
+
 #
 # Benchmarking the jobs with different inputs
 #
 inputs = %{
   "Small (3 Partials)" => generate_template.(3),
   "Middle (10 Partials)" => generate_template.(10),
-  "Big (20 Partials)" => generate_template.(20)
+  "Big (20 Partials)" => generate_template.(20),
+  "Big (10,000 Partials)" => generate_template.(10_000)
 }
 
 #
@@ -93,11 +97,7 @@ Benchee.run(
   %{
     "bbmustache" =>
       {
-        fn template ->
-          from
-          |> StrawHat.Mailer.Email.new(to)
-          |> StrawHat.Mailer.Email.with_template(template, data)
-        end,
+        fn template -> run.(template) end,
         before_scenario: fn template ->
           Application.put_env(
             :straw_hat_mailer,
@@ -110,11 +110,7 @@ Benchee.run(
       },
     "mustache" =>
       {
-        fn template ->
-          from
-          |> StrawHat.Mailer.Email.new(to)
-          |> StrawHat.Mailer.Email.with_template(template, data)
-        end,
+        fn template -> run.(template) end,
         before_scenario: fn template ->
           Application.put_env(
             :straw_hat_mailer,
