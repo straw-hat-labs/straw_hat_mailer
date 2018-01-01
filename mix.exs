@@ -106,17 +106,17 @@ defmodule StrawHat.Mailer.Mixfile do
       source_url: @source_url,
       extras: ["README.md"],
       groups_for_modules: [
-        "Interactors": [
+        Interactors: [
           StrawHat.Mailer.Template,
           StrawHat.Mailer.Partial,
           StrawHat.Mailer.Email,
           StrawHat.Mailer
         ],
-        "Schemas": [
+        Schemas: [
           StrawHat.Mailer.Schema.Privacy,
           StrawHat.Mailer.Schema.Partial,
           StrawHat.Mailer.Schema.Template,
-          StrawHat.Mailer.Schema.TemplatePartial,
+          StrawHat.Mailer.Schema.TemplatePartial
         ]
       ]
     ]

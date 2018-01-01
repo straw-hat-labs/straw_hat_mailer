@@ -17,15 +17,6 @@ defmodule StrawHat.Mailer.Test.PartialTest do
 
       assert length(partial_pagination.entries) == 0
     end
-
-    test "with valid owner and public partials included" do
-      owner_id = "user:123"
-      insert_list(3, :partial, %{owner_id: owner_id})
-      insert_list(2, :partial, %{privacy: "PUBLIC"})
-      partial_pagination = Partial.get_owner_partials(owner_id, include_public: true)
-
-      assert length(partial_pagination.entries) == 5
-    end
   end
 
   test "get partial by id" do
