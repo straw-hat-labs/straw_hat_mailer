@@ -5,29 +5,31 @@ defmodule StrawHat.Mailer.Schema.Template do
   """
 
   use StrawHat.Mailer.Schema
-  alias StrawHat.Mailer.Template.Privacy
+  alias StrawHat.Mailer.Schema.{Privacy, TemplatePartial, Partial}
 
   @typedoc """
   - ***name:*** unique identifier (per owner_id) of the template.
   - ***title:*** Human readable title.
-  - ***privacy:*** Check `t:StrawHat.Mailer.Template.Privacy.t/0` for more information.
-  - ***owner_id:*** The identifier of the owner. We recommend to use combinations
-  of `system + resource id`. For example: `"system_name:resource_id"` or any other
-  combination. The reason behind is that if you use just some resource id,
-  example just `"1"`, you can't use more than one resource that owns the
-  template with the same `id`.
+  - ***privacy:*** Check `t:StrawHat.Mailer.Schema.Privacy.t/0` for more information.
+  - ***owner_id:*** Check `t:StrawHat.Mailer.owner_id/0` for more information.
   - ***subject:*** The subject of the email. You can use Mustache template
   inside for render dynamic content from the data pass to the template.
+  - ***pre_header:*** The `pre_header` of the email. You can use Mustache
+  template inside for render dynamic html content from the data pass to the template.
   - ***html_body:*** The `html_body` of the email. You can use Mustache
-  template inside for render dynamic content from the data pass to the template.
+  template inside for render dynamic html content from the data pass to the template.
+  - ***text_body:*** The `text_body` of the email. You can use Mustach
+  template inside for render dynamic html content from the data pass to the template.
   """
   @type t :: %__MODULE__{
           name: String.t(),
           title: String.t(),
           subject: String.t(),
-          owner_id: String.t(),
+          owner_id: StrawHat.Mailer.owner_id(),
           privacy: Privacy.t(),
-          html_body: String.t()
+          pre_header: String.t(),
+          html_body: String.t(),
+          text_body: String.t()
         }
 
   @typedoc """
@@ -37,13 +39,15 @@ defmodule StrawHat.Mailer.Schema.Template do
           name: String.t(),
           title: String.t(),
           subject: String.t(),
-          owner_id: String.t(),
+          owner_id: StrawHat.Mailer.owner_id(),
           privacy: Privacy.t(),
-          html_body: String.t()
+          pre_body: String.t(),
+          html_body: String.t(),
+          text_body: String.t()
         }
 
   @required_fields ~w(name title subject owner_id)a
-  @optional_fields ~w(html_body privacy)a
+  @optional_fields ~w(pre_header html_body text_body privacy)a
   @name_regex ~r/^[a-z]+[a-z_]+[a-z]$/
 
   schema "templates" do
@@ -52,7 +56,18 @@ defmodule StrawHat.Mailer.Schema.Template do
     field(:subject, :string)
     field(:owner_id, :string)
     field(:privacy, Privacy)
+    field(:pre_header, :string)
     field(:html_body, :string)
+    field(:text_body, :string)
+
+    many_to_many(
+      :partials,
+      Partial,
+      join_through: TemplatePartial,
+      on_replace: :delete,
+      on_delete: :delete_all,
+      unique: true
+    )
   end
 
   @doc """

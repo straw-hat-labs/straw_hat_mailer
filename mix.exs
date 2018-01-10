@@ -54,16 +54,19 @@ defmodule StrawHat.Mailer.Mixfile do
       {:scrivener_ecto, "~> 1.2"},
       {:exnumerator, "~> 1.3"},
       {:swoosh, "~> 0.10.0"},
-      {:mustache, "~> 0.3.1"},
+      {:bbmustache, "~> 1.5"},
+      {:mustache, "~> 0.3.1", optional: true},
 
       # Testing
-      {:ex_machina, ">= 0.0.0", only: :test},
-      {:faker, ">= 0.0.0", only: :test},
+      {:ex_machina, ">= 0.0.0", only: [:test]},
+      {:faker, ">= 0.0.0", only: [:test]},
 
       # Tools
       {:dialyxir, ">= 0.0.0", only: [:dev], runtime: false},
       {:credo, ">= 0.0.0", only: [:dev, :test], runtime: false},
       {:excoveralls, ">= 0.0.0", only: [:test], runtime: false},
+      {:benchee, ">= 0.0.0", only: [:dev], runtime: false},
+      {:benchee_html, ">= 0.0.0", only: [:dev], runtime: false},
       {:ex_doc, ">= 0.0.0", only: [:dev], runtime: false}
     ]
   end
@@ -101,7 +104,21 @@ defmodule StrawHat.Mailer.Mixfile do
       homepage_url: @source_url,
       source_ref: "v#{@version}",
       source_url: @source_url,
-      extras: ["README.md"]
+      extras: ["README.md"],
+      groups_for_modules: [
+        Interactors: [
+          StrawHat.Mailer.Template,
+          StrawHat.Mailer.Partial,
+          StrawHat.Mailer.Email,
+          StrawHat.Mailer
+        ],
+        Schemas: [
+          StrawHat.Mailer.Schema.Privacy,
+          StrawHat.Mailer.Schema.Partial,
+          StrawHat.Mailer.Schema.Template,
+          StrawHat.Mailer.Schema.TemplatePartial
+        ]
+      ]
     ]
   end
 end
