@@ -2,11 +2,11 @@ defmodule StrawHat.Mailer.Mixfile do
   use Mix.Project
 
   @name :straw_hat_mailer
-  @version "0.3.0"
+  @version "0.3.1"
   @elixir_version "~> 1.5"
 
   @description """
-    Email Management
+  Email Management
   """
   @source_url "https://github.com/straw-hat-team/straw_hat_mailer"
 
@@ -48,7 +48,7 @@ defmodule StrawHat.Mailer.Mixfile do
 
   defp deps do
     [
-      {:straw_hat, "~> 0.1.4"},
+      {:straw_hat, "~> 0.2"},
       {:postgrex, "~> 0.13.2"},
       {:ecto, "~> 2.2"},
       {:scrivener_ecto, "~> 1.2"},

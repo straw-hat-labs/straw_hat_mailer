@@ -8,7 +8,7 @@ under the hood so you can do everything that the template system allow you to do
 ```elixir
 def deps do
   [
-    {:straw_hat_mailer, ">= 0.2.0"}
+    {:straw_hat_mailer, "~> 0.3"}
   ]
 end
 ```
