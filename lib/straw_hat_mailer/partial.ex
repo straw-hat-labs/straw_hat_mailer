@@ -1,6 +1,9 @@
 defmodule StrawHat.Mailer.Partial do
   @moduledoc """
-  Interactor module that defines all the functionality for partial management.
+  Defines functionality for partial management.
+
+  A Partial is just a chunk of email content that you could reuse
+  cross multiple emails.
   """
 
   use StrawHat.Mailer.Interactor

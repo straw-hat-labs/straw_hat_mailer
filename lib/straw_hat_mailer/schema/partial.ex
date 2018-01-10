@@ -10,23 +10,17 @@ defmodule StrawHat.Mailer.Schema.Partial do
   @typedoc """
   - ***name:*** The partial identificator and is used for index the rendered
   content of partial in the template body.
-  - ***html:*** The `html` is a Mustache template or html text that is combined in the
-  `html_body` of the email.
-  - ***text:*** The `text` is a Mustache template or plain text that is combined in the
-  `text_body` of the email.
+  - ***html:*** The `html` is a Mustache template that will be used when you call the partial on your template.
+  - ***text:*** The `text` is a Mustache template that will be used when you call the partial on your template.
   - ***privacy:*** Check `t:StrawHat.Mailer.Schema.Privacy.t/0` for more information.
-  - ***owner_id:*** The identifier of the owner. We recommend to use combinations
-  of `system + resource id`. For example: `"system_name:resource_id"` or any other
-  combination. The reason behind is that if you use just some resource id,
-  example just `"1"`, you can't use more than one resource that owns the
-  template with the same `id`.
+  - ***owner_id:*** Check `t:StrawHat.Mailer.owner_id/0` for more information.
   """
   @type t :: %__MODULE__{
           name: String.t(),
           html: String.t(),
           text: String.t(),
           privacy: Privacy.t(),
-          owner_id: String.t()
+          owner_id: StrawHat.Mailer.owner_id()
         }
 
   @typedoc """

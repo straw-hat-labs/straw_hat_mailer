@@ -11,11 +11,7 @@ defmodule StrawHat.Mailer.Schema.Template do
   - ***name:*** unique identifier (per owner_id) of the template.
   - ***title:*** Human readable title.
   - ***privacy:*** Check `t:StrawHat.Mailer.Schema.Privacy.t/0` for more information.
-  - ***owner_id:*** The identifier of the owner. We recommend to use combinations
-  of `system + resource id`. For example: `"system_name:resource_id"` or any other
-  combination. The reason behind is that if you use just some resource id,
-  example just `"1"`, you can't use more than one resource that owns the
-  template with the same `id`.
+  - ***owner_id:*** Check `t:StrawHat.Mailer.owner_id/0` for more information.
   - ***subject:*** The subject of the email. You can use Mustache template
   inside for render dynamic content from the data pass to the template.
   - ***pre_header:*** The `pre_header` of the email. You can use Mustache
@@ -29,7 +25,7 @@ defmodule StrawHat.Mailer.Schema.Template do
           name: String.t(),
           title: String.t(),
           subject: String.t(),
-          owner_id: String.t(),
+          owner_id: StrawHat.Mailer.owner_id(),
           privacy: Privacy.t(),
           pre_header: String.t(),
           html_body: String.t(),
@@ -43,7 +39,7 @@ defmodule StrawHat.Mailer.Schema.Template do
           name: String.t(),
           title: String.t(),
           subject: String.t(),
-          owner_id: String.t(),
+          owner_id: StrawHat.Mailer.owner_id(),
           privacy: Privacy.t(),
           pre_body: String.t(),
           html_body: String.t(),
