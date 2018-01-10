@@ -2,7 +2,7 @@ defmodule StrawHat.Mailer.Mixfile do
   use Mix.Project
 
   @name :straw_hat_mailer
-  @version "0.2.1"
+  @version "0.3.0"
   @elixir_version "~> 1.5"
 
   @description """
@@ -53,7 +53,7 @@ defmodule StrawHat.Mailer.Mixfile do
       {:ecto, "~> 2.2"},
       {:scrivener_ecto, "~> 1.2"},
       {:exnumerator, "~> 1.3"},
-      {:swoosh, "~> 0.10.0"},
+      {:swoosh, "~> 0.12"},
       {:bbmustache, "~> 1.5"},
       {:mustache, "~> 0.3.1", optional: true},
 
