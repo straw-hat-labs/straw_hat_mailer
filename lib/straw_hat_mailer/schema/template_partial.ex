@@ -23,7 +23,6 @@ defmodule StrawHat.Mailer.Schema.TemplatePartial do
           partial_id: Integer.t()
         }
 
-  @primary_key false
   schema "template_partials" do
     belongs_to(:template, Template)
     belongs_to(:partial, Partial)

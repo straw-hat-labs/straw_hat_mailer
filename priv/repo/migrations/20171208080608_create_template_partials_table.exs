@@ -7,6 +7,6 @@ defmodule StrawHat.Mailer.Repo.Migrations.CreateTemplatePartialsTable do
       add(:partial_id, references(:partials), null: false, on_delete: :delete_all)
     end
 
-    create index(:template_partials, [:template_id, :partial_id], unique: true)
+    create(index(:template_partials, [:template_id, :partial_id], unique: true))
   end
 end

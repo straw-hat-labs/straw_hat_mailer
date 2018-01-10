@@ -111,7 +111,7 @@ defmodule StrawHat.Mailer.Template do
   end
 
   @doc """
-  Add a partial to template.
+  Add a partial to the template.
   """
   @spec add_partial(Template.t(), Partial.t()) ::
           {:ok, TemplatePartial.t()} | {:error, Ecto.Changeset.t()}
@@ -122,12 +122,22 @@ defmodule StrawHat.Mailer.Template do
   end
 
   @doc """
-  Remove partials from template.
+  Remove a partial from the template.
   """
-  @spec remove_partials(Template.t(), [Integer.t()]) :: {integer, nil | [term]} | no_return
-  def remove_partials(template, partials) do
-    TemplatePartial
-    |> TemplatePartialQuery.get_by(template.id, partials)
-    |> Repo.delete_all()
+  @spec remove_partial(Template.t(), Partial.t()) ::
+          {:ok, TemplatePartial.t()} | {:error, Ecto.Changeset.t() | Error.t()}
+  def remove_partial(%Template{id: template_id} = _template, %Partial{id: partial_id} = _partial) do
+    clauses = [template_id: template_id, partial_id: partial_id]
+
+    case Repo.get_by(TemplatePartial, clauses) do
+      nil ->
+        error =
+          Error.new("straw_hat_mailer.template.template_partial.not_found", metadata: clauses)
+
+        {:error, error}
+
+      template_partial ->
+        Repo.delete(template_partial)
+    end
   end
 end

@@ -43,12 +43,11 @@ defmodule StrawHat.Mailer.Test.TemplateTest do
     assert Enum.count(template.partials) == 6
   end
 
-  test "remove partials from template" do
+  test "remove partial from template" do
     template = insert(:template)
     partial = insert(:partial)
-    Template.add_partials(template, [partial])
-    assert {count, _} = Template.remove_partials(template, [partial.id])
-    assert count == 1
+    Template.add_partial(template, partial)
+    assert {:ok, _} = Template.remove_partial(template, partial)
   end
 
   test "update template" do
