@@ -5,7 +5,7 @@ defmodule StrawHat.Mailer.Template do
 
   use StrawHat.Mailer.Interactor
 
-  alias StrawHat.Mailer.Schema.{Template, TemplatePartial}
+  alias StrawHat.Mailer.Schema.{Template, Partial, TemplatePartial}
   alias StrawHat.Mailer.Query.{TemplateQuery, TemplatePartialQuery}
 
   @doc """
@@ -101,14 +101,24 @@ defmodule StrawHat.Mailer.Template do
   @doc """
   Add partials to template.
   """
-  @spec add_partials(Template.t(), [Partial.t()]) ::
-          {:ok, Template.t()} | {:error, Ecto.Changeset.t()}
+  @spec add_partials(Template.t(), [Partial.t()]) :: [Template.t() | Ecto.Changeset.t()]
   def add_partials(template, partials) do
-    template
-    |> Repo.preload(:partials)
-    |> Ecto.Changeset.change()
-    |> Ecto.Changeset.put_assoc(:partials, partials)
-    |> Repo.update()
+    Enum.map(partials, fn %Partial{} = partial ->
+      template
+      |> add_partial(partial)
+      |> elem(1)
+    end)
+  end
+
+  @doc """
+  Add a partial to template.
+  """
+  @spec add_partial(Template.t(), Partial.t()) ::
+          {:ok, TemplatePartial.t()} | {:error, Ecto.Changeset.t()}
+  def add_partial(template, partial) do
+    %TemplatePartial{}
+    |> TemplatePartial.changeset(template, partial)
+    |> Repo.insert()
   end
 
   @doc """

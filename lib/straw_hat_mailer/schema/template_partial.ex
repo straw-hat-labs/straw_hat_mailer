@@ -23,8 +23,6 @@ defmodule StrawHat.Mailer.Schema.TemplatePartial do
           partial_id: Integer.t()
         }
 
-  @required_fields ~w(template_id partial_id)a
-
   @primary_key false
   schema "template_partials" do
     belongs_to(:template, Template)
@@ -34,10 +32,12 @@ defmodule StrawHat.Mailer.Schema.TemplatePartial do
   @doc """
   Validate the attributes and return a Ecto.Changeset for the current Template Partial.
   """
-  @spec changeset(t, template_partial_attrs) :: Ecto.Changeset.t()
-  def changeset(template_partial, template_partial_attrs) do
+  @spec changeset(t, Template.t(), Partial.t(), map()) :: Ecto.Changeset.t()
+  def changeset(template_partial, template, partial, params \\ %{}) do
     template_partial
-    |> cast(template_partial_attrs, @required_fields)
-    |> validate_required(@required_fields)
+    |> cast(params, [])
+    |> unique_constraint(:partial, name: :template_partials_template_id_partial_id_index)
+    |> put_assoc(:template, template)
+    |> put_assoc(:partial, partial)
   end
 end

@@ -38,7 +38,7 @@ defmodule StrawHat.Mailer.Test.EmailTest do
     end
 
     test "when the template do not exists" do
-      assert {:error, email} =
+      assert {:error, _email} =
                @from
                |> Email.new(@to)
                |> Email.with_template("fake_id", @options)
@@ -61,7 +61,7 @@ defmodule StrawHat.Mailer.Test.EmailTest do
       template = insert(:template, template_attrs)
       partial = insert(:partial, partial_attrs)
 
-      assert {:ok, template} = Template.add_partials(template, [partial])
+      Template.add_partials(template, [partial])
 
       {:ok, email} =
         @from
