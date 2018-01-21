@@ -3,6 +3,7 @@ defmodule StrawHat.Mailer.Repo.Migrations.CreatePartialsTable do
 
   def change do
     create table(:partials) do
+      add(:title, :string, null: false)
       add(:name, :string, null: false)
       add(:html, :text)
       add(:text, :text)

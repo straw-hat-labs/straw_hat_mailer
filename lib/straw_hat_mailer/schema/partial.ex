@@ -8,6 +8,7 @@ defmodule StrawHat.Mailer.Schema.Partial do
   alias StrawHat.Mailer.Schema.Privacy
 
   @typedoc """
+  - ***title:*** Human readable title.
   - ***name:*** The partial identificator and is used for index the rendered
   content of partial in the template body.
   - ***html:*** The `html` is a Mustache template that will be used when you call the partial on your template.
@@ -17,6 +18,7 @@ defmodule StrawHat.Mailer.Schema.Partial do
   """
   @type t :: %__MODULE__{
           name: String.t(),
+          title: String.t(),
           html: String.t(),
           text: String.t(),
           privacy: Privacy.t(),
@@ -28,17 +30,19 @@ defmodule StrawHat.Mailer.Schema.Partial do
   """
   @type partial_attrs :: %{
           name: String.t(),
+          title: String.t(),
           html: String.t(),
           text: String.t(),
           privacy: Privacy.t(),
           owner_id: String.t()
         }
 
-  @required_fields ~w(name owner_id)a
+  @required_fields ~w(name title owner_id)a
   @optional_fields ~w(html text privacy)a
   @name_regex ~r/^[a-z]+[a-z_]+[a-z]$/
 
   schema "partials" do
+    field(:title, :string)
     field(:name, :string)
     field(:html, :string)
     field(:text, :string)
@@ -54,6 +58,7 @@ defmodule StrawHat.Mailer.Schema.Partial do
     partial
     |> cast(partial_attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
+    |> update_change(:title, &String.trim/1)
     |> validate_inclusion(:privacy, Privacy.values())
     |> validate_name()
   end

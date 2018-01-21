@@ -11,7 +11,7 @@ defmodule StrawHat.Mailer.Test.Factory do
       title: Faker.Name.title(),
       owner_id: Faker.String.base64(),
       privacy: privacy,
-      subject: "Milka Suberast",
+      subject: Faker.Lorem.sentence(),
       pre_header: "Behold then sings my soul",
       html:
         "Welcome {{data.username}}!, <br> <b>Become </b> our client number <i>{{data.number}}</i>",
@@ -23,6 +23,7 @@ defmodule StrawHat.Mailer.Test.Factory do
     privacy = get_privacy()
 
     %Partial{
+      title: Faker.Lorem.sentence(),
       name: Faker.Name.first_name(),
       html: "<b>Located in:</b> {{data.address}}",
       text: "Located in: {{data.address}}",
