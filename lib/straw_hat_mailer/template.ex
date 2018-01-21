@@ -6,7 +6,7 @@ defmodule StrawHat.Mailer.Template do
   use StrawHat.Mailer.Interactor
 
   alias StrawHat.Mailer.Schema.{Template, Partial, TemplatePartial}
-  alias StrawHat.Mailer.Query.{TemplateQuery, TemplatePartialQuery}
+  alias StrawHat.Mailer.Query.TemplateQuery
 
   @doc """
   Get the list of templates.

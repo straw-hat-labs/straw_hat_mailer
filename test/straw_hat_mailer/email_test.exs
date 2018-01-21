@@ -46,9 +46,9 @@ defmodule StrawHat.Mailer.Test.EmailTest do
 
     test "with template and partials" do
       template_attrs = %{
-        html_body:
+        html:
           "<b>Welcome</b> {{data.username}}!, enjoy a good reputation, {{{partials.marketing_text}}}",
-        text_body:
+        text:
           "Welcome {{data.username}}!, enjoy a good reputation, {{partials.marketing_text}}"
       }
 

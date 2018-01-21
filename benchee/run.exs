@@ -60,11 +60,11 @@ generate_template = fn n ->
     privacy: "PUBLIC",
     subject: "Milka Suberast",
     pre_header: "Behold then sings my soul",
-    html_body:
+    html:
       "Welcome {{data.username}}!, <br> <b>Become </b> our client number <i>{{data.number}}</i> #{
         dinamic_partial_keys
       }",
-    text_body:
+    text:
       "Welcome {{data.username}}!, \n Become our client number {{data.number}} #{
         dinamic_partial_keys
       }",

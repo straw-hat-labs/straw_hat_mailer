@@ -52,7 +52,7 @@ defmodule StrawHat.Mailer.Email do
   end
 
   @doc """
-  Add `subject`, `html_body` and `text_body` to the Email using a template.
+  Add `subject`, `html` and `text` to the Email using a template.
   """
   @spec with_template(Email.t(), TemplateSchema.t() | String.t(), map) ::
           {:ok, Email.t()} | {:error, Error.t()}
@@ -87,12 +87,12 @@ defmodule StrawHat.Mailer.Email do
       |> put_pre_header(template)
       |> put_partials(template)
 
-    html_body = render_body(:html, template, template_data)
-    text_body = render_body(:text, template, template_data)
+    html = render_body(:html, template, template_data)
+    text = render_body(:text, template, template_data)
 
     email
-    |> add_body_to_email(:html, html_body)
-    |> add_body_to_email(:text, text_body)
+    |> add_body_to_email(:html, html)
+    |> add_body_to_email(:text, text)
   end
 
   @spec render_body(email_body_type(), TemplateSchema.t(), map()) :: map()
@@ -121,8 +121,8 @@ defmodule StrawHat.Mailer.Email do
   end
 
   @spec get_body_by_type(email_body_type(), TemplateSchema.t()) :: String.t()
-  defp get_body_by_type(:html, template), do: template.html_body
-  defp get_body_by_type(:text, template), do: template.text_body
+  defp get_body_by_type(:html, template), do: template.html
+  defp get_body_by_type(:text, template), do: template.text
 
   @spec add_body_to_email(Email.t(), email_body_type(), String.t()) :: Email.t()
   defp add_body_to_email(email, :html, body), do: Email.html_body(email, body)

@@ -15,7 +15,8 @@ defmodule StrawHat.Mailer.Schema.Privacy do
   @type t :: String.t()
 
   @spec public() :: String.t()
-  def public do
-    "PUBLIC"
-  end
+  def public, do: "PUBLIC"
+
+  @spec private() :: String.t()
+  def private, do: "PRIVATE"
 end

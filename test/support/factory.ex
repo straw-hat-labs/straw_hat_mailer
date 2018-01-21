@@ -13,9 +13,9 @@ defmodule StrawHat.Mailer.Test.Factory do
       privacy: privacy,
       subject: "Milka Suberast",
       pre_header: "Behold then sings my soul",
-      html_body:
+      html:
         "Welcome {{data.username}}!, <br> <b>Become </b> our client number <i>{{data.number}}</i>",
-      text_body: "Text with name, plain and my number is {{data.number}}"
+      text: "Text with name, plain and my number is {{data.number}}"
     }
   end
 

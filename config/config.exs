@@ -13,3 +13,5 @@ config :straw_hat_mailer, StrawHat.Mailer.Repo,
 config :straw_hat_mailer, StrawHat.Mailer, adapter: Swoosh.Adapters.Local
 
 config :swoosh, preview_port: 5000
+
+config :logger, level: :error
