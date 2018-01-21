@@ -17,6 +17,9 @@ defmodule StrawHat.Mailer.Email do
 
   StrawHat.Mailer.deliver(email)
   ```
+
+  All your templates will receive the same shape of data which you could use
+  mustache syntax for using it, read about `t:StrawHat.Mailer.Email.template_data/0`.
   """
 
   use StrawHat.Mailer.Interactor
@@ -24,6 +27,22 @@ defmodule StrawHat.Mailer.Email do
   alias Swoosh.Email
   alias StrawHat.Mailer.{Template, TemplateEngine}
   alias StrawHat.Mailer.Schema.Template, as: TemplateSchema
+
+  @typedoc """
+  You would use the data as mustache syntax does it using brackets.
+  The `partials` key will whole all the partials of your template using
+  `name as the key` so you will be able to use it as `{{{partials.PARTIAL_NAME}}}`.
+  Notice I am using triple brackets and that is because probably you want to
+  escape the output.
+  """
+  @type template_data :: %{
+    data: struct(),
+    partials: %{
+      required(atom()) => String.t()
+    },
+    pre_header: String.t(),
+    pre_header_html: String.t()
+  }
 
   @typedoc """
   The tuple is compose by the name and email.
