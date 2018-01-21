@@ -12,5 +12,6 @@ defmodule StrawHat.Mailer.Repo.Migrations.CreatePartialsTable do
     end
 
     create(index(:partials, [:owner_id, :name], unique: true))
+    create(index(:partials, [:name]))
   end
 end
