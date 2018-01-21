@@ -7,7 +7,8 @@ under the hood so you can do everything that the template system allow you to do
 
 ```elixir
 def deps do
-  [
+  [  
+    {:swoosh, "~> 0.12"},
     {:straw_hat_mailer, "~> 0.4"}
   ]
 end
@@ -21,6 +22,7 @@ for save the templates.
 ```elixir
 # In your config files
 config :straw_hat_mailer, StrawHat.Mailer,
+  # Swoosh.Adapters.Local for development
   adapter: Swoosh.Adapters.Sendgrid,
   api_key: "SG.x.x"
 
@@ -162,3 +164,41 @@ data = %{
 
 MyApp.send_welcome_email(to, data)
 ```
+
+### Mix Aliases Task and Ecto
+
+If you are using `Ecto` in your application probably you have some mix aliases
+if not then just create it.
+
+```elixir
+defp aliases do
+  [
+    "ecto.setup": [
+      "ecto.create",
+      "ecto.migrate",
+      "run priv/repo/seeds.exs"
+    ],
+    "ecto.reset": [
+      "ecto.drop",
+      "ecto.setup"
+    ],
+    "test": ["ecto.create --quiet", "ecto.migrate", "test"]
+  ]
+end
+```
+
+the add `StrawHat.Mailer.Repo` to the list of ecto repos on your application
+in your config.
+
+```elixir
+# config/config.exs
+
+config :my_app,
+  ecto_repos: [
+    # ...
+    StrawHat.Mailer.Repo
+  ]
+
+```
+
+This way `ecto.create`, `ecto.migrate` and `ecto.drop` knows about the repo.
