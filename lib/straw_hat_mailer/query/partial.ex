@@ -3,7 +3,7 @@ defmodule StrawHat.Mailer.Query.PartialQuery do
 
   import Ecto.Query, only: [from: 2]
 
-  alias StrawHat.Mailer.Schema.{Partial, Privacy}
+  alias StrawHat.Mailer.Schema.Partial
 
   @spec by_owner(String.t()) :: Ecto.Query.t()
   def by_owner(owner_id) do
