@@ -20,6 +20,7 @@ defmodule StrawHat.Mailer.Schema.Template do
   template inside for render dynamic html content from the data pass to the template.
   - **text:** The `text` of the email. You can use Mustach
   template inside for render dynamic html content from the data pass to the template.
+  - **partials:** List of `t:StrawHat.Mailer.Schema.Partial.t/0` associated with the template.
   """
   @type t :: %__MODULE__{
           name: String.t(),
@@ -29,7 +30,8 @@ defmodule StrawHat.Mailer.Schema.Template do
           privacy: Privacy.t(),
           pre_header: String.t(),
           html: String.t(),
-          text: String.t()
+          text: String.t(),
+          partials: [Partial.t()]
         }
 
   @typedoc """
