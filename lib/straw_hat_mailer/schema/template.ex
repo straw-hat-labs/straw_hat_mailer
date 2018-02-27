@@ -33,7 +33,7 @@ defmodule StrawHat.Mailer.Schema.Template do
         }
 
   @typedoc """
-  Check `t` type for more information about the keys.
+  Check `t:t/0` type for more information about the keys.
   """
   @type template_attrs :: %{
           name: String.t(),
