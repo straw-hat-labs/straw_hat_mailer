@@ -198,7 +198,6 @@ config :my_app,
     # ...
     StrawHat.Mailer.Repo
   ]
-
 ```
 
 This way `ecto.create`, `ecto.migrate` and `ecto.drop` knows about the repo.
