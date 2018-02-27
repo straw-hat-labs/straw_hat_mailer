@@ -187,7 +187,7 @@ defp aliases do
 end
 ```
 
-the add `StrawHat.Mailer.Repo` to the list of ecto repos on your application
+Then add `StrawHat.Mailer.Repo` to the list of ecto repos on your application
 in your config.
 
 ```elixir
