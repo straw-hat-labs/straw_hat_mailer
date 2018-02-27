@@ -101,7 +101,9 @@ defmodule StrawHat.Mailer.Template do
   @doc """
   Add partials to template.
   """
-  @spec add_partials(Template.t(), [Partial.t()]) :: [{:ok, Template.t()} | {:error, Ecto.Changeset.t()}]
+  @spec add_partials(Template.t(), [Partial.t()]) :: [
+          {:ok, Template.t()} | {:error, Ecto.Changeset.t()}
+        ]
   def add_partials(template, partials) do
     Enum.map(partials, fn %Partial{} = partial ->
       add_partial(template, partial)

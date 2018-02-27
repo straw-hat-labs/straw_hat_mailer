@@ -8,17 +8,17 @@ defmodule StrawHat.Mailer.Schema.Template do
   alias StrawHat.Mailer.Schema.{Privacy, TemplatePartial, Partial}
 
   @typedoc """
-  - ***name:*** unique identifier (per owner_id) of the template.
-  - ***title:*** Human readable title.
-  - ***privacy:*** Check `t:StrawHat.Mailer.Schema.Privacy.t/0` for more information.
-  - ***owner_id:*** Check `t:StrawHat.Mailer.owner_id/0` for more information.
-  - ***subject:*** The subject of the email. You can use Mustache template
+  - **name:** unique identifier (per owner_id) of the template.
+  - **title:** Human readable title.
+  - **privacy:** Check `t:StrawHat.Mailer.Schema.Privacy.t/0` for more information.
+  - **owner_id:** Check `t:StrawHat.Mailer.owner_id/0` for more information.
+  - **subject:** The subject of the email. You can use Mustache template
   inside for render dynamic content from the data pass to the template.
-  - ***pre_header:*** The `pre_header` of the email. You can use Mustache
+  - **pre_header:** The `pre_header` of the email. You can use Mustache
   template inside for render dynamic html content from the data pass to the template.
-  - ***html:*** The `html` of the email. You can use Mustache
+  - **html:** The `html` of the email. You can use Mustache
   template inside for render dynamic html content from the data pass to the template.
-  - ***text:*** The `text` of the email. You can use Mustach
+  - **text:** The `text` of the email. You can use Mustach
   template inside for render dynamic html content from the data pass to the template.
   """
   @type t :: %__MODULE__{

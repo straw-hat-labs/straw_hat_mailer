@@ -8,13 +8,13 @@ defmodule StrawHat.Mailer.Schema.Partial do
   alias StrawHat.Mailer.Schema.Privacy
 
   @typedoc """
-  - ***title:*** Human readable title.
-  - ***name:*** The partial identificator and is used for index the rendered
+  - **title:** Human readable title.
+  - **name:** The partial identificator and is used for index the rendered
   content of partial in the template body.
-  - ***html:*** The `html` is a Mustache template that will be used when you call the partial on your template.
-  - ***text:*** The `text` is a Mustache template that will be used when you call the partial on your template.
-  - ***privacy:*** Check `t:StrawHat.Mailer.Schema.Privacy.t/0` for more information.
-  - ***owner_id:*** Check `t:StrawHat.Mailer.owner_id/0` for more information.
+  - **html:** The `html` is a Mustache template that will be used when you call the partial on your template.
+  - **text:** The `text` is a Mustache template that will be used when you call the partial on your template.
+  - **privacy:** Check `t:StrawHat.Mailer.Schema.Privacy.t/0` for more information.
+  - **owner_id:** Check `t:StrawHat.Mailer.owner_id/0` for more information.
   """
   @type t :: %__MODULE__{
           name: String.t(),

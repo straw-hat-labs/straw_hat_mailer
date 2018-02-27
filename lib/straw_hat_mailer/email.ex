@@ -36,13 +36,13 @@ defmodule StrawHat.Mailer.Email do
   escape the output.
   """
   @type template_data :: %{
-    data: struct(),
-    partials: %{
-      required(atom()) => String.t()
-    },
-    pre_header: String.t(),
-    pre_header_html: String.t()
-  }
+          data: struct(),
+          partials: %{
+            required(atom()) => String.t()
+          },
+          pre_header: String.t(),
+          pre_header_html: String.t()
+        }
 
   @typedoc """
   The tuple is compose by the name and email.

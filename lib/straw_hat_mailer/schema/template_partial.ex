@@ -7,8 +7,8 @@ defmodule StrawHat.Mailer.Schema.TemplatePartial do
   alias StrawHat.Mailer.Schema.{Template, Partial}
 
   @typedoc """
-  - ***template_id:*** The `template_id` is a reference to templates schema.
-  - ***partial_id:*** The `partial_id` is a reference to partials schema.
+  - **template_id:** The `template_id` is a reference to templates schema.
+  - **partial_id:** The `partial_id` is a reference to partials schema.
   """
   @type t :: %__MODULE__{
           template_id: Integer.t(),

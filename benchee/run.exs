@@ -95,32 +95,30 @@ Benchee.run(
   # This is not working
   # Related to https://github.com/PragTob/benchee/issues/165
   %{
-    "bbmustache" =>
-      {
-        fn template -> run.(template) end,
-        before_scenario: fn template ->
-          Application.put_env(
-            :straw_hat_mailer,
-            :template_engine,
-            StrawHat.Mailer.TemplateEngine.BBMustache
-          )
+    "bbmustache" => {
+      fn template -> run.(template) end,
+      before_scenario: fn template ->
+        Application.put_env(
+          :straw_hat_mailer,
+          :template_engine,
+          StrawHat.Mailer.TemplateEngine.BBMustache
+        )
 
-          template
-        end
-      },
-    "mustache" =>
-      {
-        fn template -> run.(template) end,
-        before_scenario: fn template ->
-          Application.put_env(
-            :straw_hat_mailer,
-            :template_engine,
-            Mustache
-          )
+        template
+      end
+    },
+    "mustache" => {
+      fn template -> run.(template) end,
+      before_scenario: fn template ->
+        Application.put_env(
+          :straw_hat_mailer,
+          :template_engine,
+          Mustache
+        )
 
-          template
-        end
-      }
+        template
+      end
+    }
   },
   time: 1,
   print: [fast_warning: false],
