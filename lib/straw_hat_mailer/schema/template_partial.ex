@@ -17,9 +17,9 @@ defmodule StrawHat.Mailer.Schema.TemplatePartial do
   with the template partial.
   """
   @type t :: %__MODULE__{
-          template: Template.t(),
+          template: Template.t() | Ecto.Association.NotLoaded.t(),
           template_id: Integer.t(),
-          partial: Partial.t(),
+          partial: Partial.t() | Ecto.Association.NotLoaded.t(),
           partial_id: Integer.t()
         }
 

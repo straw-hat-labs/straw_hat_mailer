@@ -31,7 +31,7 @@ defmodule StrawHat.Mailer.Schema.Template do
           pre_header: String.t(),
           html: String.t(),
           text: String.t(),
-          partials: [Partial.t()]
+          partials: [Partial.t()] | Ecto.Association.NotLoaded.t()
         }
 
   @typedoc """
