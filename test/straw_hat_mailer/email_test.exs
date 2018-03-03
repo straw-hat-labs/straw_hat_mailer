@@ -13,8 +13,8 @@ defmodule StrawHat.Mailer.Test.EmailTest do
     username: "tokarev"
   }
 
-  describe "with template" do
-    test "when the template use html in body" do
+  describe "email with template" do
+    test "should match html and text" do
       template = insert(:template)
 
       {:ok, email} =
@@ -24,27 +24,17 @@ defmodule StrawHat.Mailer.Test.EmailTest do
 
       assert email.html_body ==
                "Welcome tokarev!, <br> <b>Become </b> our client number <i>1 000 000</i>"
-    end
-
-    test "when the template use text plain in body" do
-      template = insert(:template)
-
-      {:ok, email} =
-        @from
-        |> Email.new(@to)
-        |> Email.with_template(template.name, @options)
-
       assert email.text_body == "Text with name, plain and my number is 1 000 000"
     end
 
-    test "when the template do not exists" do
+    test "when the template doesn't exists" do
       assert {:error, _email} =
                @from
                |> Email.new(@to)
                |> Email.with_template("fake_id", @options)
     end
 
-    test "with template and partials" do
+    test "with partials" do
       template_attrs = %{
         html:
           "<b>Welcome</b> {{data.username}}!, enjoy a good reputation, {{{partials.marketing_text}}}",

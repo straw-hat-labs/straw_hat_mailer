@@ -3,7 +3,7 @@ defmodule StrawHat.Mailer.Test.PartialTest do
   alias StrawHat.Mailer.Partial
 
   describe "get_owner_partials/2" do
-    test "with valid owner" do
+    test "with a valid owner" do
       owner_id = "user:123"
       insert_list(3, :partial, %{owner_id: owner_id})
       partial_pagination = Partial.get_owner_partials(owner_id)
@@ -11,7 +11,7 @@ defmodule StrawHat.Mailer.Test.PartialTest do
       assert length(partial_pagination.entries) == 3
     end
 
-    test "with invalid owner" do
+    test "with an invalid owner" do
       insert_list(3, :partial, %{owner_id: "user:123"})
       partial_pagination = Partial.get_owner_partials("admin:1234")
 
@@ -28,10 +28,10 @@ defmodule StrawHat.Mailer.Test.PartialTest do
     assert {:error, _reason} = Partial.find_partial(1235)
   end
 
-  test "list per page" do
-    insert_list(10, :partial)
-    partial = Partial.get_partials(%{page: 2, page_size: 5})
-    assert partial.total_entries == 10
+  test "listing partials" do
+    insert_list(3, :partial)
+    partial = Partial.get_partials(%{page: 2, page_size: 2})
+    assert length(partial.entries) == 1
   end
 
   test "create partial" do

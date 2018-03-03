@@ -3,31 +3,26 @@ defmodule StrawHat.Mailer.Test.TemplateTest do
   alias StrawHat.Mailer.Template
 
   describe "get template" do
-    test "with valid name" do
+    test "with a valid name" do
       template = insert(:template)
       assert {:ok, _template} = Template.get_template_by_name(template.name)
     end
 
-    test "with valid id" do
+    test "with a valid id" do
       template = insert(:template)
       assert {:ok, _template} = Template.find_template(template.id)
     end
 
-    test "with invalid name" do
+    test "with an invalid name" do
       assert {:error, _reason} = Template.find_template(1235)
     end
   end
 
-  test "get template by id" do
-    template = insert(:template)
-    assert Template.get_template(template.id) != nil
-  end
-
-  test "list per page" do
-    insert_list(5, :template)
+  test "listing templates" do
+    insert_list(3, :template)
     template_pagination = Template.get_templates(%{page: 2, page_size: 2})
 
-    assert length(template_pagination.entries) == 2
+    assert length(template_pagination.entries) == 1
   end
 
   test "create template" do
@@ -43,11 +38,19 @@ defmodule StrawHat.Mailer.Test.TemplateTest do
     assert Enum.count(template.partials) == 6
   end
 
-  test "remove partial from template" do
-    template = insert(:template)
-    partial = insert(:partial)
-    Template.add_partial(template, partial)
-    assert {:ok, _} = Template.remove_partial(template, partial)
+  describe "remove partial from template" do
+    test "with a valid connected partial" do
+      template = insert(:template)
+      partial = insert(:partial)
+      Template.add_partial(template, partial)
+      assert {:ok, _} = Template.remove_partial(template, partial)
+    end
+
+    test "with an invalid connected partial" do
+      template = insert(:template)
+      partial = insert(:partial)
+      assert {:error, _} = Template.remove_partial(template, partial)
+    end
   end
 
   test "update template" do
