@@ -13,9 +13,7 @@ defmodule StrawHat.Mailer.Template do
   """
   @spec get_templates(Scrivener.Config.t()) :: Scrivener.Page.t()
   def get_templates(pagination \\ []) do
-    Template
-    |> TemplateQuery.templates()
-    |> Repo.paginate(pagination)
+    TemplateQuery.all_templates() |> Repo.paginate(pagination)
   end
 
   @doc """
@@ -79,8 +77,8 @@ defmodule StrawHat.Mailer.Template do
   @spec get_template_by_name(String.t()) :: {:ok, Template.t()} | {:error, Error.t()}
   def get_template_by_name(template_name) do
     template =
-      Template
-      |> TemplateQuery.by_name(template_name)
+      template_name
+      |> TemplateQuery.templates_by_name()
       |> Repo.one()
 
     case template do
@@ -132,7 +130,7 @@ defmodule StrawHat.Mailer.Template do
     case Repo.get_by(TemplatePartial, clauses) do
       nil ->
         error =
-          Error.new("straw_hat_mailer.template.template_partial.not_found", metadata: clauses)
+          Error.new("straw_hat_mailer.template_partial.not_found", metadata: clauses)
 
         {:error, error}
 

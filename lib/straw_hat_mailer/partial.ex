@@ -74,7 +74,7 @@ defmodule StrawHat.Mailer.Partial do
   @spec get_owner_partials(String.t(), Scrivener.Config.t()) :: Scrivener.Page.t()
   def get_owner_partials(owner_id, pagination \\ []) do
     owner_id
-    |> PartialQuery.by_owner()
+    |> PartialQuery.partials_by_owner()
     |> Repo.paginate(pagination)
   end
 end

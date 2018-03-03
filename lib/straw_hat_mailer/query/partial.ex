@@ -5,8 +5,8 @@ defmodule StrawHat.Mailer.Query.PartialQuery do
 
   alias StrawHat.Mailer.Schema.Partial
 
-  @spec by_owner(String.t()) :: Ecto.Query.t()
-  def by_owner(owner_id) do
+  @spec partials_by_owner(String.t()) :: Ecto.Query.t()
+  def partials_by_owner(owner_id) do
     from(partial in Partial, where: partial.owner_id == ^owner_id)
   end
 end

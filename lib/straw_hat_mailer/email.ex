@@ -2,21 +2,19 @@ defmodule StrawHat.Mailer.Email do
   @moduledoc """
   Add capability to create emails using templates.
 
-  ```elixir
-  token = get_token()
-  from = {"ACME", "noreply@acme.com"}
-  to = {"Straw Hat Team", "some_email@acme.com"}
-  data = %{
-    confirmation_token: token
-  }
+      token = get_token()
+      from = {"ACME", "noreply@acme.com"}
+      to = {"Straw Hat Team", "some_email@acme.com"}
+      data = %{
+        confirmation_token: token
+      }
 
-  {:ok, email} =
-    from
-    |> StrawHat.Mailer.Email.new(to)
-    |> StrawHat.Mailer.Email.with_template("welcome", data)
+      {:ok, email} =
+        from
+        |> StrawHat.Mailer.Email.new(to)
+        |> StrawHat.Mailer.Email.with_template("welcome", data)
 
-  StrawHat.Mailer.deliver(email)
-  ```
+      StrawHat.Mailer.deliver(email)
 
   All your templates will receive the same shape of data which you could use
   mustache syntax for using it, read about `t:StrawHat.Mailer.Email.template_data/0`.

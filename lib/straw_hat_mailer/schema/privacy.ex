@@ -9,8 +9,8 @@ defmodule StrawHat.Mailer.Schema.Privacy do
   @typedoc """
   Allowed Values
 
-  - **PRIVATE:** only the owner have access to the template.
-  - **PUBLIC:** everyone have access to the template.
+  - `PRIVATE`: only the owner have access to the template.
+  - `PUBLIC`: everyone have access to the template.
   """
   @type t :: String.t()
 

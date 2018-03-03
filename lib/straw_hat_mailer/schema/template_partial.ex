@@ -7,13 +7,13 @@ defmodule StrawHat.Mailer.Schema.TemplatePartial do
   alias StrawHat.Mailer.Schema.{Template, Partial}
 
   @typedoc """
-  - **template:** `t:StrawHat.Mailer.Schema.Template.t/0` associated with the
+  - `template`: `t:StrawHat.Mailer.Schema.Template.t/0` associated with the
   template partial.
-  - **template_id:** `id` of `t:StrawHat.Mailer.Schema.Template.t/0` associated
+  - `template_id`: `id` of `t:StrawHat.Mailer.Schema.Template.t/0` associated
   with the template partial.
-  - **partial:** `t:StrawHat.Mailer.Schema.Partial.t/0` associated with the
+  - `partial`: `t:StrawHat.Mailer.Schema.Partial.t/0` associated with the
   template partial.
-  - **partial_id:** `id` of `t:StrawHat.Mailer.Schema.Partial.t/0` associated
+  - `partial_id`: `id` of `t:StrawHat.Mailer.Schema.Partial.t/0` associated
   with the template partial.
   """
   @type t :: %__MODULE__{
