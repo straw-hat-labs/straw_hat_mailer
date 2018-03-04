@@ -13,7 +13,7 @@ defmodule StrawHat.Mailer.Template do
   """
   @spec get_templates(Scrivener.Config.t()) :: Scrivener.Page.t()
   def get_templates(pagination \\ []) do
-    TemplateQuery.all_templates() |> Repo.paginate(pagination)
+    TemplateQuery.templates() |> Repo.paginate(pagination)
   end
 
   @doc """

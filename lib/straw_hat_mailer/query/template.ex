@@ -5,8 +5,8 @@ defmodule StrawHat.Mailer.Query.TemplateQuery do
 
   alias StrawHat.Mailer.Schema.Template
 
-  @spec all_templates :: Ecto.Query.t()
-  def all_templates do
+  @spec templates :: Ecto.Query.t()
+  def templates do
     from(_template in Template, preload: [:partials])
   end
 
