@@ -7,17 +7,16 @@ defmodule StrawHat.Mailer.Partials do
   """
 
   use StrawHat.Mailer.Interactor
-
   alias StrawHat.Mailer.Partial
 
   @doc """
-  Get the list of partials.
+  Returns the list of partials.
   """
   @spec get_partials(Scrivener.Config.t()) :: Scrivener.Page.t()
   def get_partials(pagination \\ []), do: Repo.paginate(Partial, pagination)
 
   @doc """
-  Create a partial.
+  Creates a partial.
   """
   @spec create_partial(Partial.partial_attrs()) ::
           {:ok, Partial.t()} | {:error, Ecto.Changeset.t()}
@@ -28,7 +27,7 @@ defmodule StrawHat.Mailer.Partials do
   end
 
   @doc """
-  Update a partial.
+  Updates a partial.
   """
   @spec update_partial(Partial.t(), Partial.partial_attrs()) ::
           {:ok, Partial.t()} | {:error, Ecto.Changeset.t()}
@@ -39,7 +38,7 @@ defmodule StrawHat.Mailer.Partials do
   end
 
   @doc """
-  Destroy a partial.
+  Destroys a partial.
   """
   @spec destroy_partial(Partial.t()) :: {:ok, Partial.t()} | {:error, Ecto.Changeset.t()}
   def destroy_partial(%Partial{} = partial), do: Repo.delete(partial)
@@ -49,16 +48,11 @@ defmodule StrawHat.Mailer.Partials do
   """
   @spec find_partial(String.t()) :: {:ok, Partial.t()} | {:error, Error.t()}
   def find_partial(partial_id) do
-    case get_partial(partial_id) do
-      nil ->
-        error =
-          Error.new("straw_hat_mailer.partial.not_found", metadata: [partial_id: partial_id])
-
-        {:error, error}
-
-      partial ->
-        {:ok, partial}
-    end
+    partial_id
+    |> get_partial()
+    |> StrawHat.Response.from_value(
+      Error.new("straw_hat_mailer.partial.not_found", metadata: [partial_id: partial_id])
+    )
   end
 
   @doc """
@@ -68,7 +62,7 @@ defmodule StrawHat.Mailer.Partials do
   def get_partial(partial_id), do: Repo.get(Partial, partial_id)
 
   @doc """
-  Get the list of partials by `owner_id`.
+  Returns a list of partials that belongs to the `owner_id`.
   """
   @spec get_owner_partials(String.t(), Scrivener.Config.t()) :: Scrivener.Page.t()
   def get_owner_partials(owner_id, pagination \\ []) do

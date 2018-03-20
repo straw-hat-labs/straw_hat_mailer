@@ -4,7 +4,6 @@ defmodule StrawHat.Mailer.Templates do
   """
 
   use StrawHat.Mailer.Interactor
-
   alias StrawHat.Mailer.{Template, TemplatePartial, Partial}
 
   @doc """
@@ -38,7 +37,7 @@ defmodule StrawHat.Mailer.Templates do
   end
 
   @doc """
-  Destroy a template.
+  Destroys a template.
   """
   @spec destroy_template(Template.t()) :: {:ok, Template.t()} | {:error, Ecto.Changeset.t()}
   def destroy_template(%Template{} = template), do: Repo.delete(template)
