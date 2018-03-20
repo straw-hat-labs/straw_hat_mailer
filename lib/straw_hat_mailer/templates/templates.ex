@@ -137,7 +137,7 @@ defmodule StrawHat.Mailer.Templates do
   end
 
   @spec templates_with_partials :: Ecto.Query.t()
-  def templates_with_partials do
+  defp templates_with_partials do
     from(_template in Template, preload: [:partials])
   end
 end
