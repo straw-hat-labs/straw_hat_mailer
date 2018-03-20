@@ -1,5 +1,9 @@
 # StrawHat.Mailer
 
+[![Build Status](https://travis-ci.org/straw-hat-team/straw_hat_mailer.svg?branch=master)](https://travis-ci.org/straw-hat-team/straw_hat_mailer)
+[![Coverage Status](https://coveralls.io/repos/github/straw-hat-team/straw_hat_mailer/badge.svg?branch=master)](https://coveralls.io/github/straw-hat-team/straw_hat_mailer?branch=master)
+[![Inline docs](http://inch-ci.org/github/straw-hat-team/straw_hat_mailer.svg)](http://inch-ci.org/github/straw-hat-team/straw_hat_mailer)
+
 Email Management with templating capability. The templates use Mustache template
 under the hood so you can do everything that the template system allow you to do.
 
@@ -7,7 +11,7 @@ under the hood so you can do everything that the template system allow you to do
 
 ```elixir
 def deps do
-  [  
+  [
     {:swoosh, "~> 0.12"},
     {:straw_hat_mailer, "~> 0.4"}
   ]

@@ -24,6 +24,7 @@ defmodule StrawHat.Mailer.Test.EmailTest do
 
       assert email.html_body ==
                "Welcome tokarev!, <br> <b>Become </b> our client number <i>1 000 000</i>"
+
       assert email.text_body == "Text with name, plain and my number is 1 000 000"
     end
 

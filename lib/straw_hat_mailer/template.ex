@@ -129,8 +129,7 @@ defmodule StrawHat.Mailer.Template do
 
     case Repo.get_by(TemplatePartial, clauses) do
       nil ->
-        error =
-          Error.new("straw_hat_mailer.template_partial.not_found", metadata: clauses)
+        error = Error.new("straw_hat_mailer.template_partial.not_found", metadata: clauses)
 
         {:error, error}
 

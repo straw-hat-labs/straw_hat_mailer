@@ -67,7 +67,8 @@ defmodule StrawHat.Mailer.Mixfile do
       {:excoveralls, ">= 0.0.0", only: [:test], runtime: false},
       {:benchee, ">= 0.0.0", only: [:dev], runtime: false},
       {:benchee_html, ">= 0.0.0", only: [:dev], runtime: false},
-      {:ex_doc, ">= 0.0.0", only: [:dev], runtime: false}
+      {:ex_doc, ">= 0.0.0", only: [:dev], runtime: false},
+      {:inch_ex, ">= 0.0.0", only: [:dev], runtime: false}
     ]
   end
 

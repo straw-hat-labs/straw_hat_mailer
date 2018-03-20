@@ -1,0 +1,16 @@
+language: elixir
+sudo: false
+
+elixir:
+  - 1.6.4
+otp_release:
+  - 20.2
+
+script:
+  - make testing
+after_script:
+  - make docs
+
+notifications:
+  recipients:
+    - engineers@straw-hat-llc.com
