@@ -21,7 +21,6 @@ defmodule StrawHat.Mailer.Emails do
   """
 
   use StrawHat.Mailer.Interactor
-
   alias Swoosh.Email
   alias StrawHat.Mailer.{Templates, TemplateEngine, Template}
 
@@ -75,19 +74,17 @@ defmodule StrawHat.Mailer.Emails do
   def with_template(email, template_name_or_template_schema, data \\ %{})
 
   def with_template(email, %Template{} = template, data) do
-    email =
-      email
-      |> add_subject(template.subject, data)
-      |> add_body(template, data)
-
-    {:ok, email}
+    email
+    |> add_subject(template.subject, data)
+    |> add_body(template, data)
+    |> StrawHat.Response.ok()
   end
 
   def with_template(email, template_name, data) do
-    case Templates.get_template_by_name(template_name) do
-      {:error, reason} -> {:error, reason}
-      {:ok, template} -> with_template(email, template, data)
-    end
+    add_template = fn template -> with_template(email, template, data) end
+    template_name
+    |> Templates.get_template_by_name()
+    |> StrawHat.Response.and_then(add_template)
   end
 
   @spec add_subject(Email.t(), String.t(), map) :: Email.t()

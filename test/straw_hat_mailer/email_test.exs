@@ -1,6 +1,5 @@
 defmodule StrawHat.Mailer.Test.EmailsTest do
   use StrawHat.Mailer.Test.DataCase, async: true
-
   alias StrawHat.Mailer.{Emails, Templates}
   doctest Emails
 
@@ -14,8 +13,8 @@ defmodule StrawHat.Mailer.Test.EmailsTest do
     username: "tokarev"
   }
 
-  describe "email with template" do
-    test "should match html and text" do
+  describe "with_template/2" do
+    test "with valid template should match html and text" do
       template = insert(:template)
 
       {:ok, email} =
@@ -29,14 +28,14 @@ defmodule StrawHat.Mailer.Test.EmailsTest do
       assert email.text_body == "Text with name, plain and my number is 1 000 000"
     end
 
-    test "when the template doesn't exists" do
+    test "with invalid template it returns an error" do
       assert {:error, _email} =
                @from
                |> Emails.new(@to)
                |> Emails.with_template("fake_id")
     end
 
-    test "with partials" do
+    test "with added partials should it renders the partial contents" do
       template_attrs = %{
         html:
           "<b>Welcome</b> {{data.username}}!, enjoy a good reputation, {{{partials.marketing_text}}}",
@@ -67,13 +66,13 @@ defmodule StrawHat.Mailer.Test.EmailsTest do
     end
   end
 
-  test "send email" do
+  test "deliver/1 should send the email" do
     options = [subject: "Welcome john"]
     email = Emails.new(@from, @to, options)
     assert {:ok, %{id: _}} = StrawHat.Mailer.deliver(email)
   end
 
-  test "send email later" do
+  test "deliver_later/1 should send the email" do
     options = [subject: "Welcome john"]
     email = Emails.new(@from, @to, options)
     assert {:ok, _} = StrawHat.Mailer.deliver_later(email)
