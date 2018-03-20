@@ -32,7 +32,7 @@ defmodule StrawHat.Mailer.Test.EmailTest do
       assert {:error, _email} =
                @from
                |> Email.new(@to)
-               |> Email.with_template("fake_id", @options)
+               |> Email.with_template("fake_id")
     end
 
     test "with partials" do
