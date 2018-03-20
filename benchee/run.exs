@@ -24,7 +24,7 @@ end
 #
 generate_partials = fn n ->
   for _ <- 1..n,
-      do: %StrawHat.Mailer.Schema.Partial{
+      do: %StrawHat.Mailer.Partial{
         name: generate_key.(4),
         html:
           "Welcome {{data.username}}!, <br> <b>Become </b> our client number <i>{{data.number}}</i> <b>Located in:</b> {{data.address}}",
@@ -53,7 +53,7 @@ generate_template = fn n ->
   #
   # Declared template schema with partial schema:
   #
-  %StrawHat.Mailer.Schema.Template{
+  %StrawHat.Mailer.Template{
     name: "Benchee",
     title: "Benchee test",
     owner_id: "benchee:provider:345098",

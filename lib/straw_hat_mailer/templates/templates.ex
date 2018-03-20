@@ -1,19 +1,18 @@
-defmodule StrawHat.Mailer.Template do
+defmodule StrawHat.Mailer.Templates do
   @moduledoc """
   Interactor module that defines all the functionality for template management.
   """
 
   use StrawHat.Mailer.Interactor
 
-  alias StrawHat.Mailer.Schema.{Template, Partial, TemplatePartial}
-  alias StrawHat.Mailer.Query.TemplateQuery
+  alias StrawHat.Mailer.{Template, TemplatePartial, Partial}
 
   @doc """
   Get the list of templates.
   """
   @spec get_templates(Scrivener.Config.t()) :: Scrivener.Page.t()
   def get_templates(pagination \\ []) do
-    TemplateQuery.templates() |> Repo.paginate(pagination)
+    templates_with_partials() |> Repo.paginate(pagination)
   end
 
   @doc """
@@ -78,7 +77,7 @@ defmodule StrawHat.Mailer.Template do
   def get_template_by_name(template_name) do
     template =
       template_name
-      |> TemplateQuery.templates_by_name()
+      |> templates_by_name()
       |> Repo.one()
 
     case template do
@@ -136,5 +135,19 @@ defmodule StrawHat.Mailer.Template do
       template_partial ->
         Repo.delete(template_partial)
     end
+  end
+
+  @spec templates_by_name(String.t()) :: Ecto.Query.t()
+  defp templates_by_name(name) do
+    from(
+      template in Template,
+      where: template.name == ^name,
+      preload: [:partials]
+    )
+  end
+
+  @spec templates_with_partials :: Ecto.Query.t()
+  def templates_with_partials do
+    from(_template in Template, preload: [:partials])
   end
 end

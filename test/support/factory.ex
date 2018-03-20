@@ -1,7 +1,7 @@
 defmodule StrawHat.Mailer.Test.Factory do
   use ExMachina.Ecto, repo: StrawHat.Mailer.Repo
 
-  alias StrawHat.Mailer.Schema.{Template, Partial, Privacy}
+  alias StrawHat.Mailer.{Template, Privacy, Partial}
 
   def template_factory do
     privacy = get_privacy()

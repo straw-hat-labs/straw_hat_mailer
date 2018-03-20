@@ -1,16 +1,16 @@
-defmodule StrawHat.Mailer.Schema.Template do
+defmodule StrawHat.Mailer.Template do
   @moduledoc """
   Represents a Template Ecto Schema with functionality about the data validation
   for Template.
   """
 
   use StrawHat.Mailer.Schema
-  alias StrawHat.Mailer.Schema.{Privacy, TemplatePartial, Partial}
+  alias StrawHat.Mailer.{Privacy, TemplatePartial, Partial}
 
   @typedoc """
   - `name`: unique identifier (per owner_id) of the template.
   - `title`: Human readable title.
-  - `privacy`: Check `t:StrawHat.Mailer.Schema.Privacy.t/0` for more information.
+  - `privacy`: Check `t:StrawHat.Mailer.Privacy.t/0` for more information.
   - `owner_id`: Check `t:StrawHat.Mailer.owner_id/0` for more information.
   - `subject`: The subject of the email. You can use Mustache template
   inside for render dynamic content from the data pass to the template.
@@ -20,7 +20,7 @@ defmodule StrawHat.Mailer.Schema.Template do
   render dynamic html content from the data pass to the template.
   - `text`: The `text` of the email. You can use Mustache template inside for
   render dynamic html content from the data pass to the template.
-  - `partials`: List of `t:StrawHat.Mailer.Schema.Partial.t/0` associated with
+  - `partials`: List of `t:StrawHat.Mailer.Partial.t/0` associated with
   the template.
   """
   @type t :: %__MODULE__{

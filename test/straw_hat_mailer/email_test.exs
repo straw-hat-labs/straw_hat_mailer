@@ -1,7 +1,8 @@
-defmodule StrawHat.Mailer.Test.EmailTest do
+defmodule StrawHat.Mailer.Test.EmailsTest do
   use StrawHat.Mailer.Test.DataCase, async: true
 
-  alias StrawHat.Mailer.{Email, Template}
+  alias StrawHat.Mailer.{Emails, Templates}
+  doctest Emails
 
   @from "siupport@myapp.com"
   @to "acme@acme.com"
@@ -19,8 +20,8 @@ defmodule StrawHat.Mailer.Test.EmailTest do
 
       {:ok, email} =
         @from
-        |> Email.new(@to)
-        |> Email.with_template(template.name, @options)
+        |> Emails.new(@to)
+        |> Emails.with_template(template.name, @options)
 
       assert email.html_body ==
                "Welcome tokarev!, <br> <b>Become </b> our client number <i>1 000 000</i>"
@@ -31,8 +32,8 @@ defmodule StrawHat.Mailer.Test.EmailTest do
     test "when the template doesn't exists" do
       assert {:error, _email} =
                @from
-               |> Email.new(@to)
-               |> Email.with_template("fake_id")
+               |> Emails.new(@to)
+               |> Emails.with_template("fake_id")
     end
 
     test "with partials" do
@@ -51,12 +52,12 @@ defmodule StrawHat.Mailer.Test.EmailTest do
       template = insert(:template, template_attrs)
       partial = insert(:partial, partial_attrs)
 
-      Template.add_partials(template, [partial])
+      Templates.add_partials(template, [partial])
 
       {:ok, email} =
         @from
-        |> Email.new(@to)
-        |> Email.with_template(template.name, @options)
+        |> Emails.new(@to)
+        |> Emails.with_template(template.name, @options)
 
       assert email.html_body ==
                "<b>Welcome</b> tokarev!, enjoy a good reputation, <b>Purchase Now!</b>: POBOX 54634"
@@ -68,13 +69,13 @@ defmodule StrawHat.Mailer.Test.EmailTest do
 
   test "send email" do
     options = [subject: "Welcome john"]
-    email = Email.new(@from, @to, options)
+    email = Emails.new(@from, @to, options)
     assert {:ok, %{id: _}} = StrawHat.Mailer.deliver(email)
   end
 
   test "send email later" do
     options = [subject: "Welcome john"]
-    email = Email.new(@from, @to, options)
+    email = Emails.new(@from, @to, options)
     assert {:ok, _} = StrawHat.Mailer.deliver_later(email)
   end
 end

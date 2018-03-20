@@ -1,11 +1,11 @@
-defmodule StrawHat.Mailer.Schema.Partial do
+defmodule StrawHat.Mailer.Partial do
   @moduledoc """
   Represents a Partial Ecto Schema with functionality about the data validation
   for Partial Template.
   """
 
   use StrawHat.Mailer.Schema
-  alias StrawHat.Mailer.Schema.Privacy
+  alias StrawHat.Mailer.Privacy
 
   @typedoc """
   - `title`: Human readable title.
@@ -13,7 +13,7 @@ defmodule StrawHat.Mailer.Schema.Partial do
   content of partial in the template body.
   - `html`: The `html` is a Mustache template that will be used when you call the partial on your template.
   - `text`: The `text` is a Mustache template that will be used when you call the partial on your template.
-  - `privacy`: Check `t:StrawHat.Mailer.Schema.Privacy.t/0` for more information.
+  - `privacy`: Check `t:StrawHat.Mailer.Privacy.t/0` for more information.
   - `owner_id`: Check `t:StrawHat.Mailer.owner_id/0` for more information.
   """
   @type t :: %__MODULE__{

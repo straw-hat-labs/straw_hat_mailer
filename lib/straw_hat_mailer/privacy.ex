@@ -1,4 +1,4 @@
-defmodule StrawHat.Mailer.Schema.Privacy do
+defmodule StrawHat.Mailer.Privacy do
   @moduledoc """
   The privacy of the Template or Partials. You could share your templates with
   others based on the privacy.

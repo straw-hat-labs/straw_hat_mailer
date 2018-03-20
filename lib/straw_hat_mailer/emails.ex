@@ -1,4 +1,4 @@
-defmodule StrawHat.Mailer.Email do
+defmodule StrawHat.Mailer.Emails do
   @moduledoc """
   Add capability to create emails using templates.
 
@@ -23,8 +23,7 @@ defmodule StrawHat.Mailer.Email do
   use StrawHat.Mailer.Interactor
 
   alias Swoosh.Email
-  alias StrawHat.Mailer.{Template, TemplateEngine}
-  alias StrawHat.Mailer.Schema.Template, as: TemplateSchema
+  alias StrawHat.Mailer.{Templates, TemplateEngine, Template}
 
   @typedoc """
   You would use the data as mustache syntax does it using brackets.
@@ -71,11 +70,11 @@ defmodule StrawHat.Mailer.Email do
   @doc """
   Add `subject`, `html` and `text` to the Email using a template.
   """
-  @spec with_template(Email.t(), TemplateSchema.t() | String.t(), map) ::
+  @spec with_template(Email.t(), Template.t() | String.t(), map) ::
           {:ok, Email.t()} | {:error, Error.t()}
   def with_template(email, template_name_or_template_schema, data \\ %{})
 
-  def with_template(email, %TemplateSchema{} = template, data) do
+  def with_template(email, %Template{} = template, data) do
     email =
       email
       |> add_subject(template.subject, data)
@@ -85,7 +84,7 @@ defmodule StrawHat.Mailer.Email do
   end
 
   def with_template(email, template_name, data) do
-    case Template.get_template_by_name(template_name) do
+    case Templates.get_template_by_name(template_name) do
       {:error, reason} -> {:error, reason}
       {:ok, template} -> with_template(email, template, data)
     end
@@ -97,7 +96,7 @@ defmodule StrawHat.Mailer.Email do
     Email.subject(email, subject)
   end
 
-  @spec add_body(Email.t(), TemplateSchema.t(), map) :: Email.t()
+  @spec add_body(Email.t(), Template.t(), map) :: Email.t()
   defp add_body(email, template, data) do
     template_data =
       %{data: data}
@@ -112,7 +111,7 @@ defmodule StrawHat.Mailer.Email do
     |> add_body_to_email(:text, text)
   end
 
-  @spec render_body(email_body_type(), TemplateSchema.t(), map()) :: map()
+  @spec render_body(email_body_type(), Template.t(), map()) :: map()
   defp render_body(type, template, template_data) do
     partial_type = Map.get(template_data.partials, type)
     template_data = Map.put(template_data, :partials, partial_type)
@@ -122,7 +121,7 @@ defmodule StrawHat.Mailer.Email do
     |> TemplateEngine.render(template_data)
   end
 
-  @spec put_pre_header(map(), TemplateSchema.t()) :: map()
+  @spec put_pre_header(map(), Template.t()) :: map()
   defp put_pre_header(template_data, template) do
     pre_header = render_pre_header(template, template_data)
 
@@ -131,13 +130,13 @@ defmodule StrawHat.Mailer.Email do
     |> Map.put(:pre_header_html, "<span style=\"display: none !important;\">#{pre_header}</span>")
   end
 
-  @spec put_partials(map(), TemplateSchema.t()) :: map()
+  @spec put_partials(map(), Template.t()) :: map()
   defp put_partials(template_data, template) do
     partials = render_partials(template, template_data)
     Map.put(template_data, :partials, partials)
   end
 
-  @spec get_body_by_type(email_body_type(), TemplateSchema.t()) :: String.t()
+  @spec get_body_by_type(email_body_type(), Template.t()) :: String.t()
   defp get_body_by_type(:html, template), do: template.html
   defp get_body_by_type(:text, template), do: template.text
 
@@ -145,7 +144,7 @@ defmodule StrawHat.Mailer.Email do
   defp add_body_to_email(email, :html, body), do: Email.html_body(email, body)
   defp add_body_to_email(email, :text, body), do: Email.text_body(email, body)
 
-  @spec render_partials(TemplateSchema.t(), map()) :: map()
+  @spec render_partials(Template.t(), map()) :: map()
   defp render_partials(template, template_data) do
     Enum.reduce(template.partials, %{html: %{}, text: %{}}, fn partial, reducer_accumulator ->
       name = Map.get(partial, :name)
@@ -167,13 +166,13 @@ defmodule StrawHat.Mailer.Email do
     |> Map.put(String.to_atom(name), render_partial)
   end
 
-  @spec render_pre_header(TemplateSchema.t(), map()) :: String.t()
-  defp render_pre_header(%TemplateSchema{pre_header: nil} = _template, _template_data) do
+  @spec render_pre_header(Template.t(), map()) :: String.t()
+  defp render_pre_header(%Template{pre_header: nil} = _template, _template_data) do
     ""
   end
 
-  @spec render_pre_header(TemplateSchema.t(), map()) :: String.t()
-  defp render_pre_header(%TemplateSchema{pre_header: pre_header} = _template, template_data) do
+  @spec render_pre_header(Template.t(), map()) :: String.t()
+  defp render_pre_header(%Template{pre_header: pre_header} = _template, template_data) do
     TemplateEngine.render(pre_header, template_data)
   end
 end

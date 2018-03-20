@@ -51,7 +51,7 @@ You could use `seed.exs` or just use `iex -S mix` for interactive terminal.
 {:ok, welcome_template} = StrawHat.Mailer.Template.create_template(%{
   name: "welcome",
   owner_id: "system:my_app",
-  privacy: StrawHat.Mailer.Schema.Privacy.public(),
+  privacy: StrawHat.Mailer.Privacy.public(),
   title: "Welcome to My App",
 
   subject: "Welcome to My App",
@@ -74,7 +74,7 @@ Let's create the partials.
 {:ok, header_partial} = StrawHat.Mailer.Partial.create_partial(%{
   name: "company_header",
   owner_id: "system:my_app",
-  privacy: StrawHat.Mailer.Schema.Privacy.public(),
+  privacy: StrawHat.Mailer.Privacy.public(),
 
   html: """
    <header>
@@ -91,7 +91,7 @@ Let's create the partials.
 {:ok, footer_partial} = StrawHat.Mailer.Partial.create_partial(%{
   name: "company_footer",
   owner_id: "system:my_app",
-  privacy: StrawHat.Mailer.Schema.Privacy.public(),
+  privacy: StrawHat.Mailer.Privacy.public(),
 
   html: """
    <footer>

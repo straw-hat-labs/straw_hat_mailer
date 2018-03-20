@@ -1,4 +1,4 @@
-defmodule StrawHat.Mailer.Partial do
+defmodule StrawHat.Mailer.Partials do
   @moduledoc """
   Defines functionality for partial management.
 
@@ -8,8 +8,7 @@ defmodule StrawHat.Mailer.Partial do
 
   use StrawHat.Mailer.Interactor
 
-  alias StrawHat.Mailer.Schema.Partial
-  alias StrawHat.Mailer.Query.PartialQuery
+  alias StrawHat.Mailer.Partial
 
   @doc """
   Get the list of partials.
@@ -74,7 +73,12 @@ defmodule StrawHat.Mailer.Partial do
   @spec get_owner_partials(String.t(), Scrivener.Config.t()) :: Scrivener.Page.t()
   def get_owner_partials(owner_id, pagination \\ []) do
     owner_id
-    |> PartialQuery.partials_by_owner()
+    |> partials_by_owner()
     |> Repo.paginate(pagination)
+  end
+
+  @spec partials_by_owner(String.t()) :: Ecto.Query.t()
+  defp partials_by_owner(owner_id) do
+    from(partial in Partial, where: partial.owner_id == ^owner_id)
   end
 end
