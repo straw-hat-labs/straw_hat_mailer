@@ -1,7 +1,7 @@
 # StrawHat.Mailer
 
 [![Build Status](https://travis-ci.org/straw-hat-team/straw_hat_mailer.svg?branch=master)](https://travis-ci.org/straw-hat-team/straw_hat_mailer)
-[![Coverage Status](https://coveralls.io/repos/github/straw-hat-team/straw_hat_mailer/badge.svg?branch=master)](https://coveralls.io/github/straw-hat-team/straw_hat_mailer?branch=master)
+[![codecov](https://codecov.io/gh/straw-hat-team/straw_hat_mailer/branch/master/graph/badge.svg)](https://codecov.io/gh/straw-hat-team/straw_hat_mailer)
 [![Inline docs](http://inch-ci.org/github/straw-hat-team/straw_hat_mailer.svg)](http://inch-ci.org/github/straw-hat-team/straw_hat_mailer)
 
 Email Management with templating capability. The templates use Mustache template
