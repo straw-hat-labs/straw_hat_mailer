@@ -8,7 +8,7 @@ defmodule StrawHat.Mailer.Templates do
   alias StrawHat.Mailer.{Template, TemplatePartial, Partial}
 
   @doc """
-  Get the list of templates.
+  Returns the list of templates.
   """
   @spec get_templates(Scrivener.Config.t()) :: Scrivener.Page.t()
   def get_templates(pagination \\ []) do
@@ -16,7 +16,7 @@ defmodule StrawHat.Mailer.Templates do
   end
 
   @doc """
-  Create a template.
+  Creates a template.
   """
   @spec create_template(Template.template_attrs()) ::
           {:ok, Template.t()} | {:error, Ecto.Changeset.t()}
@@ -27,7 +27,7 @@ defmodule StrawHat.Mailer.Templates do
   end
 
   @doc """
-  Update a template.
+  Updates a template.
   """
   @spec update_template(Template.t(), Template.template_attrs()) ::
           {:ok, Template.t()} | {:error, Ecto.Changeset.t()}
@@ -44,20 +44,23 @@ defmodule StrawHat.Mailer.Templates do
   def destroy_template(%Template{} = template), do: Repo.delete(template)
 
   @doc """
+  Returns an `%Ecto.Changeset{}` for tracking template changes.
+  """
+  @spec destroy_template(Template.t()) :: Ecto.Changeset.t()
+  def change_template(%Template{} = template) do
+    Template.changeset(template, %{})
+  end
+
+  @doc """
   Get a template by `id`.
   """
   @spec find_template(String.t()) :: {:ok, Template.t()} | {:error, Error.t()}
   def find_template(template_id) do
-    case get_template(template_id) do
-      nil ->
-        error =
-          Error.new("straw_hat_mailer.template.not_found", metadata: [template_id: template_id])
-
-        {:error, error}
-
-      template ->
-        {:ok, template}
-    end
+    template_id
+    |> get_template()
+    |> StrawHat.Response.from_value(
+      Error.new("straw_hat_mailer.template.not_found", metadata: [template_id: template_id])
+    )
   end
 
   @doc """
@@ -75,24 +78,15 @@ defmodule StrawHat.Mailer.Templates do
   """
   @spec get_template_by_name(String.t()) :: {:ok, Template.t()} | {:error, Error.t()}
   def get_template_by_name(template_name) do
-    template =
-      template_name
-      |> templates_by_name()
-      |> Repo.one()
-
-    case template do
-      nil ->
-        error =
-          Error.new(
-            "straw_hat_mailer.template.not_found",
-            metadata: [template_name: template_name]
-          )
-
-        {:error, error}
-
-      template ->
-        {:ok, template}
-    end
+    template_name
+    |> templates_by_name()
+    |> Repo.one()
+    |> StrawHat.Response.from_value(
+      Error.new(
+        "straw_hat_mailer.template.not_found",
+        metadata: [template_name: template_name]
+      )
+    )
   end
 
   @doc """
@@ -126,15 +120,12 @@ defmodule StrawHat.Mailer.Templates do
   def remove_partial(%Template{id: template_id} = _template, %Partial{id: partial_id} = _partial) do
     clauses = [template_id: template_id, partial_id: partial_id]
 
-    case Repo.get_by(TemplatePartial, clauses) do
-      nil ->
-        error = Error.new("straw_hat_mailer.template_partial.not_found", metadata: clauses)
-
-        {:error, error}
-
-      template_partial ->
-        Repo.delete(template_partial)
-    end
+    TemplatePartial
+    |> Repo.get_by(clauses)
+    |> StrawHat.Response.from_value(
+      Error.new("straw_hat_mailer.template_partial.not_found", metadata: clauses)
+    )
+    |> StrawHat.Response.map(&Repo.delete/1)
   end
 
   @spec templates_by_name(String.t()) :: Ecto.Query.t()

@@ -58,7 +58,7 @@ defmodule StrawHat.Mailer.Template do
     field(:title, :string)
     field(:subject, :string)
     field(:owner_id, :string)
-    field(:privacy, Privacy)
+    field(:privacy, Privacy, default: Privacy.private())
     field(:pre_header, :string)
     field(:html, :string)
     field(:text, :string)
