@@ -1,6 +1,6 @@
 defmodule StrawHat.Mailer.PartialsTest do
   use StrawHat.Mailer.Test.DataCase, async: true
-  alias StrawHat.Mailer.Partials
+  alias StrawHat.Mailer.{Partials, Partial}
   doctest Partials
 
   describe "get_owner_partials/2" do
@@ -49,5 +49,9 @@ defmodule StrawHat.Mailer.PartialsTest do
   test "delete_partial/1 with valid partial deletes the partial" do
     partial = insert(:partial)
     assert {:ok, _} = Partials.destroy_partial(partial)
+  end
+
+  test "change_partial/1 returns a partial changeset" do
+    assert %Ecto.Changeset{} = Partials.change_partial(%Partial{})
   end
 end

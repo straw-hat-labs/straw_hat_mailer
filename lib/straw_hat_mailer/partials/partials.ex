@@ -62,6 +62,14 @@ defmodule StrawHat.Mailer.Partials do
   def get_partial(partial_id), do: Repo.get(Partial, partial_id)
 
   @doc """
+  Returns an `%Ecto.Changeset{}` for tracking partial changes.
+  """
+  @spec change_partial(Partial.t()) :: Ecto.Changeset.t()
+  def change_partial(%Partial{} = partial) do
+    Partial.changeset(partial, %{})
+  end
+
+  @doc """
   Returns a list of partials that belongs to the `owner_id`.
   """
   @spec get_owner_partials(String.t(), Scrivener.Config.t()) :: Scrivener.Page.t()

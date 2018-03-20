@@ -45,7 +45,7 @@ defmodule StrawHat.Mailer.Templates do
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking template changes.
   """
-  @spec destroy_template(Template.t()) :: Ecto.Changeset.t()
+  @spec change_template(Template.t()) :: Ecto.Changeset.t()
   def change_template(%Template{} = template) do
     Template.changeset(template, %{})
   end
