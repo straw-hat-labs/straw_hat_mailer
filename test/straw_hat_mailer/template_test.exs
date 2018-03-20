@@ -20,9 +20,9 @@ defmodule StrawHat.Mailer.Test.TemplateTest do
 
   test "listing templates" do
     insert_list(3, :template)
-    template_pagination = Template.get_templates(%{page: 2, page_size: 2})
+    template_pagination = Template.get_templates(%{page: 1, page_size: 2})
 
-    assert length(template_pagination.entries) == 1
+    assert length(template_pagination.entries) == 2
   end
 
   test "create template" do
