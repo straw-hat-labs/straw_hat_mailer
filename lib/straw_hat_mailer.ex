@@ -18,6 +18,7 @@ defmodule StrawHat.Mailer do
 
   It use `StrawHat.Mailer.deliver/1` inside `Task.start/1`.
   """
+  @since "1.0.0"
   @spec deliver_later(Swoosh.Email.t(), keyword) :: {:ok, pid}
   def deliver_later(email, config \\ []) do
     Task.start(fn -> deliver(email, config) end)

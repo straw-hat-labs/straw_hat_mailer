@@ -82,6 +82,7 @@ defmodule StrawHat.Mailer.Emails do
 
   def with_template(email, template_name, data) do
     add_template = fn template -> with_template(email, template, data) end
+
     template_name
     |> Templates.get_template_by_name()
     |> StrawHat.Response.and_then(add_template)
