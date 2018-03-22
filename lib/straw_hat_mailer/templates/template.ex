@@ -74,7 +74,7 @@ defmodule StrawHat.Mailer.Template do
   end
 
   @doc """
-  Validate the attributes and return a Ecto.Changeset for the current Template.
+  Validates the attributes and return a Ecto.Changeset for the current Template.
   """
   @since "1.0.0"
   @spec changeset(t, template_attrs) :: Ecto.Changeset.t()

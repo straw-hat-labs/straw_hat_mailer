@@ -1,6 +1,6 @@
 defmodule StrawHat.Mailer.Emails do
   @moduledoc """
-  Add capability to create emails using templates.
+  Adds capability to create emails using templates.
 
       token = get_token()
       from = {"ACME", "noreply@acme.com"}
@@ -55,7 +55,7 @@ defmodule StrawHat.Mailer.Emails do
   @typep email_body_type :: :html | :text
 
   @doc """
-  Create a `Swoosh.Email` struct. It use `Swoosh.Email.new/1` so you can check
+  Creates a `Swoosh.Email` struct. It use `Swoosh.Email.new/1` so you can check
   the Swoosh documentation, the only different is this one force you to pass
   `from` and `to` as paramters rather than inside the `opts`.
   """
@@ -67,7 +67,7 @@ defmodule StrawHat.Mailer.Emails do
   end
 
   @doc """
-  Add `subject`, `html` and `text` to the Email using a template.
+  Adds `subject`, `html` and `text` to the Email using a template.
   """
   @spec with_template(Email.t(), Template.t() | String.t(), map) ::
           {:ok, Email.t()} | {:error, Error.t()}

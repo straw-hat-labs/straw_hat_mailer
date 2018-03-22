@@ -37,7 +37,7 @@ defmodule StrawHat.Mailer.TemplatePartial do
   end
 
   @doc """
-  Validate the attributes and return a Ecto.Changeset for the current Template Partial.
+  Validates the attributes and return a Ecto.Changeset for the current Template Partial.
   """
   @since "1.0.0"
   @spec changeset(t, Template.t(), Partial.t(), map()) :: Ecto.Changeset.t()

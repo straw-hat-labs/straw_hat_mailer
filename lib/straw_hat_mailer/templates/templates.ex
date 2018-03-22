@@ -56,7 +56,7 @@ defmodule StrawHat.Mailer.Templates do
   end
 
   @doc """
-  Get a template by `id`.
+  Gets a template by `id`.
   """
   @since "1.0.0"
   @spec find_template(String.t()) :: {:ok, Template.t()} | {:error, Error.t()}
@@ -69,7 +69,7 @@ defmodule StrawHat.Mailer.Templates do
   end
 
   @doc """
-  Get a template by `id`.
+  Gets a template by `id`.
   """
   @since "1.0.0"
   @spec get_template(String.t()) :: Ecto.Schema.t() | nil | no_return
@@ -80,7 +80,7 @@ defmodule StrawHat.Mailer.Templates do
   end
 
   @doc """
-  Get a template by `name`.
+  Gets a template by `name`.
   """
   @since "1.0.0"
   @spec get_template_by_name(String.t()) :: {:ok, Template.t()} | {:error, Error.t()}
@@ -97,7 +97,7 @@ defmodule StrawHat.Mailer.Templates do
   end
 
   @doc """
-  Add partials to template.
+  Adds partials to template.
   """
   @since "1.0.0"
   @spec add_partials(Template.t(), [Partial.t()]) :: [
@@ -110,7 +110,7 @@ defmodule StrawHat.Mailer.Templates do
   end
 
   @doc """
-  Add a partial to the template.
+  Adds a partial to the template.
   """
   @since "1.0.0"
   @spec add_partial(Template.t(), Partial.t()) ::
@@ -122,7 +122,7 @@ defmodule StrawHat.Mailer.Templates do
   end
 
   @doc """
-  Remove a partial from the template.
+  Removes a partial from the template.
   """
   @since "1.0.0"
   @spec remove_partial(Template.t(), Partial.t()) ::

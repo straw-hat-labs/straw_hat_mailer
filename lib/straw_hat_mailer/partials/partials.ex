@@ -48,7 +48,7 @@ defmodule StrawHat.Mailer.Partials do
   def destroy_partial(%Partial{} = partial), do: Repo.delete(partial)
 
   @doc """
-  Get a partial by `id`.
+  Gets a partial by `id`.
   """
   @since "1.0.0"
   @spec find_partial(String.t()) :: {:ok, Partial.t()} | {:error, Error.t()}
@@ -61,7 +61,7 @@ defmodule StrawHat.Mailer.Partials do
   end
 
   @doc """
-  Get a partial by `id`.
+  Gets a partial by `id`.
   """
   @since "1.0.0"
   @spec get_partial(String.t()) :: Partial.t() | nil | no_return
