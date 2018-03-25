@@ -10,4 +10,3 @@ testing: deps
 
 docs:
 	mix inch.report
-
