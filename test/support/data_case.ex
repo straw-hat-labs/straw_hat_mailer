@@ -1,4 +1,6 @@
 defmodule StrawHat.Mailer.Test.DataCase do
+  @moduledoc false
+
   use ExUnit.CaseTemplate
 
   using do

@@ -16,7 +16,7 @@ defmodule StrawHat.Mailer.PartialsTest do
       insert_list(3, :partial, %{owner_id: "user:123"})
       partial_pagination = Partials.get_owner_partials("admin:1234")
 
-      assert length(partial_pagination.entries) == 0
+      assert partial_pagination.entries == []
     end
   end
 
