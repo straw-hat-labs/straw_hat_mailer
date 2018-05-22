@@ -63,7 +63,7 @@ defmodule StrawHat.Mailer.Templates do
   def find_template(template_id) do
     template_id
     |> get_template()
-    |> StrawHat.Response.from_value(
+    |> Response.from_value(
       Error.new("straw_hat_mailer.template.not_found", metadata: [template_id: template_id])
     )
   end
@@ -88,7 +88,7 @@ defmodule StrawHat.Mailer.Templates do
     template_name
     |> templates_by_name()
     |> Repo.one()
-    |> StrawHat.Response.from_value(
+    |> Response.from_value(
       Error.new(
         "straw_hat_mailer.template.not_found",
         metadata: [template_name: template_name]
@@ -132,10 +132,10 @@ defmodule StrawHat.Mailer.Templates do
 
     TemplatePartial
     |> Repo.get_by(clauses)
-    |> StrawHat.Response.from_value(
+    |> Response.from_value(
       Error.new("straw_hat_mailer.template_partial.not_found", metadata: clauses)
     )
-    |> StrawHat.Response.map(&Repo.delete/1)
+    |> Response.map(&Repo.delete/1)
   end
 
   @since "1.0.0"

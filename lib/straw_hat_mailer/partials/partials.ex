@@ -55,7 +55,7 @@ defmodule StrawHat.Mailer.Partials do
   def find_partial(partial_id) do
     partial_id
     |> get_partial()
-    |> StrawHat.Response.from_value(
+    |> Response.from_value(
       Error.new("straw_hat_mailer.partial.not_found", metadata: [partial_id: partial_id])
     )
   end

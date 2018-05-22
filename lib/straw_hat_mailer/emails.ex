@@ -77,7 +77,7 @@ defmodule StrawHat.Mailer.Emails do
     email
     |> add_subject(template.subject, data)
     |> add_body(template, data)
-    |> StrawHat.Response.ok()
+    |> Response.ok()
   end
 
   def with_template(email, template_name, data) do
@@ -85,7 +85,7 @@ defmodule StrawHat.Mailer.Emails do
 
     template_name
     |> Templates.get_template_by_name()
-    |> StrawHat.Response.and_then(add_template)
+    |> Response.and_then(add_template)
   end
 
   @spec add_subject(Email.t(), String.t(), map) :: Email.t()
