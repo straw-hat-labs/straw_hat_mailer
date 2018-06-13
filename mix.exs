@@ -2,8 +2,8 @@ defmodule StrawHat.Mailer.Mixfile do
   use Mix.Project
 
   @name :straw_hat_mailer
-  @version "1.0.0"
-  @elixir_version "~> 1.5"
+  @version "1.1.0"
+  @elixir_version "~> 1.6"
 
   @description """
   Email Management
