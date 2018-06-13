@@ -15,7 +15,7 @@ defmodule StrawHat.Mailer.TemplateTest do
 
   describe "find_template/1" do
     test "with an invalid name returns an error" do
-      assert {:error, _reason} = Templates.find_template(1235)
+      assert {:error, _reason} = Ecto.UUID.generate() |> Templates.find_template()
     end
 
     test "returns a pagination of templates" do

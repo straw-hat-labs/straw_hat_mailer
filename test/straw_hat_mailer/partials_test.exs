@@ -26,7 +26,7 @@ defmodule StrawHat.Mailer.PartialsTest do
   end
 
   test "get_partial/1 with a invalid id returns an error" do
-    assert {:error, _reason} = Partials.find_partial(1235)
+    assert {:error, _reason} = Ecto.UUID.generate() |> Partials.find_partial()
   end
 
   test "get_partials/1 returns a list of partials" do

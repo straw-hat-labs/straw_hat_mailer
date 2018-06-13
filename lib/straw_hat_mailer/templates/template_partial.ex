@@ -34,6 +34,7 @@ defmodule StrawHat.Mailer.TemplatePartial do
   schema "template_partials" do
     belongs_to(:template, Template)
     belongs_to(:partial, Partial)
+    timestamps()
   end
 
   @doc """

@@ -71,6 +71,7 @@ defmodule StrawHat.Mailer.Template do
       on_delete: :delete_all,
       unique: true
     )
+    timestamps()
   end
 
   @doc """

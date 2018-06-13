@@ -50,6 +50,7 @@ defmodule StrawHat.Mailer.Partial do
     field(:text, :string)
     field(:privacy, Privacy)
     field(:owner_id, :string)
+    timestamps()
   end
 
   @doc """
