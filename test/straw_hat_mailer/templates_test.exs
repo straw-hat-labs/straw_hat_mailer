@@ -1,4 +1,4 @@
-defmodule StrawHat.Mailer.TemplateTest do
+defmodule StrawHat.Mailer.TemplateTests do
   use StrawHat.Mailer.TestSupport.CaseTemplate, async: true
   alias StrawHat.Mailer.{Templates, Template}
   doctest Templates
