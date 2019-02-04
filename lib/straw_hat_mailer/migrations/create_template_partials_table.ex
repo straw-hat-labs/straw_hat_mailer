@@ -1,4 +1,10 @@
-defmodule StrawHat.Mailer.Repo.Migrations.CreateTemplatePartialsTable do
+defmodule StrawHat.Mailer.Migrations.CreateTemplatePartialsTable do
+  @moduledoc """
+  Creates template partials table.
+
+  Created at: ~N[2017-07-25 04:50:12]
+  """
+
   use Ecto.Migration
 
   def change do

@@ -1,7 +1,7 @@
 defmodule StrawHat.Mailer.Test.Factory do
   @moduledoc false
 
-  use ExMachina.Ecto, repo: StrawHat.Mailer.Repo
+  use ExMachina.Ecto, repo: StrawHat.Mailer.TestSupport.Repo
 
   alias StrawHat.Mailer.{Template, Privacy, Partial}
 

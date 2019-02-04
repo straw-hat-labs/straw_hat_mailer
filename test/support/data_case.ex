@@ -11,15 +11,15 @@ defmodule StrawHat.Mailer.Test.DataCase do
       import StrawHat.Mailer.Test.DataCase
       import StrawHat.Mailer.Test.Factory
 
-      alias StrawHat.Mailer.Repo
+      alias StrawHat.Mailer.TestSupport.Repo
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(StrawHat.Mailer.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(StrawHat.Mailer.TestSupport.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(StrawHat.Mailer.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(StrawHat.Mailer.TestSupport.Repo, {:shared, self()})
     end
 
     :ok

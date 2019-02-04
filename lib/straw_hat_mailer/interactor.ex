@@ -5,7 +5,7 @@ defmodule StrawHat.Mailer.Interactor do
     quote do
       import Ecto.Query, only: [from: 2]
       alias StrawHat.{Error, Response}
-      alias StrawHat.Mailer.Repo
+      alias StrawHat.Mailer.TestSupport.Repo
     end
   end
 end
