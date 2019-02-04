@@ -27,9 +27,6 @@ defmodule StrawHat.Mailer.Partial do
           owner_id: StrawHat.Mailer.owner_id()
         }
 
-  @typedoc """
-  Check `t:t/0` type for more information about the keys.
-  """
   @type partial_attrs :: %{
           name: String.t(),
           title: String.t(),
@@ -53,9 +50,6 @@ defmodule StrawHat.Mailer.Partial do
     timestamps()
   end
 
-  @doc """
-  Validates the attributes and return a Ecto.Changeset for the current Partial Template.
-  """
   @spec changeset(t, partial_attrs) :: Ecto.Changeset.t()
   def changeset(partial, partial_attrs) do
     partial
@@ -66,7 +60,6 @@ defmodule StrawHat.Mailer.Partial do
     |> validate_name()
   end
 
-  @spec validate_name(Ecto.Changeset.t()) :: Ecto.Changeset.t()
   defp validate_name(changeset) do
     changeset
     |> update_change(:name, &cleanup_name/1)
@@ -74,7 +67,6 @@ defmodule StrawHat.Mailer.Partial do
     |> unique_constraint(:name, name: :partials_owner_id_name_index)
   end
 
-  @spec cleanup_name(String.t()) :: String.t()
   defp cleanup_name(name) do
     name
     |> String.trim()

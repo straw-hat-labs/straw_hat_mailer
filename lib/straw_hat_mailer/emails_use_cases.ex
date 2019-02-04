@@ -88,13 +88,11 @@ defmodule StrawHat.Mailer.Emails do
     |> Response.and_then(add_template)
   end
 
-  @spec add_subject(Email.t(), String.t(), map) :: Email.t()
   defp add_subject(email, subject, data) do
     subject = TemplateEngine.render(subject, data)
     Email.subject(email, subject)
   end
 
-  @spec add_body(Email.t(), Template.t(), map) :: Email.t()
   defp add_body(email, template, data) do
     template_data =
       %{data: data}
@@ -109,7 +107,6 @@ defmodule StrawHat.Mailer.Emails do
     |> add_body_to_email(:text, text)
   end
 
-  @spec render_body(email_body_type(), Template.t(), map()) :: map()
   defp render_body(type, template, template_data) do
     partial_type = Map.get(template_data.partials, type)
     template_data = Map.put(template_data, :partials, partial_type)
@@ -119,7 +116,6 @@ defmodule StrawHat.Mailer.Emails do
     |> TemplateEngine.render(template_data)
   end
 
-  @spec put_pre_header(map(), Template.t()) :: map()
   defp put_pre_header(template_data, template) do
     pre_header = render_pre_header(template, template_data)
 
@@ -128,21 +124,17 @@ defmodule StrawHat.Mailer.Emails do
     |> Map.put(:pre_header_html, "<span style=\"display: none !important;\">#{pre_header}</span>")
   end
 
-  @spec put_partials(map(), Template.t()) :: map()
   defp put_partials(template_data, template) do
     partials = render_partials(template, template_data)
     Map.put(template_data, :partials, partials)
   end
 
-  @spec get_body_by_type(email_body_type(), Template.t()) :: String.t()
   defp get_body_by_type(:html, template), do: template.html
   defp get_body_by_type(:text, template), do: template.text
 
-  @spec add_body_to_email(Email.t(), email_body_type(), String.t()) :: Email.t()
   defp add_body_to_email(email, :html, body), do: Email.html_body(email, body)
   defp add_body_to_email(email, :text, body), do: Email.text_body(email, body)
 
-  @spec render_partials(Template.t(), map()) :: map()
   defp render_partials(template, template_data) do
     Enum.reduce(template.partials, %{html: %{}, text: %{}}, fn partial, reducer_accumulator ->
       name = Map.get(partial, :name)
@@ -152,7 +144,6 @@ defmodule StrawHat.Mailer.Emails do
     end)
   end
 
-  @spec add_partial(email_body_type(), String.t(), map(), map(), map()) :: map()
   defp add_partial(type, name, partial, partials_data, template_data) do
     render_partial =
       partial
@@ -164,12 +155,10 @@ defmodule StrawHat.Mailer.Emails do
     |> Map.put(String.to_atom(name), render_partial)
   end
 
-  @spec render_pre_header(Template.t(), map()) :: String.t()
   defp render_pre_header(%Template{pre_header: nil} = _template, _template_data) do
     ""
   end
 
-  @spec render_pre_header(Template.t(), map()) :: String.t()
   defp render_pre_header(%Template{pre_header: pre_header} = _template, template_data) do
     TemplateEngine.render(pre_header, template_data)
   end

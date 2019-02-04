@@ -60,10 +60,6 @@ defmodule StrawHat.Mailer.Partials do
     Partial.changeset(partial, %{})
   end
 
-  @doc """
-  Returns a list of partials that belongs to the `owner_id`.
-  """
-  @since "1.0.0"
   @spec get_owner_partials(Ecto.Repo.t(), String.t(), Scrivener.Config.t()) :: Scrivener.Page.t()
   def get_owner_partials(repo, owner_id, pagination \\ []) do
     Partial

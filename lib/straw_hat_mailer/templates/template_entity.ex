@@ -35,9 +35,6 @@ defmodule StrawHat.Mailer.Template do
           partials: [Partial.t()] | Ecto.Association.NotLoaded.t()
         }
 
-  @typedoc """
-  Check `t:t/0` type for more information about the keys.
-  """
   @type template_attrs :: %{
           name: String.t(),
           title: String.t(),
@@ -75,10 +72,6 @@ defmodule StrawHat.Mailer.Template do
     timestamps()
   end
 
-  @doc """
-  Validates the attributes and return a Ecto.Changeset for the current Template.
-  """
-  @since "1.0.0"
   @spec changeset(t, template_attrs) :: Ecto.Changeset.t()
   def changeset(template, template_attrs) do
     template
@@ -89,8 +82,6 @@ defmodule StrawHat.Mailer.Template do
     |> validate_name()
   end
 
-  @since "1.0.0"
-  @spec validate_name(Ecto.Changeset.t()) :: Ecto.Changeset.t()
   defp validate_name(changeset) do
     changeset
     |> update_change(:name, &cleanup_name/1)
@@ -98,8 +89,6 @@ defmodule StrawHat.Mailer.Template do
     |> unique_constraint(:name, name: :templates_owner_id_name_index)
   end
 
-  @since "1.0.0"
-  @spec cleanup_name(String.t()) :: String.t()
   defp cleanup_name(name) do
     name
     |> String.trim()
