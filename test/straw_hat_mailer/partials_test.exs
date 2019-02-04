@@ -1,5 +1,5 @@
 defmodule StrawHat.Mailer.PartialsTest do
-  use StrawHat.Mailer.Test.DataCase, async: true
+  use StrawHat.Mailer.TestSupport.CaseTemplate, async: true
   alias StrawHat.Mailer.{Partials, Partial}
   doctest Partials
 

@@ -1,5 +1,5 @@
 defmodule StrawHat.Mailer.Test.EmailsTest do
-  use StrawHat.Mailer.Test.DataCase, async: true
+  use StrawHat.Mailer.TestSupport.CaseTemplate, async: true
   alias StrawHat.Mailer.{Emails, Templates}
   doctest Emails
 

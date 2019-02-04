@@ -1,4 +1,4 @@
-defmodule StrawHat.Mailer.Test.Factory do
+defmodule StrawHat.Mailer.TestSupport.Factory do
   @moduledoc false
 
   use ExMachina.Ecto, repo: StrawHat.Mailer.TestSupport.Repo
