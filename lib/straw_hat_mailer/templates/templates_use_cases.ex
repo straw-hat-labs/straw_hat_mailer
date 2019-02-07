@@ -56,8 +56,10 @@ defmodule StrawHat.Mailer.Templates do
 
   @spec get_template_by_name(Ecto.Repo.t(), String.t()) :: {:ok, Template.t()} | {:error, Error.t()}
   def get_template_by_name(repo, template_name) do
-    template_name
-    |> templates_by_name()
+    Template
+    |> select([template], template)
+    |> where(name: ^template_name)
+    |> preload([:partials])
     |> repo.one()
     |> Response.from_value(
       Error.new(
@@ -93,14 +95,6 @@ defmodule StrawHat.Mailer.Templates do
       Error.new("straw_hat_mailer.template_partial.not_found", metadata: clauses)
     )
     |> Response.map(&repo.delete/1)
-  end
-
-  defp templates_by_name(name) do
-    from(
-      template in Template,
-      where: template.name == ^name,
-      preload: [:partials]
-    )
   end
 
   defp templates_with_partials do
