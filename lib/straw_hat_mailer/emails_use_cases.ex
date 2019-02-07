@@ -2,19 +2,15 @@ defmodule StrawHat.Mailer.Emails do
   @moduledoc """
   Adds capability to create emails using templates.
 
-      token = get_token()
       from = {"ACME", "noreply@acme.com"}
       to = {"Straw Hat Team", "some_email@acme.com"}
       data = %{
-        confirmation_token: token
+        confirmation_token: "12345"
       }
+      email = StrawHat.Mailer.Email.new(from, to)
+      {:ok, email} = StrawHat.Mailer.Email.with_template(MyRepo, email, "confirmation_email", data)
 
-      {:ok, email} =
-        from
-        |> StrawHat.Mailer.Email.new(to)
-        |> StrawHat.Mailer.Email.with_template("welcome", data)
-
-      StrawHat.Mailer.deliver(email)
+      StrawHat.Mailer.deliver_later(email)
 
   All your templates will receive the same shape of data which you could use
   mustache syntax for using it, read about `t:StrawHat.Mailer.Email.template_data/0`.
@@ -43,7 +39,9 @@ defmodule StrawHat.Mailer.Emails do
   @typedoc """
   The tuple is compose by the name and email.
 
-  Example: `{"Straw Hat Team", "straw_hat_team@straw_hat.com"}`
+  Example:
+
+      `{"Straw Hat Team", "straw_hat_team@straw_hat.com"}`
   """
   @type address :: {String.t(), String.t()}
 
