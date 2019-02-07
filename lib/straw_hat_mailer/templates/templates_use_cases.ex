@@ -9,7 +9,10 @@ defmodule StrawHat.Mailer.Templates do
 
   @spec get_templates(Ecto.Repo.t(), Scrivener.Config.t()) :: Scrivener.Page.t()
   def get_templates(repo, pagination \\ []) do
-    templates_with_partials() |> Scrivener.paginate(Scrivener.Config.new(repo, [], pagination))
+    Template
+    |> select([template], template)
+    |> preload([:partials])
+    |> Scrivener.paginate(Scrivener.Config.new(repo, [], pagination))
   end
 
   @spec create_template(Ecto.Repo.t(), Template.template_attrs()) ::
@@ -95,9 +98,5 @@ defmodule StrawHat.Mailer.Templates do
       Error.new("straw_hat_mailer.template_partial.not_found", metadata: clauses)
     )
     |> Response.map(&repo.delete/1)
-  end
-
-  defp templates_with_partials do
-    from(_template in Template, preload: [:partials])
   end
 end
