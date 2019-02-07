@@ -69,10 +69,8 @@ defmodule StrawHat.Mailer.Emails do
   @doc """
   Adds `subject`, `html` and `text` to the Email using a template.
   """
-  @spec with_template(Email.t(), Template.t() | String.t(), map) ::
+  @spec with_template(Email.t(), Template.t(), map) ::
           {:ok, Email.t()} | {:error, Error.t()}
-  def with_template(email, template_name_or_template_schema, data \\ %{})
-
   def with_template(email, %Template{} = template, data) do
     email
     |> add_subject(template.subject, data)
@@ -80,12 +78,15 @@ defmodule StrawHat.Mailer.Emails do
     |> Response.ok()
   end
 
-  def with_template(email, template_name, data) do
-    add_template = fn template -> with_template(email, template, data) end
-
-    template_name
-    |> Templates.get_template_by_name()
-    |> Response.and_then(add_template)
+  @doc """
+  Adds `subject`, `html` and `text` to the Email using a template.
+  """
+  @spec with_template(Ecto.Repo.t(), Email.t(), String.t(), map) ::
+          {:ok, Email.t()} | {:error, Error.t()}
+  def with_template(repo, email, template_name, data) do
+    repo
+    |> Templates.get_template_by_name(template_name)
+    |> Response.and_then(&with_template(email, &1, data))
   end
 
   defp add_subject(email, subject, data) do

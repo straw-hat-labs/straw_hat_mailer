@@ -16,11 +16,8 @@ defmodule StrawHat.Mailer.Test.EmailsTests do
   describe "with_template/2" do
     test "with valid template should match html and text" do
       template = insert(:template)
-
-      {:ok, email} =
-        @from
-        |> Emails.new(@to)
-        |> Emails.with_template(template.name, @options)
+      email = Emails.new(@from, @to)
+      {:ok, email} = Emails.with_template(Repo, email, template.name, @options)
 
       assert email.html_body ==
                "Welcome tokarev!, <br> <b>Become </b> our client number <i>1 000 000</i>"
@@ -29,10 +26,9 @@ defmodule StrawHat.Mailer.Test.EmailsTests do
     end
 
     test "with invalid template it returns an error" do
-      assert {:error, _email} =
-               @from
-               |> Emails.new(@to)
-               |> Emails.with_template("fake_id")
+      email = Emails.new(@from, @to)
+
+      assert {:error, _email} = Emails.with_template(Repo, email, "fake_id", %{})
     end
 
     test "with added partials should it renders the partial contents" do
@@ -51,12 +47,11 @@ defmodule StrawHat.Mailer.Test.EmailsTests do
       template = insert(:template, template_attrs)
       partial = insert(:partial, partial_attrs)
 
-      Templates.add_partials(template, [partial])
+      Templates.add_partials(Repo, template, [partial])
 
-      {:ok, email} =
-        @from
-        |> Emails.new(@to)
-        |> Emails.with_template(template.name, @options)
+      email = Emails.new(@from, @to)
+
+      {:ok, email} = Emails.with_template(Repo, email, template.name, @options)
 
       assert email.html_body ==
                "<b>Welcome</b> tokarev!, enjoy a good reputation, <b>Purchase Now!</b>: POBOX 54634"
