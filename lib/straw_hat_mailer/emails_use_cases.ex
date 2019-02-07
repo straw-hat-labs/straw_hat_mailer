@@ -20,8 +20,8 @@ defmodule StrawHat.Mailer.Emails do
   mustache syntax for using it, read about `t:StrawHat.Mailer.Email.template_data/0`.
   """
 
-  use StrawHat.Mailer.Interactor
   alias Swoosh.Email
+  alias StrawHat.Response
   alias StrawHat.Mailer.{Templates, TemplateEngine, Template}
 
   @typedoc """
