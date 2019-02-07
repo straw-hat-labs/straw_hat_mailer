@@ -22,7 +22,7 @@ defmodule StrawHat.Mailer.PartialsTests do
 
   test "get_partial/1 with a valid id finds the partial" do
     partial = insert(:partial)
-    assert Partials.get_partial(Repo,partial.id) != nil
+    assert Partials.get_partial(Repo, partial.id) != nil
   end
 
   test "get_partial/1 with a invalid id returns an error" do

@@ -31,7 +31,8 @@ defmodule StrawHat.Mailer.Templates do
     |> repo.update()
   end
 
-  @spec destroy_template(Ecto.Repo.t(), Template.t()) :: {:ok, Template.t()} | {:error, Ecto.Changeset.t()}
+  @spec destroy_template(Ecto.Repo.t(), Template.t()) ::
+          {:ok, Template.t()} | {:error, Ecto.Changeset.t()}
   def destroy_template(repo, %Template{} = template) do
     repo.delete(template)
   end
@@ -57,7 +58,8 @@ defmodule StrawHat.Mailer.Templates do
     |> repo.preload(:partials)
   end
 
-  @spec get_template_by_name(Ecto.Repo.t(), String.t()) :: {:ok, Template.t()} | {:error, Error.t()}
+  @spec get_template_by_name(Ecto.Repo.t(), String.t()) ::
+          {:ok, Template.t()} | {:error, Error.t()}
   def get_template_by_name(repo, template_name) do
     Template
     |> select([template], template)
@@ -89,7 +91,11 @@ defmodule StrawHat.Mailer.Templates do
 
   @spec remove_partial(Ecto.Repo.t(), Template.t(), Partial.t()) ::
           {:ok, TemplatePartial.t()} | {:error, Ecto.Changeset.t() | Error.t()}
-  def remove_partial(repo, %Template{id: template_id} = _template, %Partial{id: partial_id} = _partial) do
+  def remove_partial(
+        repo,
+        %Template{id: template_id} = _template,
+        %Partial{id: partial_id} = _partial
+      ) do
     clauses = [template_id: template_id, partial_id: partial_id]
 
     TemplatePartial
