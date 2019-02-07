@@ -3,7 +3,8 @@ defmodule StrawHat.Mailer.Templates do
   Interactor module that defines all the functionality for template management.
   """
 
-  use StrawHat.Mailer.Interactor
+  import Ecto.Query
+  alias StrawHat.{Error, Response}
   alias StrawHat.Mailer.{Template, TemplatePartial, Partial}
 
   @spec get_templates(Ecto.Repo.t(), Scrivener.Config.t()) :: Scrivener.Page.t()
