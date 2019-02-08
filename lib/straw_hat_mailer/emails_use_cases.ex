@@ -41,7 +41,7 @@ defmodule StrawHat.Mailer.Emails do
 
   Example:
 
-      `{"Straw Hat Team", "straw_hat_team@straw_hat.com"}`
+      {"Straw Hat Team", "straw_hat_team@straw_hat.com"}
   """
   @type address :: {String.t(), String.t()}
 
@@ -49,8 +49,6 @@ defmodule StrawHat.Mailer.Emails do
   Recipient or list of recipients of the email.
   """
   @type to :: address | [address]
-
-  @typep email_body_type :: :html | :text
 
   @doc """
   Creates a `Swoosh.Email` struct. It use `Swoosh.Email.new/1` so you can check
