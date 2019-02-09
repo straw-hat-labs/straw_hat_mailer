@@ -105,8 +105,8 @@ defmodule StrawHat.Mailer.Emails do
   end
 
   defp render_body(type, template, template_data) do
-    partial_type = Map.get(template_data.partials, type)
-    template_data = Map.put(template_data, :partials, partial_type)
+    partial_from_type = Map.get(template_data.partials, type)
+    template_data = Map.put(template_data, :partials, partial_from_type)
 
     type
     |> get_body_by_type(template)
