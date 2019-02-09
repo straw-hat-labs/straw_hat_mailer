@@ -49,8 +49,6 @@ defmodule StrawHat.Mailer.MixProject do
       # Testing
       {:ex_machina, ">= 0.0.0", only: [:test]},
       {:faker, ">= 0.0.0", only: [:test]},
-      {:benchee, ">= 0.0.0", only: [:dev], runtime: false},
-      {:benchee_html, ">= 0.0.0", only: [:dev], runtime: false},
 
       # Tools
       {:dialyxir, ">= 0.0.0", only: [:dev], runtime: false},
