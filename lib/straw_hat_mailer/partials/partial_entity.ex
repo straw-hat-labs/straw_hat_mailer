@@ -1,7 +1,6 @@
 defmodule StrawHat.Mailer.Partial do
   @moduledoc """
-  Represents a Partial Ecto Schema with functionality about the data validation
-  for Partial Template.
+  A Partial entity.
   """
 
   use StrawHat.Mailer.Schema
