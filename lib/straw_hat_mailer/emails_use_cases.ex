@@ -5,7 +5,7 @@ defmodule StrawHat.Mailer.Emails do
       from = {"ACME", "noreply@acme.com"}
       to = {"Straw Hat Team", "some_email@acme.com"}
       data = %{
-        confirmation_token: "12345"
+        "confirmation_token" => "12345"
       }
       email = StrawHat.Mailer.Email.new(from, to)
       {:ok, email} = StrawHat.Mailer.Email.with_template(MyRepo, email, "confirmation_email", data)
