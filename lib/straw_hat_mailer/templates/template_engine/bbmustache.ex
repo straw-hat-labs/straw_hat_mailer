@@ -5,6 +5,6 @@ defmodule StrawHat.Mailer.TemplateEngine.BBMustache do
 
   @spec render(String.t(), map()) :: String.t()
   def render(template, data) do
-    :bbmustache.render(template, data, key_type: :atom)
+    :bbmustache.render(template, data, key_type: :binary)
   end
 end

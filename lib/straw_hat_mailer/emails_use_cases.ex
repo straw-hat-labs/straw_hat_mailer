@@ -22,8 +22,10 @@ defmodule StrawHat.Mailer.Emails do
 
   @typedoc """
   You would use the data as mustache syntax does it using brackets.
+
   The `partials` key will whole all the partials of your template using
   `name as the key` so you will be able to use it as `{{{partials.PARTIAL_NAME}}}`.
+
   Notice I am using triple brackets and that is because probably you want to
   escape the output.
   """
@@ -92,7 +94,7 @@ defmodule StrawHat.Mailer.Emails do
 
   defp add_body(email, template, data) do
     template_data =
-      %{data: data}
+      %{"data" => data}
       |> put_pre_header(template)
       |> put_partials(template)
 
@@ -105,8 +107,11 @@ defmodule StrawHat.Mailer.Emails do
   end
 
   defp render_body(type, template, template_data) do
-    partial_from_type = Map.get(template_data.partials, type)
-    template_data = Map.put(template_data, :partials, partial_from_type)
+    partial_from_type =
+      template_data
+      |> Map.get("partials")
+      |> Map.get(type)
+    template_data = Map.put(template_data, "partials", partial_from_type)
 
     type
     |> get_body_by_type(template)
@@ -117,13 +122,13 @@ defmodule StrawHat.Mailer.Emails do
     pre_header = render_pre_header(template, template_data)
 
     template_data
-    |> Map.put(:pre_header, pre_header)
-    |> Map.put(:pre_header_html, "<span style=\"display: none !important;\">#{pre_header}</span>")
+    |> Map.put("pre_header", pre_header)
+    |> Map.put("pre_header_html", "<span style=\"display: none !important;\">#{pre_header}</span>")
   end
 
   defp put_partials(template_data, template) do
     partials = render_partials(template, template_data)
-    Map.put(template_data, :partials, partials)
+    Map.put(template_data, "partials", partials)
   end
 
   defp get_body_by_type(:html, template), do: template.html
@@ -133,23 +138,25 @@ defmodule StrawHat.Mailer.Emails do
   defp add_body_to_email(email, :text, body), do: Email.text_body(email, body)
 
   defp render_partials(template, template_data) do
-    Enum.reduce(template.partials, %{html: %{}, text: %{}}, fn partial, reducer_accumulator ->
+    template
+    |> Map.get(:partials)
+    |> Enum.reduce(%{html: %{}, text: %{}}, fn partial, reducer_accumulator ->
       name = Map.get(partial, :name)
-      html = add_partial(:html, name, partial, reducer_accumulator, template_data)
-      text = add_partial(:text, name, partial, reducer_accumulator, template_data)
+      html = render_partial(:html, name, partial, reducer_accumulator, template_data)
+      text = render_partial(:text, name, partial, reducer_accumulator, template_data)
       %{html: html, text: text}
     end)
   end
 
-  defp add_partial(type, name, partial, partials_data, template_data) do
-    render_partial =
+  defp render_partial(type, name, partial, partials_data, template_data) do
+    rendered_partial =
       partial
       |> Map.get(type)
       |> TemplateEngine.render(template_data)
 
     partials_data
     |> Map.get(type)
-    |> Map.put(String.to_atom(name), render_partial)
+    |> Map.put(name, rendered_partial)
   end
 
   defp render_pre_header(%Template{pre_header: nil} = _template, _template_data) do

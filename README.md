@@ -163,7 +163,7 @@ end
 # Later on
 to = {"User Name", "user_email@something.com"}
 data = %{
-  full_name: "My name is Jeff"
+  "full_name" => "My name is Jeff"
 }
 
 MyApp.send_welcome_email(to, data)

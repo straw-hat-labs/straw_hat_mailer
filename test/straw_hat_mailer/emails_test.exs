@@ -6,11 +6,11 @@ defmodule StrawHat.Mailer.Test.EmailsTests do
   @from "siupport@myapp.com"
   @to "acme@acme.com"
   @options %{
-    name: "jristo",
-    number: "1 000 000",
-    company: "Straw-hat",
-    address: "POBOX 54634",
-    username: "tokarev"
+    "name" => "jristo",
+    "number" => "1 000 000",
+    "company" => "Straw-hat",
+    "address" => "POBOX 54634",
+    "username" => "tokarev"
   }
 
   test "applying the template" do
@@ -36,7 +36,6 @@ defmodule StrawHat.Mailer.Test.EmailsTests do
         "<b>Welcome</b> {{data.username}}!, enjoy a good reputation, {{{partials.marketing_text}}}",
       text: "Welcome {{data.username}}!, enjoy a good reputation, {{partials.marketing_text}}"
     }
-
     partial_attrs = %{
       name: "marketing_text",
       html: "<b>Purchase Now!</b>: {{data.address}}",
@@ -54,7 +53,6 @@ defmodule StrawHat.Mailer.Test.EmailsTests do
 
     assert email.html_body ==
              "<b>Welcome</b> tokarev!, enjoy a good reputation, <b>Purchase Now!</b>: POBOX 54634"
-
     assert email.text_body ==
              "Welcome tokarev!, enjoy a good reputation, Purchase Now!: POBOX 54634"
   end
