@@ -111,6 +111,7 @@ defmodule StrawHat.Mailer.Emails do
       template_data
       |> Map.get("partials")
       |> Map.get(type)
+
     template_data = Map.put(template_data, "partials", partial_from_type)
 
     type
@@ -123,7 +124,10 @@ defmodule StrawHat.Mailer.Emails do
 
     template_data
     |> Map.put("pre_header", pre_header)
-    |> Map.put("pre_header_html", "<span style=\"display: none !important;\">#{pre_header}</span>")
+    |> Map.put(
+      "pre_header_html",
+      "<span style=\"display: none !important;\">#{pre_header}</span>"
+    )
   end
 
   defp put_partials(template_data, template) do
