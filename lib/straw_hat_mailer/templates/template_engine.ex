@@ -10,7 +10,6 @@ defmodule StrawHat.Mailer.TemplateEngine do
     template_engine().render(template, data)
   end
 
-  @spec template_engine :: any
   defp template_engine do
     Application.get_env(
       :straw_hat_mailer,
