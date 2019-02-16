@@ -3,40 +3,40 @@ defmodule StrawHat.Mailer.TemplateTests do
   alias StrawHat.Mailer.{Templates, Template}
   doctest Templates
 
-  test "get_template_by_name/1 with a valid name returns a template" do
+  test "finding a template by name" do
     template = insert(:template)
 
     assert {:ok, _template} = Templates.get_template_by_name(Repo, template.name)
   end
 
-  test "find_template/1 with a valid id returns a template" do
-    template = insert(:template)
+  test "returning a pagination of templates" do
+    insert_list(3, :template)
+    template_pagination = Templates.get_templates(Repo, %{page: 1, page_size: 2})
 
-    assert {:ok, _template} = Templates.find_template(Repo, template.id)
+    assert length(template_pagination.entries) == 2
   end
 
-  describe "find_template/1" do
-    test "with an invalid name returns an error" do
+  describe "finding a template" do
+    test "with a valid ID" do
+      template = insert(:template)
+
+      assert {:ok, _template} = Templates.find_template(Repo, template.id)
+    end
+
+    test "with an invalid ID" do
       template_id = Ecto.UUID.generate()
 
       assert {:error, _reason} = Templates.find_template(Repo, template_id)
     end
-
-    test "returns a pagination of templates" do
-      insert_list(3, :template)
-      template_pagination = Templates.get_templates(Repo, %{page: 1, page_size: 2})
-
-      assert length(template_pagination.entries) == 2
-    end
   end
 
-  test "create_template/1 with valid data creates a template" do
+  test "creating a templat with valid inputs" do
     params = params_for(:template)
 
     assert {:ok, _template} = Templates.create_template(Repo, params)
   end
 
-  test "add_partials/2 with valid partials attached the partials to the template" do
+  test "attaching partials to a template with valid partials" do
     template = insert(:template)
     Templates.add_partials(Repo, template, insert_list(3, :partial))
     Templates.add_partials(Repo, template, insert_list(3, :partial))
@@ -45,8 +45,8 @@ defmodule StrawHat.Mailer.TemplateTests do
     assert Enum.count(template.partials) == 6
   end
 
-  describe "remove_partial/2" do
-    test "with valid connected partial removes the partial from the template" do
+  describe "removing a partial from the template" do
+    test "with a valid connected partial" do
       template = insert(:template)
       partial = insert(:partial)
       Templates.add_partial(Repo, template, partial)
@@ -54,25 +54,28 @@ defmodule StrawHat.Mailer.TemplateTests do
       assert {:ok, _} = Templates.remove_partial(Repo, template, partial)
     end
 
-    test "with an invalid connected partial returns an error" do
+    test "with an invalid connected partial" do
       template = insert(:template)
       partial = insert(:partial)
+
       assert {:error, _} = Templates.remove_partial(Repo, template, partial)
     end
   end
 
-  test "update_template/2 with valid data updates the template" do
+  test "updating a template with valid inputs" do
     template = insert(:template)
     {:ok, template} = Templates.update_template(Repo, template, %{name: "new_service"})
+
     assert template.name == "new_service"
   end
 
-  test "destroy_template/1 with valid template destroys the template" do
+  test "destroying an existing template" do
     template = insert(:template)
+
     assert {:ok, _} = Templates.destroy_template(Repo, template)
   end
 
-  test "change_template/1 returns a template changeset" do
+  test "generating a template changeset" do
     assert %Ecto.Changeset{} = Templates.change_template(%Template{})
   end
 end
