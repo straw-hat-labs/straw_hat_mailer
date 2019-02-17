@@ -42,7 +42,7 @@ defmodule StrawHat.Mailer.MixProject do
       {:postgrex, ">= 0.0.0"},
       {:scrivener_ecto, "~> 2.0"},
       {:exnumerator, "~> 1.3"},
-      {:swoosh, "~> 0.12"},
+      {:swoosh, "~> 0.21"},
       {:bbmustache, "~> 1.5"},
       {:mustache, "~> 0.3.1", optional: true},
 
