@@ -17,6 +17,9 @@ All business use cases takes an Ecto repository as first parameter.
 
 Besides this, all the API stay the same, no changes.
 
+`StrawHat.Mailer.Emails.with_template` requires to pass `data` and `data` most
+be string key based. We could have some potential memory leak because of atoms.
+
 #### Committers
 
 - Yordis Prieto ([yordis](https://github.com/yordis))

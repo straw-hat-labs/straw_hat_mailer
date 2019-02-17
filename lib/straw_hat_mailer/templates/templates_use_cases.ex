@@ -1,6 +1,6 @@
 defmodule StrawHat.Mailer.Templates do
   @moduledoc """
-  Interactor module that defines all the functionality for template management.
+  Templates management use cases.
   """
 
   import Ecto.Query

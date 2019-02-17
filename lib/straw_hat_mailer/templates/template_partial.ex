@@ -1,21 +1,11 @@
 defmodule StrawHat.Mailer.TemplatePartial do
   @moduledoc """
-  Represents a TemplatePartial Ecto Schema relation.
+  Template's Partial entity.
   """
 
   use StrawHat.Mailer.Schema
   alias StrawHat.Mailer.{Template, Partial}
 
-  @typedoc """
-  - `template`: `t:StrawHat.Mailer.Template.t/0` associated with the
-  template partial.
-  - `template_id`: `id` of `t:StrawHat.Mailer.Template.t/0` associated
-  with the template partial.
-  - `partial`: `t:StrawHat.Mailer.Partial.t/0` associated with the
-  template partial.
-  - `partial_id`: `id` of `t:StrawHat.Mailer.Partial.t/0` associated
-  with the template partial.
-  """
   @type t :: %__MODULE__{
           template: Template.t() | Ecto.Association.NotLoaded.t(),
           template_id: Integer.t(),

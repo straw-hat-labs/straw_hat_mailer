@@ -1,7 +1,6 @@
 defmodule StrawHat.Mailer.Template do
   @moduledoc """
-  Represents a Template Ecto Schema with functionality about the data validation
-  for Template.
+  A Template entity.
   """
 
   use StrawHat.Mailer.Schema
