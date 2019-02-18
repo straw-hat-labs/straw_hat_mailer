@@ -29,13 +29,6 @@ config :straw_hat_mailer, StrawHat.Mailer,
   # Swoosh.Adapters.Local for development
   adapter: Swoosh.Adapters.Sendgrid,
   api_key: "SG.x.x"
-
-config :straw_hat_mailer, StrawHat.Mailer.Repo,
-  adapter: Ecto.Adapters.Postgres,
-  database: "straw_hat_mailer",
-  hostname: "localhost",
-  username: "postgres",
-  password: "postgres"
 ```
 
 ## Usage
@@ -169,39 +162,40 @@ data = %{
 MyApp.send_welcome_email(to, data)
 ```
 
-### Mix Aliases Task and Ecto
+## Use cases
 
-If you are using `Ecto` in your application probably you have some mix aliases
-if not then just create it.
+All the APIs are contain in the business use cases are under `Use Cases`
+documentation section. Check the available modules and the public API.
+
+You should be able to comprehend the API by reading the type spec and the
+function name. Please open an issue or even better make pull request about the
+documation if you have any issues with it.
+
+## Migrations
+
+Since this library does not have any repository, it does not run any migration.
+You will need to handle the migrations on your application that contains the
+repository.
+
+The `migrations` directory contains a series of migrations that should cover
+the common use cases.
+
+> **Note**
+>
+> Each migration module has a `Created at` timestamp, this information is useful
+> to decide when and the order on which the migrations should be run.
+
+### Using migrations
+
+After creating an Ecto migration in your project you could call one of the
+migrations from your `change` callback in your module.
 
 ```elixir
-defp aliases do
-  [
-    "ecto.setup": [
-      "ecto.create",
-      "ecto.migrate",
-      "run priv/repo/seeds.exs"
-    ],
-    "ecto.reset": [
-      "ecto.drop",
-      "ecto.setup"
-    ],
-    "test": ["ecto.create --quiet", "ecto.migrate", "test"]
-  ]
+defmodule MyApp.Repo.Migrations.CreatePartialsTable do
+  use Ecto.Migration
+
+  def change do
+    StrawHat.Mailer.Migrations.CreatePartialsTable.change()
+  end
 end
 ```
-
-Then add `StrawHat.Mailer.Repo` to the list of ecto repos on your application
-in your config.
-
-```elixir
-# config/config.exs
-
-config :my_app,
-  ecto_repos: [
-    # ...
-    StrawHat.Mailer.Repo
-  ]
-```
-
-This way `ecto.create`, `ecto.migrate` and `ecto.drop` knows about the repo.
