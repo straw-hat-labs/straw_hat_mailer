@@ -7,17 +7,6 @@
 Email Management with templating capability. The templates use Mustache template
 under the hood so you can do everything that the template system allow you to do.
 
-## Installation
-
-```elixir
-def deps do
-  [
-    {:swoosh, "~> 0.12"},
-    {:straw_hat_mailer, "~> 0.4"}
-  ]
-end
-```
-
 ### Configuration
 
 We need to setup `Swoosh` adapter to be able to send the emails and the database
